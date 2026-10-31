@@ -1,13 +1,14 @@
 import { statfs } from '@kit.CoreFileKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { ThemePalette } from '../../common/Theme';
 import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
-import { BackupService } from '../../data/BackupService';
+import { BackupService, BackupOptions } from '../../data/BackupService';
 import { NavGlassAction, NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
-import { ExportColumnsDialog } from '../components/Dialogs';
+import { BackupOptionsDialog, BackupPasswordDialog, ExportColumnsDialog } from '../components/Dialogs';
 
 // 备份频率选项（小时）：关闭 / 6 / 12 / 24 / 48 / 每周（对齐 Mihon backupInterval）
 const INTERVAL_HOURS: number[] = [0, 6, 12, 24, 48, 168];
@@ -69,7 +70,7 @@ export struct DataStorageContent {
               .fontColor(this.pal.text)
               .fontSize(14)
               .onClick(() => {
-                this.doCreateBackup();
+                this.showBackupOptionsDialog();
               })
             Button($r('app.string.data_restore_backup'))
               .layoutWeight(1)
@@ -231,24 +232,42 @@ export struct DataStorageContent {
     this.lastBackupText = Util.resStr(ui, $r('app.string.data_last_auto_backup'), [relText]);
   }
 
-  private async doCreateBackup(): Promise<void> {
+  // 创建备份：先选档位（完整/精简、是否含敏感配置），确认后执行导出
+  private showBackupOptionsDialog(): void {
+    const dialog = new CustomDialogController({
+      builder: BackupOptionsDialog({
+        onConfirm: (options: BackupOptions): void => {
+          this.doCreateBackup(options);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: true,
+    });
+    dialog.open();
+  }
+
+  private async doCreateBackup(options: BackupOptions): Promise<void> {
     if (this.busy) {
       return;
     }
     this.busy = true;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
-      const ok = await BackupService.exportBackup(context);
+      const ok = await BackupService.exportBackup(context, options);
       if (this.disposed) {
         return;
       }
       Util.toastRes(this.getUIContext(), ok ? $r('app.string.advanced_backup_exported') :
         $r('app.string.advanced_export_canceled'));
     } catch (e) {
-      if (this.disposed) {
-        return;
+      if (!this.disposed) {
+        hilog.error(0x0001, 'Backup', 'create backup failed: %{public}s', `${e}`);
+        Util.toastRes(this.getUIContext(), $r('app.string.advanced_export_failed'));
       }
-      Util.toastRes(this.getUIContext(), $r('app.string.advanced_export_failed'));
+      this.busy = false;
+      return;
     }
     if (!this.disposed) {
       this.busy = false;
@@ -266,14 +285,7 @@ export struct DataStorageContent {
       if (this.disposed) {
         return;
       }
-      if (count === -1) {
-        Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_canceled'));
-      } else if (count === -2) {
-        Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
-      } else {
-        Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
-        AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
-      }
+      this.handleRestoreResult(count);
     } catch (e) {
       if (this.disposed) {
         return;
@@ -282,6 +294,59 @@ export struct DataStorageContent {
     }
     if (!this.disposed) {
       this.busy = false;
+    }
+  }
+
+  // 统一处理导入返回码：-1 取消 / -2 损坏 / -3 待密码 / -4 密码错误 / ≥0 恢复数
+  private handleRestoreResult(count: number): void {
+    if (count === -1) {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_canceled'));
+    } else if (count === -2) {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
+    } else if (count === -3) {
+      this.showBackupPasswordDialog();
+    } else if (count === -4) {
+      Util.toastRes(this.getUIContext(), $r('app.string.backup_wrong_password'));
+      this.showBackupPasswordDialog();
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
+      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
+    }
+  }
+
+  // 导入含加密敏感段的备份：弹密码框 → retryImportBackup
+  private showBackupPasswordDialog(): void {
+    const dialog = new CustomDialogController({
+      builder: BackupPasswordDialog({
+        onConfirm: (password: string): void => {
+          this.retryRestoreBackup(password);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: false,
+    });
+    dialog.open();
+  }
+
+  private async retryRestoreBackup(password: string): Promise<void> {
+    try {
+      const count = await BackupService.retryImportBackup(password);
+      if (this.disposed) {
+        return;
+      }
+      if (count === -4) {
+        Util.toastRes(this.getUIContext(), $r('app.string.backup_wrong_password'));
+        this.showBackupPasswordDialog();
+        return;
+      }
+      this.handleRestoreResult(count);
+    } catch (e) {
+      if (this.disposed) {
+        return;
+      }
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
     }
   }
 

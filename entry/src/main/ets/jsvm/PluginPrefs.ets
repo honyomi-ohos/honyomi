@@ -315,4 +315,128 @@ export class PluginPrefs {
     } catch (e) {
     }
   }
+
+  // ---- 备份导出/导入（配合 BackupService v3 完整备份，偏好按插件嵌套在 plugins 段）----
+
+  // 单包明文偏好导出（备份用）：只读 __extprefs:{pkg} blob，绝不混入 SecureStore
+  // 敏感值（敏感值走 exportSecureValues 进加密段）；损坏载荷返回空
+  static plainPrefsOf(pkgKey: string): Record<string, string> {
+    const out: Record<string, string> = {};
+    const store = PluginPrefs.store;
+    if (store === undefined) {
+      return out;
+    }
+    try {
+      const raw = store.getSync(`__extprefs:${pkgKey}`, '') as string;
+      if (raw !== '') {
+        const parsed = JSON.parse(raw) as Record<string, Object>;
+        // 仅接受对象载荷：JSON.parse('null')/'5' 等合法非对象 JSON 直接丢弃
+        if (parsed !== null && parsed !== undefined && typeof parsed === 'object') {
+          for (const k of Object.keys(parsed)) {
+            const v: Object | undefined = parsed[k];
+            if (typeof v === 'string') {
+              out[k] = v;
+            }
+          }
+        }
+      }
+    } catch (_e) {
+    }
+    return out;
+  }
+
+  // 明文条目导入：仅接受两种内部前缀键，合并覆盖
+  // （备份恢复时由 BackupService 把 plugins[].prefs/secureKeys 重组为内部前缀键）
+  static importEntries(map: Record<string, string>): void {
+    const store = PluginPrefs.store;
+    if (store === undefined) {
+      return;
+    }
+    const keys = Object.keys(map);
+    for (const key of keys) {
+      if (key.indexOf('__extprefs:') !== 0 && key.indexOf('__extsecure:') !== 0) {
+        continue;
+      }
+      const v: Object | undefined = map[key];
+      if (typeof v === 'string' && v !== '') {
+        try {
+          store.putSync(key, v);
+        } catch (_e) {
+        }
+      }
+    }
+    store.flush().catch((e: Object): void => {
+      hilog.warn(DOMAIN, TAG, 'flush after backup import failed: %{public}s', `${e}`);
+    });
+  }
+
+  // 敏感偏好值导出（进 secure 加密段）：嵌套 map（pkgKey → prefKey → 值），
+  // 避免包名含点时扁平键分隔符歧义；仅收录注册表内非空值
+  static exportSecureValues(): Record<string, Record<string, string>> {
+    const out: Record<string, Record<string, string>> = {};
+    for (const pkg of PluginPrefs.allRegistryPackages()) {
+      const registered: string[] = PluginPrefs.secureKeysOf(pkg);
+      if (registered.length === 0) {
+        continue;
+      }
+      const values: Record<string, string> = {};
+      for (const k of registered) {
+        const v: string = SecureStore.getSync(PluginPrefs.secureAlias(pkg, k));
+        if (v !== '') {
+          values[k] = v;
+        }
+      }
+      if (Object.keys(values).length > 0) {
+        out[pkg] = values;
+      }
+    }
+    return out;
+  }
+
+  // 敏感偏好值导入（secure 段解密后调用）：仅回写本地注册表已登记的插件与键，
+  // 防止生成永久孤儿 Asset 条目（未安装插件的值待安装后被 seedScript 采用）
+  static importSecureValues(map: Record<string, Record<string, string>>): void {
+    const pkgs = Object.keys(map);
+    for (const pkg of pkgs) {
+      const registered = new Set<string>(PluginPrefs.secureKeysOf(pkg));
+      if (registered.size === 0) {
+        continue;
+      }
+      const inner: Object | undefined = map[pkg];
+      if (inner === null || inner === undefined || typeof inner !== 'object') {
+        continue;
+      }
+      const values: Record<string, Object> = inner as Record<string, Object>;
+      const prefKeys = Object.keys(values);
+      for (const k of prefKeys) {
+        if (!registered.has(k)) {
+          continue;
+        }
+        const v: Object | undefined = values[k];
+        if (typeof v === 'string' && v !== '') {
+          SecureStore.putSync(PluginPrefs.secureAlias(pkg, k), v);
+        }
+      }
+    }
+  }
+
+  // 敏感键注册表所在插件 key 清单（__extsecure:{pkg} 枚举）
+  private static allRegistryPackages(): string[] {
+    const out: string[] = [];
+    const store = PluginPrefs.store;
+    if (store === undefined) {
+      return out;
+    }
+    try {
+      const all: Record<string, Object> = store.getAllSync() as Record<string, Object>;
+      const keys = Object.keys(all);
+      for (const key of keys) {
+        if (key.indexOf('__extsecure:') === 0) {
+          out.push(key.substring('__extsecure:'.length));
+        }
+      }
+    } catch (_e) {
+    }
+    return out;
+  }
 }

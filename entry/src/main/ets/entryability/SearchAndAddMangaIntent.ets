@@ -109,7 +109,8 @@ export default class SearchAndAddMangaImpl extends InsightIntentEntryExecutor<Se
       await MangaRepo.setInLibrary(mangaId, true);
       this.goDetail(mangaId);
       hilog.info(DOMAIN, 'Mihon', 'SearchAndAddManga added "%{public}s" (id %{public}d)', best.title, mangaId);
-      return SearchAndAddMangaImpl.result(0, `已加入书架：${best.title}`);
+      return SearchAndAddMangaImpl.result(0, context.resourceManager.getStringSync(
+        $r('app.string.intent_added_to_library').id, best.title));
     } catch (e) {
       hilog.error(DOMAIN, 'Mihon', 'SearchAndAddManga add failed: %{public}s', `${e}`);
       this.fallbackGlobalSearch(query);

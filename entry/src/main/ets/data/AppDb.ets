@@ -70,14 +70,9 @@ export class AppDb {
     }
   }
 
-  // 轻量列迁移（幂等）：老库补齐新增列，重复执行/列已存在时忽略错误。
-  // plugin.acgn（ACGN 内容标记）为后加列，建表语句只覆盖新装库，升级库由此补齐
-  private static async migrateSchema(store: relationalStore.RdbStore): Promise<void> {
-    try {
-      await store.executeSql(`ALTER TABLE plugin ADD COLUMN acgn INTEGER DEFAULT 0`);
-    } catch (e) {
-      // duplicate column（列已存在）等错误忽略
-    }
+  // schema 迁移框架：项目未发布，无存量升级路径，当前无迁移操作；
+  // 后续发布后如需结构变更，在此追加幂等迁移步骤
+  private static async migrateSchema(_store: relationalStore.RdbStore): Promise<void> {
   }
 
   // 全量建表（CREATE IF NOT EXISTS，新装库直接落最新 schema；升级库由 migrate 补齐差异）

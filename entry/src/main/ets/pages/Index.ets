@@ -346,6 +346,17 @@ struct TabIcon {
   }
 }
 
+// 宽屏 Rail 挂载/卸载转场：出现时自左侧滑入并淡入（越界方向由宽度参数决定），
+// 消失时仅淡出——消失瞬间内容区（layoutWeight）同步展开补位，滑出会遮盖
+// 正在展开的内容。仅在动画作用域内（animateTo 驱动的状态变化）生效。
+function railTransition(w: number): TransitionEffect {
+  return TransitionEffect.asymmetric(
+    TransitionEffect.OPACITY.animation({ duration: 250, curve: Curve.Friction })
+      .combine(TransitionEffect.translate({ x: -w })
+        .animation({ duration: 250, curve: Curve.Friction })),
+    TransitionEffect.OPACITY.animation({ duration: 200, curve: Curve.Friction }));
+}
+
 // 宽屏（lg ≥840vp，平板横屏/PC）侧边导航项：图标在左、文本在右（横排）+ 选中胶囊底 + 鼠标悬停反馈；
 // compact=true 时仅显示图标（推入路由页后外层导航收窄为图标栏，避免与设置页自身分类导航形成双栏）
 @Component
@@ -627,6 +638,9 @@ struct Index {
     // 渲染在 Navigation（Row 中靠后的兄弟节点）之上：推入路由页时首页向左平移
     // 让位，Rail 不被平移中的首页内容盖住
     .zIndex(1)
+    // 断点/路由切换时 Rail 挂载卸载的转场：出现从左侧滑入+淡入，
+    // 消失仅淡出（内容区同时展开补位，滑出会盖住正在展开的内容）
+    .transition(railTransition(Bp.WIDE_RAIL_W))
   }
 
   // 复刻 Mihon 底部导航快捷操作：再次点击已选中的页签触发 onReselect
@@ -690,6 +704,7 @@ struct Index {
     .backgroundColor(this.pal.bg)
     .border({ width: { right: 1 }, color: this.pal.divider })
     .zIndex(1)
+    .transition(railTransition(72))
   }
 
   // 宽屏内容区：页签首次访问时挂载、驻留保状态（无页签栏，导航由左侧 Rail 承担）
@@ -905,10 +920,19 @@ struct Index {
     .onAreaChange((_old: Area, newArea: Area) => {
       const w = newArea.width;
       if (typeof w === 'number') {
-        this.windowW = w;
-        AppStorage.setOrCreate(AppKeys.WINDOW_W, w);
-        // 页签浮动条避让高度：宽屏无底部页签条时为 0，页签页不再预留大片底部空白
-        AppStorage.setOrCreate(AppKeys.TAB_PAD_H, Bp.isWide(w) ? 0 : 76);
+        // 跨越 lg 断点（横竖屏切换）时置于动画作用域内：Rail 挂载/卸载播放转场，
+        // 由宽转窄淡出让位、由窄转宽滑入补位；未跨断点的普通缩放保持即时布局
+        const apply = (): void => {
+          this.windowW = w;
+          AppStorage.setOrCreate(AppKeys.WINDOW_W, w);
+          // 页签浮动条避让高度：宽屏无底部页签条时为 0，页签页不再预留大片底部空白
+          AppStorage.setOrCreate(AppKeys.TAB_PAD_H, Bp.isWide(w) ? 0 : 76);
+        };
+        if (Bp.isWide(this.windowW) !== Bp.isWide(w)) {
+          this.getUIContext().animateTo({ duration: 250, curve: Curve.Friction }, apply);
+        } else {
+          apply();
+        }
       }
     })
   }

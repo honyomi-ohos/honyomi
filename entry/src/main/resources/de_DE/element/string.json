@@ -485,10 +485,6 @@
       "value": "Aus der Bibliothek entfernt"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Alle Kapitel als gelesen markiert"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Download in Warteschlange"
     },
@@ -527,10 +523,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Kapitel (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Alle als gelesen"
     },
     {
       "name": "detail_download",
@@ -3559,6 +3551,1642 @@
     {
       "name": "subject_infobox_duration",
       "value": "Länge"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Privater App-Speicher"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Interner Speicher"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Nie"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Export abgebrochen"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Export fehlgeschlagen"
+    },
+    {
+      "name": "module_desc",
+      "value": "Modulbeschreibung"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Beschreibung"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Bewertung"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Seitenabstand"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Fortlaufend"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Doppelseite"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Automatisch (Querformat)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Immer"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Aus"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Cover einzeln"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Lautstärketasten blättern"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Bildschirm eingeschaltet lassen"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Kapitelname und Seitenzahl anzeigen"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Seiten vorausladen"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Doppelte Seiten überspringen"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Leere Seiten entfernen"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Leseerlebnis"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Seitenverarbeitung"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Fortlaufend vertikal"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Verlauf durchsuchen"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Verwandte"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Verwandte Serie"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Kapitel"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Papier"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Automatisches Blättern"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Aus"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d Sek."
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Automatisches Blättern an"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Automatisches Blättern aus"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Automatisches Blättern ist im Webtoon-Modus nicht verfügbar"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Bild-im-Bild ist auf diesem Gerät nicht verfügbar"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Erweiterungs-Repositorys"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Noch keine Erweiterungs-Repositorys. Tippe auf +, um eines hinzuzufügen."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Repository hinzufügen"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "Index-URL des Repositorys"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Gib eine gültige http(s)-URL ein"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Dieses Repository ist bereits hinzugefügt"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Wird hinzugefügt…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Repository hinzugefügt"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Hinzufügen des Repositorys fehlgeschlagen: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Repository löschen"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Repository %s löschen?\n%s\n\nInstallierte Erweiterungen bleiben erhalten."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Repository gelöscht"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "In die Zwischenablage kopiert"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Wird aktualisiert…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Repositorys aktualisiert"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Aktualisieren fehlgeschlagen: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Nicht vertrauenswürdige Erweiterung"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Böswillige Erweiterungen können gespeicherte Anmeldedaten lesen oder beliebigen Code ausführen.\n\nWenn du dieser Erweiterung vertraust, akzeptierst du diese Risiken."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Vertrauen"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Nicht vertrauenswürdig"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "%s vertraut"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Vollständige Datensicherung"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Nur Bibliothek und Erweiterungs-Repositorys"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Vertrauliche Daten einschließen"
+    },
+    {
+      "name": "backup_password",
+      "value": "Passwort"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Passwort bestätigen"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Das Passwort muss mindestens 6 Zeichen haben"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Die Passwörter stimmen nicht überein"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Für vertrauliche Daten ist ein Passwort erforderlich"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Diese Datensicherung enthält verschlüsselte vertrauliche Daten. Gib das Passwort der Datensicherung ein, um sie wiederherzustellen."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Falsches Passwort"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (Videokommentare)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Danmaku bei der Videowiedergabe ist standardmäßig an und lässt sich jederzeit in den Player-Einstellungen oder während der Wiedergabe ausschalten. Solange es aktiv ist, wird der Titel des wiedergegebenen Werks an den Danmaku-Drittdienst dandanplay (api.dandanplay.net) gesendet, um die Folge zuzuordnen und den Kommentarpool zu laden. Es werden keine Konto- oder Gerätekennungen gesendet, und geladene Kommentare bleiben nur im Speicher. Für den Dienst gilt seine eigene Datenschutzrichtlinie."
+    },
+    {
+      "name": "help_title",
+      "value": "Hilfe"
+    },
+    {
+      "name": "help_intro",
+      "value": "Das Honyomi-Handbuch: vom Import und den Erweiterungen bis zu Lesen, Vorlesen, Datensicherung und Datenschutz – alltägliche Funktionen und Tipps zur Fehlerbehebung."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Erste Schritte"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Lokale Dateien (CBZ, EPUB und mehr) fügst du über die lokale Quelle hinzu oder öffnest sie direkt. Für Online-Inhalte füge unter Stöbern > Erweiterungen ein Repository hinzu, installiere Erweiterungen und durchsuche dann ihre Quellen. Tippe bei einem Titel auf Zur Bibliothek, um ihn zu behalten, und halte Einträge in der Bibliothek lang gedrückt, um sie gesammelt zu verwalten. Passe bei der ersten Nutzung unter Einstellungen Thema, Startbildschirm und Lesevorlieben an."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Erweiterungen und Plug-ins"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Online-Quellen kommen von Erweiterungs-Plug-ins und werden unter Stöbern > Erweiterungen verwaltet: Repositorys hinzufügen, dann Erweiterungen installieren, aktualisieren oder entfernen. Ziehe die Liste nach unten, um nach Plug-in-Aktualisierungen zu suchen. Füge nur Repositorys hinzu, denen du vertraust – geht ein Repository offline, lassen sich seine Erweiterungen nicht mehr aktualisieren oder neu installieren."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Lesen und Vorlesen"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "Der Leser bietet seitenweises, vertikales und Webtoon-Lesen mit einstellbarer Richtung, Hintergrund und Helligkeit, jeweils pro Titel gemerkt. Romane können vorgelesen werden, mit Geschwindigkeit, Schlummer-Timer und Wiedergabe im Hintergrund; Videos laufen online mit Danmaku. Der Lesefortschritt wird automatisch aufgezeichnet."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Downloadverwaltung"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Stelle Kapitel über die Titelseite oder die Kapitelliste in die Warteschlange, um offline zu lesen. Fortschritt, Pause und Entfernen findest du unter Mehr > Downloadwarteschlange; unter Einstellungen > Downloads gibt es Downloads nur über Wi-Fi, automatisches Herunterladen neuer Kapitel und automatisches Löschen gelesener Kapitel."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Tracking und Sync"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Verbinde AniList, MyAnimeList, Bangumi, Kitsu oder Shikimori im Bereich Tracking auf der Titelseite. Nach der Verknüpfung werden Status und Lesefortschritt automatisch synchronisiert; Tokens bleiben nur auf deinem Gerät, und du kannst die Verknüpfung jederzeit lösen."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Quellen migrieren"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Wenn ein Titel zu einer anderen Quelle desselben Typs wechselt, öffne ihn und wähle im Menü Migrieren. Honyomi ordnet die Zielquelle nach Titel oder Autor zu und übernimmt Lesefortschritt und Downloads, damit du bei der neuen Quelle weiterlesen kannst."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Aktualisierungen und Anstehend"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Der Tab Aktualisierungen prüft deine Bibliothek auf neue Kapitel – ziehe nach unten zum Aktualisieren, Titel mit neuen Kapiteln stehen oben. Anstehend schätzt die nächste Aktualisierung jedes Titels aus dem bisherigen Rhythmus; die Angaben sind nur ein Anhalt."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Daten und Speicher"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Bibliothek, Fortschritt und Einstellungen liegen nur auf deinem Gerät und werden nicht hochgeladen. Unter Mehr > Daten und Speicher sicherst und stellst du wieder her, siehst die Speichernutzung, leerst den Kapitel-Zwischenspeicher und planst automatische Datensicherungen. Sichere manuell, bevor du das Gerät wechselst oder die App neu installierst."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Datenschutz und Sicherheit"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi arbeitet lokal und erfasst keine personenbezogenen Daten. Unter Einstellungen > Datenschutz gibt es eine biometrische App-Sperre, das Ausblenden von Benachrichtigungsinhalten und das Blockieren von Screenshots; der Inkognito-Modus unter Mehr pausiert den Leseverlauf. NSFW-Quellen bleiben ausgeblendet, bis du sie unter Einstellungen > Stöbern aktivierst."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Fehlerbehebung"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Wenn Seiten nicht laden, prüfe dein Netzwerk oder wechsle den DNS-over-HTTPS-Anbieter unter Einstellungen > Erweitert und schließe die menschliche Verifizierung ab, sobald sie erscheint. Wenn eine Quelle nicht richtig funktioniert, ziehe die Erweiterungsliste zum Aktualisieren oder installiere die Erweiterung neu. Bei hartnäckigen Problemen sichere zuerst unter Daten und Speicher und leere dann den Kapitel-Zwischenspeicher."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Papier"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Wird übersetzt… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Übersetzung abgeschlossen"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Übersetzung fehlgeschlagen"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Übersetzung abgebrochen"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Die Sprache des Inhalts entspricht der Zielsprache, Übersetzung nicht nötig"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Texterkennung nicht verfügbar. Versuche es später erneut (auf Emulatoren möglicherweise nicht unterstützt)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Bildübersetzung"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Jede Seite automatisch erkennen, übersetzen und das Ergebnis darüberlegen"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Kapitelübersetzung"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Dieses Kapitel bei Aktivierung automatisch übersetzen und das Ergebnis anzeigen"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Seitenbild speichern"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Bild kopieren"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Seite teilen"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Original anzeigen"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Seitenbild gespeichert"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Speichern fehlgeschlagen"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Bild in der Galerie speichern"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Bild kopiert"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Kopieren fehlgeschlagen"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Teilen fehlgeschlagen"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Stimme"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Weiblich (Standard)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Männlich"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Wenn die männliche Stimme nicht verfügbar ist (nicht heruntergeladen), wird die weibliche Standardstimme verwendet."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Bildschirm eingeschaltet lassen"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Lautstärketasten blättern"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Blocksatz"
+    },
+    {
+      "name": "novel_search",
+      "value": "Im Kapitel suchen"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Text in diesem Kapitel suchen"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Keine Treffer"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Lesezeichen"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Aktuelle Position als Lesezeichen"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Lesezeichen hinzugefügt"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Noch keine Lesezeichen"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Automatisches Lesen an"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Ende des letzten Kapitels erreicht"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Helligkeit"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Springen zu"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Ab der letzten Position fortgesetzt"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Von vorn"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Livestreams können nicht heruntergeladen werden"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Nicht unterstützte Videostream-Verschlüsselung"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "BitTorrent-Download"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Dieses Kapitel ist ein BitTorrent-Torrent. Wähle, wie es heruntergeladen wird"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "System-App verwenden"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Integrierte Engine"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "In der App herunterladen, mit Wiedergabe während des Downloads"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Magnet- oder Torrent-Link an eine andere App übergeben (z. B. einen Torrent-Client)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Etwa %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Deine Auswahl wird gemerkt. Du kannst sie später unter Einstellungen > Downloads ändern"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "An die System-App übergeben"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Keine App kann diesen Torrent verarbeiten"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Wird heruntergeladen… die Wiedergabe startet automatisch, sobald genug Daten da sind"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "%1$d Torrent-Kapitel übersprungen"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT-Dienst"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Aus schaltet die BT-Engine ab; sie startet wieder, wenn ein BT-Download beginnt"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Der BT-Dienst ist aus. Aktiviere ihn unter Einstellungen - BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Download-Engine"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Jedes Mal fragen"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Integrierte Engine"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "System-App"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT-Engine-Komponente nicht installiert"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Erforderlich für Torrent-Downloads mit der integrierten Engine"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Installieren"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Wiedergabe während des Downloads"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Wiedergabe starten, während der Torrent noch herunterlädt (der Reihe nach)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Geschwindigkeitsbegrenzung"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Download-Begrenzung"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Upload-Begrenzung"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Unbegrenzt"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Zusätzliche Tracker"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Wird jedem Torrent-Download hinzugefügt"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Eine Tracker-URL pro Zeile"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Keine"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d Tracker"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Seeding"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Share-Ratio-Limit"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Upload in getakteten Netzen begrenzen"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Begrenzt den Upload im Mobilfunk auf 10 KB/s, um Daten zu sparen"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer-Filter"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Peers nach IP-Adresse oder Bereich blockieren"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer-Filter"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Eine Regel pro Zeile: eine IP (192.168.1.1) oder ein Bereich (10.0.0.0-10.255.255.255). Leer lassen zum Deaktivieren"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Ungültige Regel in Zeile %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Aus"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d Regeln"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi-Spiegel"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi-Spiegel gespeichert"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "API-Spiegel, https://your-proxy.example.com, leer = Standard api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Adresse muss mit https:// beginnen"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Bildspiegel, https://your-proxy.example.com, leer = Standard lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Adresse muss mit https:// beginnen"
+    },
+    {
+      "name": "trans_title",
+      "value": "Übersetzung"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Übersetzung aktivieren"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Text im Leser über eingerichtete Engines übersetzen"
+    },
+    {
+      "name": "trans_test",
+      "value": "Übersetzung testen"
+    },
+    {
+      "name": "trans_target",
+      "value": "Zielsprache"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Wird übersetzt…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Alle Engines fehlgeschlagen"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Engine-Priorität"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Lang drücken und ziehen zum Sortieren; tippe eine Engine an, um ihre Schlüssel einzurichten"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Bereit"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Nicht konfiguriert"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Keine Einrichtung nötig"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Festgelegt"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu-Übersetzung"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Geheimer Schlüssel"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "App-Schlüssel"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "App-Geheimnis"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API-Token"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Übersetzer"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API-Schlüssel"
+    },
+    {
+      "name": "action_edit",
+      "value": "Bearbeiten"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Trotzdem hinzufügen"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "Du hast noch keine Kategorien."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Mögliche Duplikate"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "In deiner Bibliothek gibt es Einträge mit einem ähnlichen Namen.\n\nWähle einen Eintrag zum Migrieren oder füge ihn trotzdem hinzu."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d Kapitel"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Zur Bibliothek hinzufügen?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Heruntergeladene Kapitel löschen?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Die heruntergeladenen Kapitel dieses Eintrags werden gelöscht."
+    },
+    {
+      "name": "default_category",
+      "value": "Standardkategorie"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Immer fragen"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Automatisch (nach Inhaltstyp)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Erscheinungsbild"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Navigation"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Allgemein"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "E-Ink-Auffrischblitz"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Gelesene Kapitel überspringen"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Gefilterte Kapitel überspringen"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Doppelte Kapitel überspringen"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Kapitelübergang"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Blitz beim Umblättern"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Blitzfarbe"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Weiß"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Schwarz"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Weiß, dann Schwarz"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Blitzdauer (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Blitz alle N Seiten"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Ränder zuschneiden (Seitenmodus)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Ränder zuschneiden (Webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Mischmodus des Farbfilters"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Keine"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Multiplizieren"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Negativ multiplizieren"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Ineinanderkopieren"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Abdunkeln"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Aufhellen"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Herauszoomen deaktivieren (Webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Zoom-Startposition"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Automatisch"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Links"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Rechts"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Mitte"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L-Form"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle-Stil"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D-Würfel"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Stapel"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Überblenden"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D-Drehung"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Kugel"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Tippen zum Fortfahren"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "%d Kapitel werden übersprungen, entweder fehlen sie in der Quelle oder sie wurden herausgefiltert"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Überspringpunkte im Einstellungsfeld des Players festlegen"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Untertitel"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Externe .srt-Untertitel laden"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Untertitel-Schriftgröße"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Danmaku-Filter"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Kommentare, die auf eine dieser Regex-Regeln passen, werden ausgeblendet"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Hinzufügen"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Gib eine Regex-Regel ein, z. B. \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Ungültige oder doppelte Regel"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Noch keine Filterregeln"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Filter angewendet"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Überspringpunkte gespeichert"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Ungültiges Zeitformat"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Untertitel geladen"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Ungültige Untertiteldatei"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Lesen der Datei fehlgeschlagen"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Anmeldung fehlgeschlagen: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "Keine passende Folge in der Danmaku-Bibliothek"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Bitte zuerst anmelden"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Diesem Kapitel ist keine Folge zugeordnet"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Gesendet"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Senden fehlgeschlagen: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Verwandt"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Vorgeschichte"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Fortsetzung"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Ableger"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Special"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Haupthandlung"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Kompilation"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Aktualisierungsintervall ändern"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Global folgen"
+    },
+    {
+      "name": "interval_never",
+      "value": "Nie"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Jede Stunde"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Alle 6 Stunden"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Alle 12 Stunden"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Täglich"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Alle 2 Tage"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Alle 3 Tage"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Wöchentlich"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Alle 2 Wochen"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Monatlich"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Alle %d Stunden"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Globale Aktualisierung"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Nur über Wi-Fi aktualisieren"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Bibliotheksaktualisierungen außerhalb von Wi-Fi überspringen"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Nur beim Laden aktualisieren"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Bibliotheksaktualisierungen überspringen, wenn nicht geladen wird"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Wischaktionen"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Aktion am Anfang"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Aktion am Ende"
+    },
+    {
+      "name": "action_none",
+      "value": "Keine"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Aktualisierungsintervall"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Notizen"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Notiz hinzufügen"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Notiz bearbeiten"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "%d Kapitel fehlen"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Inkognito-Stöbern"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Beim Stöbern in den Quellen dieser Erweiterung werden Verlauf und Statistiken nicht aufgezeichnet"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Inkognito · Leseverlauf und Statistiken werden nicht aufgezeichnet"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Erweiterungsaktualisierungen"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Nach Erweiterungsaktualisierungen suchen"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Beim Aktualisieren der Plug-in-Repositorys nach Aktualisierungen suchen und benachrichtigen"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d Erweiterungen können aktualisiert werden"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "E-Mail / Benutzername"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (in den Kavita-Servereinstellungen erzeugt)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Benutzername (optional, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Passwort (optional, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Notizen zu diesem Eintrag schreiben…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Erweiterungsaktualisierungen"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d Erweiterungen haben neue Versionen; aktualisiere sie auf der Plug-in-Seite"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Aktualisieren nur über Wi-Fi ist an und das aktuelle Netzwerk passt nicht, Aktualisierung übersprungen"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Aktualisieren nur beim Laden ist an, schließe ein Ladegerät an"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Noch kein Leseverlauf"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Kein lesbares Kapitel"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Weiterlesen: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Hörbuch wird fortgesetzt"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Kein Roman zum Vorlesen"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Wiedergabe starten fehlgeschlagen"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Weiterhören: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "„%s“ nicht in deiner Bibliothek gefunden, globale Suche geöffnet"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "„%1$s“ in deiner Bibliothek gefunden, aber kein Kapitel passt zu „%2$s“, Details geöffnet"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Geöffnet: „%1$s“ %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Geöffnet: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Zur Bibliothek hinzugefügt: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Bibliotheksaktualisierung übersprungen: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Bibliotheksaktualisierung gestartet"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Spulbefehl nicht verstanden: „%s“"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Erledigt: %s"
+    },
+    {
+      "name": "ext_info_version",
+      "value": "Version"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Automatisch"
+    },
+    {
+      "name": "lib_display_tabs_group",
+      "value": "Tabs"
+    },
+    {
+      "name": "card_updates_display",
+      "value": "Aktualisierungen"
+    },
+    {
+      "name": "card_updates_header",
+      "value": "Aktualisierungen"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Oktopus"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Vierblatt"
+    },
+    {
+      "name": "tab_updates",
+      "value": "Aktualisierungen"
+    },
+    {
+      "name": "more_version",
+      "value": "Version %s"
+    },
+    {
+      "name": "updates_title",
+      "value": "Aktualisierungen"
+    },
+    {
+      "name": "download_title",
+      "value": "Downloads"
+    },
+    {
+      "name": "download_tab_queue",
+      "value": "Wird heruntergeladen"
+    },
+    {
+      "name": "download_tab_downloaded",
+      "value": "Heruntergeladen"
+    },
+    {
+      "name": "download_move_top_series",
+      "value": "Serie nach oben"
+    },
+    {
+      "name": "download_move_bottom_series",
+      "value": "Serie nach unten"
+    },
+    {
+      "name": "download_cancel_series",
+      "value": "Alle für diese Serie abbrechen"
+    },
+    {
+      "name": "download_sort_newest",
+      "value": "Neueste"
+    },
+    {
+      "name": "download_sort_oldest",
+      "value": "Älteste"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Filter"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Tracking"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Automatisch"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Automatisch"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Multi"
+    },
+    {
+      "name": "settings_downloads",
+      "value": "Downloads"
+    },
+    {
+      "name": "settings_tab_updates",
+      "value": "Aktualisierungen"
+    },
+    {
+      "name": "about_row_version",
+      "value": "Version"
+    },
+    {
+      "name": "dl_set_title",
+      "value": "Downloads"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "browse_type_video",
+      "value": "Videos"
+    },
+    {
+      "name": "novel_tab_text",
+      "value": "Text"
+    },
+    {
+      "name": "novel_anim_curl",
+      "value": "Simulation"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Player"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "category_video",
+      "value": "Videos"
+    },
+    {
+      "name": "track_title",
+      "value": "Tracking"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
     }
   ]
 }

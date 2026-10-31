@@ -75,10 +75,10 @@ export struct LibrarySettingsContent {
           })
         }
 
-        PrefGroup({ groupTitle: '全局更新' }) {
+        PrefGroup({ groupTitle: $r('app.string.lib_set_update_group') }) {
           PrefSwitchRow({
-            title: '仅 Wi-Fi 时更新',
-            subtitle: '非 Wi-Fi 网络时跳过书架更新',
+            title: $r('app.string.lib_set_update_wifi_only'),
+            subtitle: $r('app.string.lib_set_update_wifi_only_sub'),
             initValue: Settings.getLibraryUpdateWifiOnly(),
             apply: (value: boolean): void => {
               Settings.setLibraryUpdateWifiOnly(value);
@@ -86,8 +86,8 @@ export struct LibrarySettingsContent {
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
           PrefSwitchRow({
-            title: '仅充电时更新',
-            subtitle: '未连接充电器时跳过书架更新',
+            title: $r('app.string.lib_set_update_charging_only'),
+            subtitle: $r('app.string.lib_set_update_charging_only_sub'),
             initValue: Settings.getLibraryUpdateChargingOnly(),
             apply: (value: boolean): void => {
               Settings.setLibraryUpdateChargingOnly(value);
@@ -95,10 +95,10 @@ export struct LibrarySettingsContent {
           })
         }
 
-        PrefGroup({ groupTitle: '滑动操作' }) {
+        PrefGroup({ groupTitle: $r('app.string.lib_set_swipe_group') }) {
           PrefSelectRow({
-            title: '起始端动作',
-            options: ['标记已读', '无'],
+            title: $r('app.string.lib_set_swipe_start'),
+            options: [$r('app.string.action_mark_as_read'), $r('app.string.action_none')],
             selectedIndex: this.swipeStartIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibrarySwipeStartAction(index === 1 ? 'none' : 'read');
@@ -107,8 +107,8 @@ export struct LibrarySettingsContent {
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
           PrefSelectRow({
-            title: '末端动作',
-            options: ['标记已读', '无'],
+            title: $r('app.string.lib_set_swipe_end'),
+            options: [$r('app.string.action_mark_as_read'), $r('app.string.action_none')],
             selectedIndex: this.swipeEndIndex(),
             onSelectIndex: (index: number): void => {
               Settings.setLibrarySwipeEndAction(index === 1 ? 'none' : 'read');

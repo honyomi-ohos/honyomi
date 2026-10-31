@@ -27,7 +27,7 @@ export struct IncognitoSourceBanner {
     if (this.incognitoOn) {
       Row({ space: 6 }) {
         AppIcon({ name: 'visibility_off', iconSize: 14, tint: this.pal.sub })
-        Text('无痕浏览中 · 不记录阅读历史与统计')
+        Text($r('app.string.incognito_source_banner'))
           .fontSize(12)
           .fontColor(this.pal.sub)
           .maxLines(1)

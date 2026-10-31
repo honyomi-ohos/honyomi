@@ -73,7 +73,8 @@ export default class OpenMangaImpl extends InsightIntentEntryExecutor<string> {
     }
     if (best === undefined || bestScore <= 0) {
       this.fallbackGlobalSearch(query);
-      return OpenMangaImpl.result(1, `书架未找到"${query}"，已打开全局搜索`);
+      return OpenMangaImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_open_not_in_library').id, query));
     }
     const payload: Record<string, string | number> = {
       'target': 'detail',
@@ -82,7 +83,8 @@ export default class OpenMangaImpl extends InsightIntentEntryExecutor<string> {
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-    return OpenMangaImpl.result(0, `已打开：${best.title}`);
+    return OpenMangaImpl.result(0,
+      context.resourceManager.getStringSync($r('app.string.intent_open_manga_opened').id, best.title));
   }
 
   private fallbackGlobalSearch(query: string): void {

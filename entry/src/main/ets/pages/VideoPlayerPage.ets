@@ -25,7 +25,6 @@ import { ReaderParams } from '../model/RouteParams';
 import { ContinueSession } from '../common/ContinueSession';
 import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
-import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
 import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
@@ -637,6 +636,7 @@ export struct VideoPlayerPage {
   }
 
   // ---- 底部弹层（剧集 / 画质 / 倍速 / 播放设置）----
+  // 根节点不设固定高度：配合 FIT_CONTENT 半模态按内容收起，超出系统限高时在 Scroll 内滚动
   @Builder
   sheetBuilder() {
     Column() {
@@ -678,12 +678,11 @@ export struct VideoPlayerPage {
         .width('100%')
         .padding({ left: 16, right: 16, bottom: 30 })
       }
-      .layoutWeight(1)
+      .width('100%')
       .scrollBar(BarState.Off)
       .align(Alignment.TopStart)
     }
     .width('100%')
-    .height('100%')
     .backgroundColor(this.pal.bg)
     .borderRadius({ topLeft: 24, topRight: 24 })
   }
@@ -1671,9 +1670,8 @@ export struct VideoPlayerPage {
         this.handlePlayerKey(event);
       })
       .bindSheet($$this.showSheet, this.sheetBuilder(),
+        // 高度自适应内容（SheetPreset 默认 FIT_CONTENT）：选项少时贴内容收起，多时内部滚动
         SheetPreset.fit(this.windowW, {
-          height: Bp.sheetHeight(this.windowW),
-          detents: [SheetSize.MEDIUM, SheetSize.LARGE],
           showClose: false
         }))
     }

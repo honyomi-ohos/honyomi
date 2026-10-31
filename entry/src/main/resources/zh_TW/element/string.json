@@ -809,10 +809,6 @@
       "value": "已移出書架"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "已全部標記為已讀"
-    },
-    {
       "name": "detail_download_queued",
       "value": "已加入下載佇列"
     },
@@ -859,10 +855,6 @@
     {
       "name": "detail_chapters_count",
       "value": "章節（%d）"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "全部已讀"
     },
     {
       "name": "detail_download",
@@ -2214,7 +2206,7 @@
     },
     {
       "name": "browse_type_empty",
-      "value": "這個類型還沒有圖源"
+      "value": "這個類型還沒有來源"
     },
     {
       "name": "browse_local_novel_name",
@@ -3773,36 +3765,28 @@
       "value": "自訂 User-Agent"
     },
     {
-      "name": "pref_bangumi_api_mirror",
-      "value": "Bangumi API 鏡像"
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi 鏡像"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi 鏡像已保存"
     },
     {
       "name": "pref_bangumi_api_mirror_hint",
-      "value": "如 https://your-proxy.example.com，留空恢復預設 api.bgm.tv"
+      "value": "API 鏡像，如 https://your-proxy.example.com，留空恢復預設 api.bgm.tv"
     },
     {
       "name": "pref_bangumi_api_mirror_invalid",
       "value": "位址需以 https:// 開頭"
     },
     {
-      "name": "pref_bangumi_api_mirror_saved",
-      "value": "Bangumi API 鏡像已保存"
-    },
-    {
-      "name": "pref_bangumi_img_mirror",
-      "value": "Bangumi 圖片鏡像"
-    },
-    {
       "name": "pref_bangumi_img_mirror_hint",
-      "value": "如 https://your-proxy.example.com，留空恢復預設 lain.bgm.tv"
+      "value": "圖片鏡像，如 https://your-proxy.example.com，留空恢復預設 lain.bgm.tv"
     },
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "位址需以 https:// 開頭"
-    },
-    {
-      "name": "pref_bangumi_img_mirror_saved",
-      "value": "Bangumi 圖片鏡像已保存"
     },
     {
       "name": "pref_user_agent_hint",
@@ -4227,6 +4211,982 @@
     {
       "name": "subject_infobox_duration",
       "value": "時長"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "變更更新間隔"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "跟隨全域"
+    },
+    {
+      "name": "interval_never",
+      "value": "永不"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "每小時"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "每 6 小時"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "每 12 小時"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "每天"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "每 2 天"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "每 3 天"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "每週"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "每 2 週"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "每月"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "每 %d 小時"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "全域更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "僅 Wi-Fi 時更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "非 Wi-Fi 網路時略過書架更新"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "僅充電時更新"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "未連接充電器時略過書架更新"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "滑動操作"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "起始端動作"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "末端動作"
+    },
+    {
+      "name": "action_none",
+      "value": "無"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "更新間隔"
+    },
+    {
+      "name": "detail_notes",
+      "value": "筆記"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "新增筆記"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "編輯筆記"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "缺失 %d 章"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "隱身瀏覽"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "瀏覽此插件的源時不記錄閱讀歷史與統計"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "無痕瀏覽中 · 不記錄閱讀歷史與統計"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "擴充更新"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "檢查擴充更新"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "重新整理插件倉庫時檢查擴充更新並提醒"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "有 %d 個擴充可更新"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "信箱 / 使用者名稱"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key（Kavita 伺服器設定產生）"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "使用者名稱（可選，Basic Auth）"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "密碼（可選，Basic Auth）"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "記錄關於這部作品的備註…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "擴充更新"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d 個擴充有新版本，可在外掛頁面更新"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "已開啟「僅 Wi-Fi 時更新」，目前網路不符條件，已略過本次更新"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "已開啟「僅充電時更新」，請連接充電器後再更新"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "暫無閱讀歷史"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "暫無可讀章節"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "繼續閱讀：%s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "繼續聽書"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "暫無可聽的小說"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "聽書啟動失敗"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "繼續聽書：%s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "書架未找到「%s」，已開啟全域搜尋"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "書架已找到《%1$s》，未符合章節「%2$s」，已開啟作品詳情"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "已開啟：《%1$s》%2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "已開啟：%s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "已加入書架：%s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "已略過書庫刷新：%s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "書庫刷新已開始"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "無法理解快進指令：「%s」"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "已執行：%s"
+    },
+    {
+      "name": "module_desc",
+      "value": "模組描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "描述"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "頁間距"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "連續捲動"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "雙頁顯示"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "自動（橫向）"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "一律雙頁"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "關閉"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "封面單獨成頁"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "音量鍵翻頁"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "閱讀時保持螢幕開啟"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "顯示章節名稱與頁碼"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "預先載入後續頁數"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "跳過重複頁"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "清除空白頁"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "閱讀體驗"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "頁面處理"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "連續捲動"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "搜尋歷史"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "章節目錄"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "紙張"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "自動翻頁"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "關閉"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d 秒"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "已開啟自動翻頁"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "已關閉自動翻頁"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "條漫模式暫不支援自動翻頁"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "此裝置不支援子母畫面"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "擴充功能儲存庫"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "尚無擴充功能儲存庫，點擊 + 新增"
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "新增儲存庫"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "儲存庫索引網址"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "請輸入有效的 http(s) 網址"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "此儲存庫已新增"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "新增中…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "已新增儲存庫"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "新增儲存庫失敗：%s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "刪除儲存庫"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "刪除儲存庫 %s？\n%s\n\n已安裝的擴充功能將保留。"
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "已刪除儲存庫"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "已複製到剪貼簿"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "重新整理中…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "已重新整理儲存庫"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "重新整理失敗：%s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "未受信任的擴充功能"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "惡意擴充功能可能會讀取已儲存的登入憑證，或執行任意程式碼。\n\n信任此擴充功能即表示您接受這些風險。"
+    },
+    {
+      "name": "ext_trust",
+      "value": "信任"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "未受信任"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "已信任 %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "完整備份"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "僅作品與擴充功能儲存庫"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "包含敏感資料"
+    },
+    {
+      "name": "backup_password",
+      "value": "密碼"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "確認密碼"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "密碼至少需要 6 個字元"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "兩次輸入的密碼不一致"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "包含敏感資料時必須設定密碼"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "此備份包含加密的敏感資料，請輸入備份密碼以繼續還原"
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "密碼錯誤"
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "紙張"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "翻譯進度 %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "翻譯完成"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "翻譯失敗"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "已取消翻譯"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "內容語言與目標語言相同，無需翻譯"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "文字辨識服務無法使用，請稍後再試（模擬器可能不支援）"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "圖片翻譯"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "開啟後自動辨識並翻譯每一頁，疊加顯示譯文"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "整章翻譯"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "開啟後自動翻譯本章並顯示譯文"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "儲存本頁圖片"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "複製圖片"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "分享本頁"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "檢視原圖"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "已儲存本頁圖片"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "儲存失敗"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "將圖片儲存到圖庫"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "已複製圖片"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "複製失敗"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "分享失敗"
+    },
+    {
+      "name": "video_brightness",
+      "value": "亮度"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "跳至"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "已從上次位置繼續"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "從頭播放"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "直播串流暫不支援下載"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "暫不支援此影片串流的加密方式"
+    },
+    {
+      "name": "trans_title",
+      "value": "翻譯"
+    },
+    {
+      "name": "trans_enable",
+      "value": "啟用翻譯"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "在閱讀器中透過已設定的引擎翻譯文字"
+    },
+    {
+      "name": "trans_test",
+      "value": "測試翻譯"
+    },
+    {
+      "name": "trans_target",
+      "value": "目標語言"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "翻譯中…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "所有引擎翻譯失敗"
+    },
+    {
+      "name": "trans_engines",
+      "value": "引擎優先順序"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "長按並拖曳以調整引擎優先順序，點擊以設定引擎金鑰"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "已設定"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "未設定"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "無需設定"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "已設定"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "百度翻譯"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "AppID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "金鑰"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "有道智雲"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "應用 ID"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "應用金鑰"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "彩雲小譯"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API 權杖"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google 翻譯"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "騰訊雲"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "火山引擎"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "小牛翻譯"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API 金鑰"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "將刪除此作品已下載的章節。"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "外觀"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "導覽"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "一般"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "電子紙刷新閃爍"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "跳過已讀章節"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "跳過已篩選的章節"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "跳過重複章節"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "章節過渡頁"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "翻頁時閃爍"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "閃爍顏色"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "白色"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "黑色"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "先白後黑"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "閃爍時長（毫秒）"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "每 N 頁閃爍"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "裁切頁緣（分頁模式）"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "裁切頁緣（條漫）"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "顏色濾鏡混合模式"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "無"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "色彩增值"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "濾色"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "覆蓋"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "變暗"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "變亮"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "禁止縮小（條漫）"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "縮放起始位置"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "自動"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "左側"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "右側"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "置中"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L 形"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle 樣式"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D 立方"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "堆疊"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "淡入淡出"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D 翻轉"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "球體"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "點擊繼續"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "已跳過 %d 章，可能是來源沒有這些章節，或被篩選規則排除"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "在播放器設定面板中設定跳過點"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "字幕"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "載入外掛 .srt 字幕檔"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "字幕字級"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "彈幕屏蔽規則"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "符合任一正則規則的彈幕將被隱藏"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "新增"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "輸入正則規則，例如 \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "規則無效或已存在"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "尚無屏蔽規則"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "規則已套用"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "已儲存跳過點"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "時間格式無效"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "已載入字幕"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "字幕檔無效"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "讀取檔案失敗"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "登入失敗：%s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "彈幕庫中找不到相符的集數"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "請先登入"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "目前章節沒有相符的集數"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "已傳送"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "傳送失敗：%s"
     }
   ]
 }

@@ -533,10 +533,6 @@
       "value": "Вилучено з бібліотеки"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Усі розділи позначено як прочитані"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Додано до черги завантаження"
     },
@@ -575,10 +571,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Розділи (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Позначити все прочитаним"
     },
     {
       "name": "detail_download",
@@ -3711,6 +3703,1490 @@
     {
       "name": "subject_infobox_duration",
       "value": "Тривалість"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Приватне сховище застосунку"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Внутрішнє сховище"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Ніколи"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Експорт скасовано"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Не вдалося експортувати"
+    },
+    {
+      "name": "module_desc",
+      "value": "опис модуля"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "опис"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Рейтинг"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Інтервал сторінок"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Безперервне прокручування"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Дві сторінки"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Авто (альбомна)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Завжди"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Обкладинка окремо"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Клавіші гучності гортають сторінки"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Не вимикати екран"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Показувати назву розділу та номер сторінки"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Попереднє завантаження сторінок"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Пропускати повторювані сторінки"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Видаляти порожні сторінки"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Зручність читання"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Обробка сторінок"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Безперервне вертикальне прокручування"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Пошук в історії"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Пов'язані"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Пов'язані серії"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Розділи"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Папір"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Автогортання"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d с"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Автогортання увімкнено"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Автогортання вимкнено"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Автогортання недоступне в режимі вебтуна"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Зображення в зображенні недоступне на цьому пристрої"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Репозиторії розширень"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Репозиторіїв розширень ще немає. Натисніть +, щоб додати."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Додати репозиторій"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "URL індексу репозиторію"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Введіть правильну адресу http(s)"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Цей репозиторій уже додано"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Додавання…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Репозиторій додано"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Не вдалося додати репозиторій: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Видалити репозиторій"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Видалити репозиторій %s?\n%s\n\nВстановлені розширення буде збережено."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Репозиторій видалено"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Скопійовано в буфер"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Оновлення…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Репозиторії оновлено"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Не вдалося оновити: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Недовірене розширення"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Шкідливі розширення можуть читати збережені облікові дані або виконувати довільний код.\n\nДовіряючи цьому розширенню, ви приймаєте ці ризики."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Довіряти"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Недовірене"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Довірено %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Повна резервна копія"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Лише бібліотека та репозиторії розширень"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Включити конфіденційні дані"
+    },
+    {
+      "name": "backup_password",
+      "value": "Пароль"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Підтвердьте пароль"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Пароль має містити щонайменше 6 символів"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Паролі не збігаються"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Щоб включити конфіденційні дані, потрібен пароль"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Ця резервна копія містить зашифровані конфіденційні дані. Введіть пароль резервної копії, щоб відновити її."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Неправильний пароль"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Данмаку (коментарі до відео)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Данмаку під час відтворення відео увімкнено за замовчуванням, і їх можна будь-коли вимкнути в налаштуваннях плеєра або під час перегляду. Поки функцію увімкнено, назва твору, що відтворюється, надсилається сторонньому сервісу данмаку dandanplay (api.dandanplay.net), щоб зіставити серію та завантажити набір коментарів. Ідентифікатори облікового запису та пристрою не надсилаються, а завантажені коментарі зберігаються лише в пам'яті. Сервіс підпорядковується власній політиці конфіденційності."
+    },
+    {
+      "name": "help_title",
+      "value": "Допомога"
+    },
+    {
+      "name": "help_intro",
+      "value": "Довідник Honyomi: від імпорту вмісту та встановлення розширень до читання, прослуховування, резервних копій і конфіденційності — пояснення повсякденних функцій і поради з усунення несправностей."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Початок роботи"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Додавайте локальні файли (CBZ, EPUB та інші) через локальне джерело або відкриваючи файл безпосередньо. Для онлайн-вмісту додайте репозиторій розширень в «Огляд → Розширення», встановіть розширення, потім переглядайте джерела й шукайте в них. Натисніть «До бібліотеки» на сторінці твору, щоб залишити його в бібліотеці, і утримуйте елементи бібліотеки для масових дій. Під час першого запуску налаштуйте тему, початковий екран і параметри читання в «Налаштуваннях»."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Розширення та плагіни"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Онлайн-джерела надають плагіни розширень. Ними керують в «Огляд → Розширення»: додавайте репозиторії, потім встановлюйте, оновлюйте або видаляйте розширення. Потягніть список униз, щоб перевірити оновлення плагінів. Додавайте лише ті репозиторії, яким довіряєте: коли репозиторій стане недоступним, його розширення не можна буде оновити чи встановити знову."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Читання та прослуховування"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "У читалці є посторінковий, вертикальний режими та вебтун; напрямок, тло і яскравість налаштовуються й запам'ятовуються для кожного твору. Новели можна слухати: регулюються швидкість, таймер сну та фонове відтворення; відео відтворюється онлайн із підтримкою данмаку. Прогрес читання записується автоматично."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Керування завантаженнями"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Ставте розділи в чергу зі сторінки твору або зі списку розділів, щоб читати офлайн. Прогрес, паузу та видалення завдань дивіться в «Ще → Черга завантажень». У «Налаштування → Завантаження» є завантаження лише через Wi-Fi, автозавантаження нових розділів і автоматичне видалення прочитаних розділів."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Трекери та синхронізація"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Підключіть AniList, MyAnimeList, Bangumi, Kitsu або Shikimori у розділі трекінгу на сторінці твору. Після прив'язки статус і прогрес читання синхронізуються автоматично; токени зберігаються лише на пристрої, і відв'язати сервіс можна будь-коли."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Перенесення джерел"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Коли твір переходить на інше джерело того самого типу, відкрийте його й виберіть «Перенести» в меню. Honyomi зіставляє цільове джерело за назвою або автором і переносить прогрес читання та завантаження, щоб можна було продовжити з нового джерела."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Оновлення та майбутні"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Вкладка «Оновлення» перевіряє бібліотеку на нові розділи — потягніть униз, щоб оновити; твори з новими розділами показуються першими. Сторінка «Майбутні» оцінює час наступного оновлення за попереднім ритмом виходу; оцінка лише орієнтовна."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Дані та сховище"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Бібліотека, прогрес і налаштування зберігаються лише на пристрої і нікуди не надсилаються. У «Ще → Дані та сховище» можна створити й відновити резервну копію, переглянути зайняте місце, очистити кеш розділів і задати період автоматичних резервних копій. Перед зміною пристрою або перевстановленням зробіть резервну копію вручну."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Конфіденційність і безпека"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi працює локально і не збирає особисті дані. У «Налаштування → Конфіденційність» є блокування застосунку біометрією, приховування тексту сповіщень і захист екрана; режим інкогніто на сторінці «Ще» призупиняє історію читання. Джерела NSFW приховані, доки їх не увімкнути в «Налаштування → Огляд»."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Усунення несправностей"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Якщо сторінки не завантажуються, перевірте мережу або змініть постачальника DNS-over-HTTPS у «Налаштування → Додатково» і пройдіть перевірку сайту, коли вона з'явиться. Якщо джерело працює некоректно, потягніть список розширень, щоб перевірити оновлення плагінів, або встановіть розширення знову. Якщо проблема не зникає, спочатку зробіть резервну копію в «Дані та сховище», а потім очистіть кеш розділів."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Папір"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Переклад… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Переклад завершено"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Не вдалося перекласти"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Переклад скасовано"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Мова вмісту збігається з цільовою, переклад не потрібен"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Служба розпізнавання тексту недоступна. Спробуйте пізніше (може не підтримуватися на емуляторах)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Переклад зображень"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Автоматично розпізнавати й перекладати кожну сторінку, накладаючи результат"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Переклад розділу"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Якщо увімкнено, автоматично перекладає цей розділ і показує переклад"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Зберегти зображення сторінки"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Копіювати зображення"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Поділитися сторінкою"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Показати оригінал"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Зображення сторінки збережено"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Не вдалося зберегти"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Зберегти зображення до галереї"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Зображення скопійовано"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Не вдалося скопіювати"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Не вдалося поділитися"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Голос"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Жіночий (типово)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Чоловічий"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Якщо чоловічий голос недоступний (не завантажений), використовується типовий жіночий голос."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Не вимикати екран"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Клавіші гучності гортають сторінки"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Вирівнювати за шириною"
+    },
+    {
+      "name": "novel_search",
+      "value": "Пошук у розділі"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Шукати текст у цьому розділі"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Немає збігів"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Закладки"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Закладка на поточній позиції"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Закладку додано"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Закладок ще немає"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Авточитання увімкнено"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Досягнуто кінця останнього розділу, авточитання зупинено"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Яскравість"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Перейти до"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Продовжено з останньої позиції"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "З початку"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Прямі трансляції не можна завантажити"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Непідтримуване шифрування відеопотоку"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "Завантаження BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Цей розділ — торент BitTorrent. Виберіть спосіб завантаження"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Системний застосунок"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Вбудований рушій"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "Завантаження в застосунку, можна дивитися під час завантаження"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Передати magnet- або torrent-посилання іншому застосунку (наприклад, торент-клієнту)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Близько %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Вибір запам'ятовується. Пізніше його можна змінити в «Налаштування → Завантаження»"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Передано системному застосунку"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Немає застосунку для цього торента"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Завантаження… відтворення почнеться автоматично, коли даних буде достатньо"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "Пропущено торент-розділів: %1$d"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "Служба BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Вимкніть, щоб зупинити рушій BT; він знову запуститься, коли почнеться завантаження BT"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Службу BT вимкнено. Увімкніть її в «Налаштування» — BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Рушій завантаження"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Запитувати щоразу"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Вбудований рушій"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "Системний застосунок"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "Компонент рушія BT не встановлено"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Потрібен, щоб завантажувати торенти вбудованим рушієм"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Встановити"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Відтворення під час завантаження"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Починати відтворення, поки торент ще завантажується (послідовне завантаження)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Обмеження швидкості"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Обмеження швидкості завантаження"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Обмеження швидкості віддачі"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Без обмежень"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Додаткові трекери"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Додаються до кожного завантаження торента"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Одна URL-адреса трекера на рядок"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Немає"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d трекерів"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Роздача"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Обмеження коефіцієнта роздачі"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Обмежити віддачу в тарифікованих мережах"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Обмежити віддачу до 10 KB/s у стільниковій мережі, щоб заощаджувати трафік"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Фільтр пірів"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Блокувати піри за IP-адресою або діапазоном"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Фільтр пірів"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Одне правило на рядок: IP (192.168.1.1) або діапазон (10.0.0.0-10.255.255.255). Залиште порожнім, щоб вимкнути"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Неприпустиме правило в рядку %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Вимкнено"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d правил"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Дзеркало Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Дзеркало Bangumi збережено"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "Дзеркало API, https://your-proxy.example.com, порожньо = типово api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Адреса має починатися з https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Дзеркало зображень, https://your-proxy.example.com, порожньо = типово lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Адреса має починатися з https://"
+    },
+    {
+      "name": "trans_title",
+      "value": "Переклад"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Увімкнути переклад"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Перекладає текст у читалці налаштованими рушіями"
+    },
+    {
+      "name": "trans_test",
+      "value": "Перевірити переклад"
+    },
+    {
+      "name": "trans_target",
+      "value": "Цільова мова"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Переклад…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Жоден рушій не зміг перекласти"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Пріоритет рушіїв"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Утримуйте й перетягуйте, щоб змінити порядок; натисніть рушій, щоб задати ключі"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Готово"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Не налаштовано"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Налаштування не потрібне"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Задано"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Перекладач Baidu"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Секретний ключ"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "ID застосунку"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "Секрет застосунку"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "Токен API"
+    },
+    {
+      "name": "trans_google",
+      "value": "Перекладач Google"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Хмара Tencent"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "Ключ API"
+    },
+    {
+      "name": "action_edit",
+      "value": "Змінити"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Все одно додати"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "У вас ще немає категорій."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Можливі дублікати"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "У бібліотеці є твори зі схожою назвою.\n\nВиберіть твір для перенесення або все одно додайте."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d розділів"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Додати до бібліотеки?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Видалити завантажені розділи?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Завантажені розділи цього твору буде видалено."
+    },
+    {
+      "name": "default_category",
+      "value": "Типова категорія"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Завжди запитувати"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Автоматично (за типом вмісту)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Вигляд"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Навігація"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Загальні"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "Спалах оновлення E-ink"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Пропускати прочитані розділи"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Пропускати відфільтровані розділи"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Пропускати повторювані розділи"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Сторінка переходу між розділами"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Спалах при зміні сторінки"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Колір спалаху"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Білий"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Чорний"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Білий, потім чорний"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Тривалість спалаху (мс)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Спалах кожні N сторінок"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Обрізати краї (посторінкові режими)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Обрізати краї (вебтун)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Режим накладання колірного фільтра"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Немає"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Множення"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Екран"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Накладання"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Затемнення"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Освітлення"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Заборонити зменшення (вебтун)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Початкова позиція масштабу"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Автоматично"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Зліва"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Справа"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "По центру"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L-подібна"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Як у Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D-куб"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Стос"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Згасання"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D-перегортання"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Сфера"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Натисніть, щоб продовжити"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Пропускається %d розділів: у джерелі їх немає або їх відфільтровано"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Задайте точки пропуску на панелі налаштувань плеєра"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Субтитри"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Завантажувати зовнішні файли субтитрів .srt"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Розмір тексту субтитрів"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Фільтри данмаку"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Коментарі, що збігаються з будь-яким із цих регулярних виразів, буде приховано"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Додати"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Введіть регулярний вираз, наприклад \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Неприпустиме або повторюване правило"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Правил фільтра ще немає"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Фільтри застосовано"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Точки пропуску збережено"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Неправильний формат часу"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Субтитри завантажено"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Неприпустимий файл субтитрів"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Не вдалося прочитати файл"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Не вдалося увійти: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "У бібліотеці данмаку немає відповідної серії"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Спочатку увійдіть"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Для цього розділу немає відповідної серії"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Надіслано"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Не вдалося надіслати: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Пов'язані"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Приквел"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Сиквел"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Спін-оф"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Спецвипуск"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Основний сюжет"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Збірка"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Змінити інтервал оновлення"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Як у загальних налаштуваннях"
+    },
+    {
+      "name": "interval_never",
+      "value": "Ніколи"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Щогодини"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Кожні 6 годин"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Кожні 12 годин"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Щодня"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Кожні 2 дні"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Кожні 3 дні"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Щотижня"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Кожні 2 тижні"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Щомісяця"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Кожні %d годин"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Загальне оновлення"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Оновлювати лише через Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Не оновлювати бібліотеку поза мережами Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Оновлювати лише під час заряджання"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Не оновлювати бібліотеку без заряджання"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Дії проведення"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Дія на початку"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Дія в кінці"
+    },
+    {
+      "name": "action_none",
+      "value": "Немає"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Інтервал оновлення"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Нотатки"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Додати нотатку"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Змінити нотатку"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Не вистачає %d розділів"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Перегляд у режимі інкогніто"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Під час перегляду джерел цього розширення історія та статистика не записуються"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Режим інкогніто · Історія читання та статистика не записуються"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Оновлення розширень"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Перевіряти оновлення розширень"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Під час оновлення репозиторіїв плагінів перевіряти оновлення розширень і сповіщати"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d розширень можна оновити"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Ел. пошта / ім'я користувача"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (створюється в налаштуваннях сервера Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Ім'я користувача (необов'язково, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Пароль (необов'язково, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Нотатки про цей твір…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Оновлення розширень"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "У %d розширень є нові версії; оновіть їх на сторінці плагінів"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Увімкнено оновлення лише через Wi-Fi, поточна мережа не підходить, оновлення пропущено"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Увімкнено оновлення лише під час заряджання, підключіть заряджання, щоб оновити"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Історії читання ще немає"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Немає розділу для читання"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Продовжити читання: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Прослуховування триває"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Немає новели для прослуховування"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Не вдалося почати відтворення"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Продовжити прослуховування: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "«%s» немає в бібліотеці, відкрито глобальний пошук"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "У бібліотеці знайдено «%1$s», але немає розділу, що відповідає «%2$s»; відкрито відомості про твір"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Відкрито: «%1$s» %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Відкрито: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Додано до бібліотеки: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Оновлення бібліотеки пропущено: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Оновлення бібліотеки запущено"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Не вдалося зрозуміти команду перемотування: «%s»"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Готово: %s"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Тако"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Йоцуба"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS через HTTPS"
     }
   ]
 }

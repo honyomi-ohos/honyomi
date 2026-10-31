@@ -78,7 +78,7 @@ export struct NotesSheet {
 
       // 编辑区：内容变化防抖保存；选区/光标变化刷新工具栏
       RichEditor({ controller: this.ctrl })
-        .placeholder('记录关于这部作品的备注…', { fontColor: this.pal.sub })
+        .placeholder($r('app.string.notes_placeholder'), { fontColor: this.pal.sub })
         .copyOptions(CopyOptions.InApp)
         .onReady(() => {
           if (!this.loaded) {

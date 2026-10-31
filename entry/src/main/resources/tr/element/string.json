@@ -533,10 +533,6 @@
       "value": "Kitaplıktan kaldırıldı"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Tüm bölümler okundu olarak işaretlendi"
-    },
-    {
       "name": "detail_download_queued",
       "value": "İndirme kuyruğuna eklendi"
     },
@@ -575,10 +571,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Bölümler (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Tümünü okundu işaretle"
     },
     {
       "name": "detail_download",
@@ -3687,6 +3679,1514 @@
     {
       "name": "subject_infobox_duration",
       "value": "Süre"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Uygulama özel depolaması"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Dahili depolama"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Hiç"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Dışa aktarma iptal edildi"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Dışa aktarma başarısız"
+    },
+    {
+      "name": "module_desc",
+      "value": "Modül açıklaması"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Açıklama"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Puan"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Sayfa aralığı"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Sürekli"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Çift sayfa"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Otomatik (yatay)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Her zaman"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Kapalı"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Kapak sayfası tek başına"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Ses tuşları sayfa çevirir"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Ekranı açık tut"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Bölüm adını ve sayfa numarasını göster"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Sayfaları önceden yükle"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Yinelenen sayfaları atla"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Boş sayfaları kaldır"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Okuma deneyimi"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Sayfa işleme"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Sürekli dikey"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Geçmişte ara"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "İlgili"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "İlgili seri"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Bölümler"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Kağıt"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Otomatik sayfa çevirme"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Kapalı"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d sn"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Otomatik sayfa çevirme açık"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Otomatik sayfa çevirme kapalı"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Webtoon modunda otomatik sayfa çevirme kullanılamaz"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Bu cihazda pencere içinde pencere kullanılamıyor"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Uzantı depoları"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Henüz uzantı deposu yok. Eklemek için + simgesine dokunun."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Depo ekle"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "Depo dizini URL’si"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Geçerli bir http(s) URL’si girin"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Bu depo zaten eklenmiş"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Ekleniyor…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Depo eklendi"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Depo eklenemedi: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Depoyu sil"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "%s deposu silinsin mi?\n%s\n\nYüklü uzantılar korunacak."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Depo silindi"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Panoya kopyalandı"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Yenileniyor…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Depolar yenilendi"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Yenileme başarısız: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Güvenilmeyen uzantı"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Kötü amaçlı uzantılar kayıtlı oturum bilgilerini okuyabilir veya rastgele kod çalıştırabilir.\n\nBu uzantıya güvenerek bu riskleri kabul etmiş olursunuz."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Güven"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Güvenilmeyen"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Güvenildi: %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Tam yedek"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Yalnızca kitaplık ve uzantı depoları"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Hassas verileri dahil et"
+    },
+    {
+      "name": "backup_password",
+      "value": "Şifre"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Şifreyi onayla"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Şifre en az 6 karakter olmalıdır"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Şifreler eşleşmiyor"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Hassas verileri dahil etmek için şifre gerekir"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Bu yedek şifrelenmiş hassas veriler içerir. Geri yüklemek için yedek şifresini girin."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Şifre yanlış"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (video yorumları)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Video oynatma için Danmaku varsayılan olarak açıktır ve oynatıcı ayarlarından veya oynatma sırasında istediğiniz zaman kapatılabilir. Açıkken, oynatılan eserin başlığı bölümü eşleştirmek ve yorum havuzunu yüklemek için üçüncü taraf Danmaku hizmeti dandanplay (api.dandanplay.net) hizmetine gönderilir. Hesap veya cihaz tanımlayıcısı gönderilmez ve indirilen yorumlar yalnızca bellekte tutulur. Hizmet kendi gizlilik politikasına tabidir."
+    },
+    {
+      "name": "help_title",
+      "value": "Yardım"
+    },
+    {
+      "name": "help_intro",
+      "value": "Honyomi el kitabı: içerik içe aktarma ve uzantı yüklemeden okuma, dinleme, yedekler ve gizliliğe — günlük özellikler ve sorun giderme ipuçları."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Başlarken"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Yerel dosyaları (CBZ, EPUB ve diğerleri) Yerel kaynak üzerinden veya dosyayı doğrudan açarak ekleyin. Çevrimiçi içerik için Göz at > Uzantılar bölümünde bir uzantı deposu ekleyin, uzantıları yükleyin, ardından kaynaklarına göz atın ve arayın. Bir eseri rafta tutmak için eser sayfasında Kitaplığa ekle öğesine dokunun; kitaplık öğelerini toplu yönetmek için uzun basın. İlk kullanımda Ayarlar’dan temayı, başlangıç ekranını ve okuma tercihlerini ayarlayın."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Uzantılar ve eklentiler"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Çevrimiçi kaynaklar uzantı eklentileri tarafından sağlanır ve Göz at > Uzantılar bölümünde yönetilir: depo ekleyin, ardından uzantıları yükleyin, güncelleyin veya kaldırın. Eklenti güncellemelerini denetlemek için listeyi aşağı çekin. Yalnızca güvendiğiniz depoları ekleyin — bir depo çevrimdışı olunca uzantıları artık güncellenemez veya yeniden yüklenemez."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Okuma ve dinleme"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "Okuyucu, eser bazında hatırlanan ayarlanabilir yön, arka plan ve parlaklıkla sayfalı, dikey ve Webtoon modları sunar. Romanlar ayarlanabilir hız, uyku zamanlayıcısı ve arka planda oynatmayla sesli okunabilir; videolar Danmaku desteğiyle çevrimiçi oynatılır. Okuma ilerlemesi otomatik kaydedilir."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "İndirme yönetimi"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Çevrimdışı okumak için bir eserin sayfasından veya bölüm listesinden bölümleri kuyruğa alın. İlerlemeyi inceleyin, görevleri Daha fazla > İndirme yöneticisi bölümünde duraklatın veya kaldırın; Ayarlar > İndirmeler yalnızca Wi-Fi indirmeleri, yeni bölümlerin otomatik indirilmesi ve okunan bölümlerin otomatik silinmesini sunar."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "İzleyiciler ve eşitleme"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Bir eserin sayfasındaki İzleme bölümünden AniList, MyAnimeList, Bangumi, Kitsu veya Shikimori bağlayın. Bağlandıktan sonra durumunuz ve okuma ilerlemeniz otomatik eşitlenir; belirteçler yalnızca cihazınızda saklanır ve istediğiniz zaman bağlantıyı kaldırabilirsiniz."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Kaynak aktarma"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Bir eser aynı türde başka bir kaynağa taşındığında onu açın ve menüden Aktar’ı seçin. Honyomi hedef kaynağı başlık veya yazara göre eşleştirir ve okuma ilerlemeniz ile indirmelerinizi taşır; böylece yeni kaynaktan kesintisiz devam edebilirsiniz."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Güncellemeler ve yaklaşanlar"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Güncellemeler sekmesi kitaplığınızda yeni bölümleri denetler — yenilemek için aşağı çekin; yeni bölümü olan eserler önce gösterilir. Yaklaşan sayfası her eserin sonraki güncelleme zamanını geçmiş yayın ritmine göre tahmin eder; tahminler yalnızca gösterge niteliğindedir."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Veri ve depolama"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Kitaplığınız, ilerlemeniz ve ayarlarınız yalnızca cihazınızda saklanır ve hiçbir zaman yüklenmez. Yedeklemek ve geri yüklemek, depolama kullanımını incelemek, bölüm önbelleğini temizlemek ve otomatik yedekleri zamanlamak için Daha fazla > Veri ve depolama bölümünü kullanın. Cihaz değiştirmeden veya yeniden yüklemeden önce elle yedek alın."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Gizlilik ve güvenlik"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi yerel önceliklidir ve kişisel veri toplamaz. Ayarlar > Gizlilik biyometrik uygulama kilidi, bildirim içeriğini gizleme ve ekran görüntüsü engelleme sunar; Daha fazla sayfasındaki gizli mod okuma geçmişini duraklatır. NSFW kaynaklar Ayarlar > Göz at bölümünde açılana kadar gizli kalır."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Sorun giderme"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Sayfalar yüklenmezse ağınızı denetleyin veya Ayarlar > Gelişmiş altında DNS-over-HTTPS sağlayıcısını değiştirin ve sitenin doğrulama istemi görününce tamamlayın. Bir kaynak sorun çıkarırsa eklenti güncellemelerini denetlemek için uzantı listesini yenilemek üzere çekin veya uzantıyı yeniden yükleyin. İnatçı sorunlarda önce Veri ve depolama bölümünde yedek alın, ardından bölüm önbelleğini temizleyin."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Kağıt"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Çevriliyor… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Çeviri tamamlandı"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Çeviri başarısız"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Çeviri iptal edildi"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "İçerik dili hedef dille aynı, çeviri gerekmez"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Metin tanıma hizmeti kullanılamıyor. Daha sonra yeniden deneyin (emülatörlerde desteklenmeyebilir)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Görsel çevirisi"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Her sayfayı otomatik tanı ve çevir, sonucu üstüne bindir"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Bölüm çevirisi"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Açıkken bu bölümü otomatik çevir ve sonucu göster"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Sayfa görselini kaydet"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Görseli kopyala"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Sayfayı paylaş"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Özgününü gör"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Sayfa görseli kaydedildi"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Kaydetme başarısız"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Görseli galeriye kaydet"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Görsel kopyalandı"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Kopyalama başarısız"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Paylaşma başarısız"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Ses"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Kadın (varsayılan)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Erkek"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Erkek ses kullanılamıyorsa (indirilmemişse) varsayılan kadın sesi kullanılır."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Ekranı açık tut"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Ses tuşları sayfa çevirir"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Metni iki yana hizala"
+    },
+    {
+      "name": "novel_search",
+      "value": "Bölümde ara"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Bu bölümde metin ara"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Eşleşme yok"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Yer işaretleri"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Geçerli konumu işaretle"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Yer işareti eklendi"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Henüz yer işareti yok"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Otomatik okuma açık"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Son bölümün sonuna ulaşıldı, otomatik okuma durdu"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Parlaklık"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Atla"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Son konumdan devam edildi"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Baştan başlat"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Canlı yayınlar indirilemez"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Desteklenmeyen video akışı şifrelemesi"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "BitTorrent indirmesi"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Bu bölüm bir BitTorrent torrentidir. Nasıl indirileceğini seçin"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Sistem uygulamasını kullan"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Yerleşik motor"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "Uygulama içinde indir, aşamalı oynatmayı destekler"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Magnet/torrent bağlantısını başka bir uygulamaya devret (ör. bir torrent istemcisi)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Yaklaşık %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Seçiminiz hatırlanır. Daha sonra Ayarlar > İndirmeler bölümünden değiştirebilirsiniz"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Sistem uygulamasına devredildi"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Bu torrenti işleyebilecek uygulama yok"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "İndiriliyor… yeterli veri olunca oynatma otomatik başlayacak"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "%1$d torrent bölümü atlandı"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT hizmeti"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "BT motorunu durdurmak için kapatın; bir BT indirmesi başlayınca yeniden başlar"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT hizmeti kapalı. Ayarlar - BitTorrent bölümünden etkinleştirin"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "İndirme motoru"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Her seferinde sor"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Yerleşik motor"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "Sistem uygulaması"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT motoru bileşeni yüklü değil"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Yerleşik motorla torrent indirmek için gerekir"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Yükle"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Aşamalı oynatma"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Torrent hâlâ indirilirken oynatmaya başla (sıralı indirme)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Hız sınırları"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "İndirme hızı sınırı"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Yükleme hızı sınırı"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Sınırsız"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Ek tracker’lar"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Her torrent indirmesine eklenir"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Satır başına bir tracker URL’si"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Yok"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d tracker"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Seed etme"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Paylaşım oranı sınırı"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Ücretli ağlarda yüklemeyi sınırla"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Veri tasarrufu için hücreselde yüklemeyi 10 KB/s ile sınırla"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Eş filtresi"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Eşleri IP adresine veya aralığa göre engelle"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Eş filtresi"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Satır başına bir kural: bir IP (192.168.1.1) veya bir aralık (10.0.0.0-10.255.255.255). Devre dışı bırakmak için boş bırakın"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "%1$d. satırdaki kural geçersiz"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Kapalı"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d kural"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi yansısı"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi yansısı kaydedildi"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "API yansısı, https://your-proxy.example.com, boş = varsayılan api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Adres https:// ile başlamalı"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Görsel yansısı, https://your-proxy.example.com, boş = varsayılan lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Adres https:// ile başlamalı"
+    },
+    {
+      "name": "trans_title",
+      "value": "Çeviri"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Çeviriyi etkinleştir"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Yapılandırılmış motorlarla okuyucudaki metni çevir"
+    },
+    {
+      "name": "trans_test",
+      "value": "Çeviriyi dene"
+    },
+    {
+      "name": "trans_target",
+      "value": "Hedef dil"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Çevriliyor…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Tüm motorlar başarısız"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Motor önceliği"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Yeniden sıralamak için uzun basın ve sürükleyin; anahtarlarını yapılandırmak için bir motora dokunun"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Hazır"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Yapılandırılmadı"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Kurulum gerekmez"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Ayarlandı"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu Çeviri"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Gizli anahtar"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "Uygulama anahtarı"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "Uygulama gizli anahtarı"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API belirteci"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Çeviri"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API anahtarı"
+    },
+    {
+      "name": "action_edit",
+      "value": "Düzenle"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Yine de ekle"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "Henüz hiç kategoriniz yok."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Olası kopyalar"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "Kitaplığınızda benzer ada sahip girdiler var.\n\nAktarmak veya yine de eklemek için bir girdi seçin."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d bölüm"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Kitaplığa eklensin mi?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "İndirilen bölümler silinsin mi?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Bu girdinin indirilen bölümleri silinecek."
+    },
+    {
+      "name": "default_category",
+      "value": "Varsayılan kategori"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Her zaman sor"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Otomatik (içerik türüne göre)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Görünüm"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Gezinme"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Genel"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "E-ink yenileme flaşı"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Okunmuş bölümleri atla"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Süzülen bölümleri atla"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Yinelenen bölümleri atla"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Bölüm geçiş sayfası"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Sayfa değişince flaş"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Flaş rengi"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Beyaz"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Siyah"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Önce beyaz sonra siyah"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Flaş süresi (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Her N sayfada flaş"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Kenarları kırp (sayfalı modlar)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Kenarları kırp (Webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Renk filtresi karışım modu"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Yok"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Çarp"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Ekran"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Bindirme"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Karart"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Açıkla"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Uzaklaştırmayı kapat (Webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Yakınlaştırma başlangıç konumu"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Otomatik"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Sol"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Sağ"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Orta"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L biçimi"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle tarzı"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D küp"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Yığın"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Solma"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D çevirme"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Küre"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Devam etmek için dokunun"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "%d bölüm atlanıyor; kaynakta yoklar veya süzülmüşler"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Atlama noktalarını oynatıcı ayarları panelinde ayarlayın"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Altyazılar"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Harici .srt altyazı dosyalarını yükle"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Altyazı metin boyutu"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Danmaku filtreleri"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Bu regex kurallarından herhangi biriyle eşleşen yorumlar gizlenir"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Ekle"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Bir regex kuralı girin, örn. \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Geçersiz veya yinelenen kural"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Henüz filtre kuralı yok"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Filtreler uygulandı"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Atlama noktaları kaydedildi"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Geçersiz zaman biçimi"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Altyazı yüklendi"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Geçersiz altyazı dosyası"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Dosya okunamadı"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Oturum açma başarısız: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "Danmaku kitaplığında eşleşen bölüm yok"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Lütfen önce oturum açın"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Bu bölümün eşleşen bir bölümü yok"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Gönderildi"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Gönderilemedi: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "İlgili"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Öncesi"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Devamı"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Yan hikâye"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Özel"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Ana hikâye"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Derleme"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Güncelleme aralığını değiştir"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Genel ayarı izle"
+    },
+    {
+      "name": "interval_never",
+      "value": "Asla"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Her saat"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "6 saatte bir"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "12 saatte bir"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Her gün"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "2 günde bir"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "3 günde bir"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Her hafta"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "2 haftada bir"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Her ay"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "%d saatte bir"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Genel güncelleme"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Yalnızca Wi-Fi’de güncelle"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Wi-Fi olmayan ağlarda kitaplık güncellemelerini atla"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Yalnızca şarjdayken güncelle"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Şarjda değilken kitaplık güncellemelerini atla"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Kaydırma eylemleri"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Başlangıç eylemi"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Bitiş eylemi"
+    },
+    {
+      "name": "action_none",
+      "value": "Yok"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Güncelleme aralığı"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Notlar"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Not ekle"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Notu düzenle"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "%d bölüm eksik"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Gizli göz atma"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Bu uzantının kaynaklarına göz atarken geçmiş ve istatistikler kaydedilmez"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Gizli göz atılıyor · Okuma geçmişi ve istatistikler kaydedilmiyor"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Uzantı güncellemeleri"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Uzantı güncellemelerini denetle"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Eklenti depoları yenilenirken güncellemeleri denetle ve bildir"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d uzantı güncellenebilir"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "E-posta / kullanıcı adı"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (Kavita sunucu ayarlarında oluşturulur)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Kullanıcı adı (isteğe bağlı, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Şifre (isteğe bağlı, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Bu girdi hakkında not yazın…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Uzantı güncellemeleri"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d uzantının yeni sürümü var; eklentiler sayfasından güncelleyin"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Yalnızca Wi-Fi güncellemesi açık ve geçerli ağ uygun değil, güncelleme atlandı"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Yalnızca şarjdayken güncelleme açık, güncellemek için şarj cihazı bağlayın"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Henüz okuma geçmişi yok"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Okunabilir bölüm yok"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Okumaya devam et: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Sesli kitaba devam ediliyor"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Dinlenecek roman yok"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Oynatma başlatılamadı"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Dinlemeye devam et: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "\"%s\" kitaplığınızda bulunamadı, genel arama açıldı"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "\"%1$s\" kitaplığınızda bulundu ancak \"%2$s\" ile eşleşen bölüm yok, girdinin ayrıntıları açıldı"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Açıldı: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Açıldı: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Kitaplığa eklendi: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Kitaplık yenilemesi atlandı: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Kitaplık yenilemesi başladı"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Atlama komutu anlaşılamadı: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Tamam: %s"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "HTTPS üzerinden DNS"
     }
   ]
 }

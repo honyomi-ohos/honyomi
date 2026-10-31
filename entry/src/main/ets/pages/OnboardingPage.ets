@@ -10,6 +10,7 @@ import { BackupService } from '../data/BackupService';
 import { OnboardingParams } from '../model/RouteParams';
 import { AppIcon } from './components/AppIcon';
 import { ThemePicker } from './components/ThemePicker';
+import { BackupPasswordDialog } from './components/Dialogs';
 
 // 入门指南：应用内帮助文档（不再外链 mihon.app）
 const APP_NAME: string = 'Honyomi';
@@ -259,26 +260,30 @@ export struct OnboardingPage {
         .align(Alignment.Top)
         .width('100%')
 
-        // 底部操作栏：下一步 / 开始使用
+        // 底部操作栏：下一步 / 开始使用（宽屏与内容区同样限宽居中）
         Column() {
-          Divider().color(this.pal.divider)
-          Button(this.isLastStep() ?
-            $r('app.string.onboarding_action_finish') :
-            $r('app.string.onboarding_action_next'))
-            .width('100%')
-            .height(48)
-            .borderRadius(24)
-            .backgroundColor(this.pal.primary)
-            .fontColor(this.pal.onPrimary)
-            .fontSize(15)
-            .fontWeight(FontWeight.Medium)
-            .margin({ top: 12 })
-            .onClick(() => {
-              this.onAccept();
-            })
+          Column() {
+            Divider().color(this.pal.divider)
+            Button(this.isLastStep() ?
+              $r('app.string.onboarding_action_finish') :
+              $r('app.string.onboarding_action_next'))
+              .width('100%')
+              .height(48)
+              .borderRadius(24)
+              .backgroundColor(this.pal.primary)
+              .fontColor(this.pal.onPrimary)
+              .fontSize(15)
+              .fontWeight(FontWeight.Medium)
+              .margin({ top: 12 })
+              .onClick(() => {
+                this.onAccept();
+              })
+          }
+          .width('100%')
+          .constraintSize({ maxWidth: 560 })
+          .padding({ left: 16, right: 16, bottom: this.navBarH + 12 })
         }
         .width('100%')
-        .padding({ left: 16, right: 16, bottom: this.navBarH + 12 })
         .backgroundColor(this.pal.bg)
       }
       .width('100%')
@@ -338,17 +343,61 @@ export struct OnboardingPage {
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
       const count = await BackupService.importBackup(context);
-      if (count === -1) {
-        // 用户取消选择
+      this.handleRestoreResult(count);
+    } catch (e) {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
+    }
+  }
+
+  // 统一处理导入返回码：-1 取消 / -2 损坏 / -3 待密码 / -4 密码错误 / ≥0 恢复数
+  private handleRestoreResult(count: number): void {
+    if (count === -1) {
+      // 用户取消选择
+      return;
+    }
+    if (count === -2) {
+      Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
+      return;
+    }
+    if (count === -3) {
+      this.showBackupPasswordDialog();
+      return;
+    }
+    if (count === -4) {
+      Util.toastRes(this.getUIContext(), $r('app.string.backup_wrong_password'));
+      this.showBackupPasswordDialog();
+      return;
+    }
+    Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
+    AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
+    this.finish();
+  }
+
+  // 导入含加密敏感段的备份：弹密码框 → retryImportBackup
+  private showBackupPasswordDialog(): void {
+    const dialog = new CustomDialogController({
+      builder: BackupPasswordDialog({
+        onConfirm: (password: string): void => {
+          this.retryRestoreBackup(password);
+        },
+        onClose: (): void => {
+          dialog.close();
+        },
+      }),
+      autoCancel: false,
+    });
+    dialog.open();
+  }
+
+  private async retryRestoreBackup(password: string): Promise<void> {
+    try {
+      const count = await BackupService.retryImportBackup(password);
+      if (count === -4) {
+        Util.toastRes(this.getUIContext(), $r('app.string.backup_wrong_password'));
+        this.showBackupPasswordDialog();
         return;
       }
-      if (count === -2) {
-        Util.toastRes(this.getUIContext(), $r('app.string.advanced_backup_invalid'));
-        return;
-      }
-      Util.toastRes(this.getUIContext(), $r('app.string.advanced_restored_manga'), [count]);
-      AppStorage.setOrCreate(AppKeys.LIB_DIRTY, (AppStorage.get<number>(AppKeys.LIB_DIRTY) ?? 0) + 1);
-      this.finish();
+      this.handleRestoreResult(count);
     } catch (e) {
       Util.toastRes(this.getUIContext(), $r('app.string.advanced_import_failed'));
     }

@@ -18,13 +18,25 @@ export class UpdateService {
   }
 
   // 批量库更新的网络/电源限制检查（对齐 Mihon updateRestrictions）：
-  // 返回 '' 表示允许更新，否则返回跳过原因（供 UI 入口 toast 提示）
+  // 返回 '' 表示允许更新，否则返回跳过原因 code（wifi_only / charging_only，
+  // 供 UI 入口经 restrictionText 转本地化文案后 toast 提示）
   static checkUpdateRestrictions(): string {
     if (Settings.getLibraryUpdateWifiOnly() && !NetworkMonitor.isWifiLike()) {
-      return '已开启「仅 Wi-Fi 时更新」，当前网络不满足，已跳过本次更新';
+      return 'wifi_only';
     }
     if (Settings.getLibraryUpdateChargingOnly() && !UpdateService.isCharging()) {
-      return '已开启「仅充电时更新」，请连接充电器后再更新';
+      return 'charging_only';
+    }
+    return '';
+  }
+
+  // 跳过原因 code → 本地化文案
+  static restrictionText(context: common.Context, code: string): string {
+    if (code === 'wifi_only') {
+      return context.resourceManager.getStringSync($r('app.string.update_restriction_wifi').id);
+    }
+    if (code === 'charging_only') {
+      return context.resourceManager.getStringSync($r('app.string.update_restriction_charging').id);
     }
     return '';
   }

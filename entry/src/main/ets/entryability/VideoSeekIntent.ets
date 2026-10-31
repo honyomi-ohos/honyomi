@@ -1,5 +1,6 @@
 import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppKeys } from '../common/AppKeys';
+import EntryAbility from './EntryAbility';
 
 // 快进指令载荷（AppStorage videoSeek 键，VideoPlayerPage 消费）
 interface VideoSeekPayload {
@@ -91,12 +92,15 @@ export default class VideoSeekImpl extends InsightIntentEntryExecutor<string> {
 
   onExecute(): Promise<insightIntent.IntentResult<string>> {
     const query: string = this.seekQuery.trim();
+    const context = EntryAbility.appContext;
     const cmd: VideoSeekPayload | undefined = VideoSeekImpl.parseSeek(query);
     if (cmd === undefined) {
-      return Promise.resolve(VideoSeekImpl.result(-1, `无法理解快进指令："${query}"`));
+      return Promise.resolve(VideoSeekImpl.result(-1, context !== undefined ?
+        context.resourceManager.getStringSync($r('app.string.intent_seek_unrecognized').id, query) : query));
     }
     cmd.ts = Date.now();
     AppStorage.setOrCreate(AppKeys.VIDEO_SEEK, JSON.stringify(cmd));
-    return Promise.resolve(VideoSeekImpl.result(0, `已执行：${query}`));
+    return Promise.resolve(VideoSeekImpl.result(0, context !== undefined ?
+      context.resourceManager.getStringSync($r('app.string.intent_seek_done').id, query) : query));
   }
 }

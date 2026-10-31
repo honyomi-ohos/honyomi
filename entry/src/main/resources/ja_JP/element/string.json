@@ -529,10 +529,6 @@
       "value": "本棚から外しました"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "すべての話を既読にしました"
-    },
-    {
       "name": "detail_download_queued",
       "value": "ダウンロードキューに追加しました"
     },
@@ -575,10 +571,6 @@
     {
       "name": "detail_chapters_count",
       "value": "話（%d）"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "すべて既読"
     },
     {
       "name": "detail_download",
@@ -3735,6 +3727,1466 @@
     {
       "name": "subject_infobox_duration",
       "value": "長さ"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "アプリの非公開ストレージ"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "内部ストレージ"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "なし"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "書き出しをキャンセルしました"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "書き出しに失敗しました"
+    },
+    {
+      "name": "module_desc",
+      "value": "モジュールの説明"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "説明"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "評価"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "ページ間隔"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "連続スクロール"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "見開き"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "自動（横向き）"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "常に見開き"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "オフ"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "表紙を単独ページ"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "音量キーでページ送り"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "画面を常時点灯"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "章名とページ番号を表示"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "先読みページ数"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "重複ページをスキップ"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "空白ページを削除"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "読書体験"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "ページ処理"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "縦方向の連続スクロール"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "履歴を検索"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "関連シリーズ"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "章一覧"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "紙"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "自動ページ送り"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "オフ"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d 秒"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "自動ページ送りをオンにしました"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "自動ページ送りをオフにしました"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "ウェブトゥーンモードでは自動ページ送りを利用できません"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "この端末ではピクチャーインピクチャーに対応していません"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "拡張機能リポジトリ"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "拡張機能リポジトリはまだありません。+ をタップして追加してください。"
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "リポジトリを追加"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "リポジトリのインデックス URL"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "有効な http(s) URL を入力してください"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "このリポジトリはすでに追加されています"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "追加中…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "リポジトリを追加しました"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "リポジトリの追加に失敗しました：%s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "リポジトリを削除"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "リポジトリ %s を削除しますか？\n%s\n\nインストール済みの拡張機能は保持されます。"
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "リポジトリを削除しました"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "クリップボードにコピーしました"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "更新中…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "リポジトリを更新しました"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "更新に失敗しました：%s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "信頼されていない拡張機能"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "悪意のある拡張機能は、保存されたログイン情報を読み取ったり、任意のコードを実行したりできます。\n\nこの拡張機能を信頼すると、これらのリスクを受け入れることになります。"
+    },
+    {
+      "name": "ext_trust",
+      "value": "信頼"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "未信頼"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "%s を信頼しました"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "完全バックアップ"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "本棚と拡張機能リポジトリのみ"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "機密データを含める"
+    },
+    {
+      "name": "backup_password",
+      "value": "パスワード"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "パスワードの確認"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "パスワードは 6 文字以上必要です"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "パスワードが一致しません"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "機密データを含めるにはパスワードが必要です"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "このバックアップには暗号化された機密データが含まれています。復元するにはバックアップのパスワードを入力してください。"
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "パスワードが正しくありません"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "弾幕（動画コメント）"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "動画再生の弾幕は初期状態でオンになっており、プレーヤーの設定または再生中にいつでもオフにできます。オンの間は、再生中の作品名がサードパーティの弾幕サービス dandanplay（api.dandanplay.net）へ送られ、エピソードの照合とコメントの読み込みに使われます。アカウントや端末の識別子は送られず、取得したコメントはメモリ内だけに保持されます。このサービスには、そのサービス自身のプライバシーポリシーが適用されます。"
+    },
+    {
+      "name": "help_title",
+      "value": "ヘルプ"
+    },
+    {
+      "name": "help_intro",
+      "value": "Honyomi の手引きです。コンテンツの取り込みや拡張機能のインストールから、読書・読み上げ、バックアップ、プライバシーまで、よく使う機能の説明とトラブルシューティングのヒントをまとめています。"
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "はじめに"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "ローカルソースから、またはファイルを直接開いて、CBZ や EPUB などのローカルファイルを追加できます。オンラインのコンテンツは「探す」>「拡張機能」で拡張機能リポジトリを追加し、拡張機能をインストールしてから、そのソースを閲覧・検索します。作品ページで「本棚に追加」をタップすると本棚に残り、本棚の項目を長押しするとまとめて管理できます。初めて使うときは「設定」でテーマ、起動画面、閲覧の設定を調整してください。"
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "拡張機能とプラグイン"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "オンラインソースは拡張機能プラグインが提供し、「探す」>「拡張機能」で管理します。リポジトリを追加すると、拡張機能のインストール、更新、削除ができます。リストを下に引くとプラグインの更新を確認できます。信頼できるリポジトリだけを追加してください。リポジトリがオフラインになると、その拡張機能は更新も再インストールもできなくなります。"
+    },
+    {
+      "name": "help_reader_title",
+      "value": "閲覧と読み上げ"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "ビューアにはページ送り、縦方向、ウェブトゥーンのモードがあり、方向・背景・明るさは作品ごとに記憶されます。小説は速度の調整、スリープタイマー、バックグラウンド再生に対応した読み上げができます。動画はオンライン再生と弾幕に対応します。閲覧の進捗は自動で記録されます。"
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "ダウンロード管理"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "作品ページまたは章の一覧から章をダウンロードに追加すると、オフラインで読めます。「その他」>「ダウンロード」で進捗の確認、一時停止、タスクの削除ができます。「設定」>「ダウンロード」では、Wi-Fi のみのダウンロード、新しい章の自動ダウンロード、既読の章の自動削除を設定できます。"
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "トラッキングと同期"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "作品ページの「トラッキング」から AniList、MyAnimeList、Bangumi、Kitsu、Shikimori を連携できます。連携するとステータスと閲覧の進捗が自動で同期されます。トークンは端末内にのみ保存され、いつでも連携を解除できます。"
+    },
+    {
+      "name": "help_migration_title",
+      "value": "ソースの移行"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "同じ種類の別ソースへ作品を移すときは、作品を開いてメニューから「移行」を選びます。Honyomi はタイトルまたは作者で移行先のソースを照合し、閲覧の進捗とダウンロードを引き継ぐので、新しいソースから続きを読めます。"
+    },
+    {
+      "name": "help_updates_title",
+      "value": "更新と更新予定"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "「更新」タブは本棚の新しい章を確認します。下に引くと更新でき、新しい章がある作品が先に表示されます。「更新予定」は過去の公開間隔から次の更新時刻を見積もります。見積もりは目安です。"
+    },
+    {
+      "name": "help_storage_title",
+      "value": "データとストレージ"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "本棚、進捗、設定は端末内にのみ保存され、アップロードされません。「その他」>「データとストレージ」でバックアップと復元、ストレージ使用量の確認、章キャッシュの消去、自動バックアップの設定ができます。端末の変更や再インストールの前に、手動でバックアップしてください。"
+    },
+    {
+      "name": "help_security_title",
+      "value": "プライバシーとセキュリティ"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi はローカル優先で、個人データを収集しません。「設定」>「プライバシー」では、生体認証のアプリロック、通知内容の非表示、スクリーンショットのブロックを設定できます。「その他」のシークレットモードは閲覧履歴の記録を一時停止します。NSFW ソースは、「設定」>「探す」で有効にするまで表示されません。"
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "トラブルシューティング"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "ページの読み込みに失敗したら、ネットワークを確認するか、「設定」>「高度な設定」で DNS-over-HTTPS のプロバイダを切り替えてください。サイトの確認が表示されたら、案内に従って完了してください。ソースがおかしいときは、拡張機能リストを下に引いてプラグインの更新を確認するか、拡張機能を再インストールしてください。解決しない場合は、先に「データとストレージ」でバックアップしてから章キャッシュを消去してください。"
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "紙"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "翻訳中… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "翻訳が完了しました"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "翻訳に失敗しました"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "翻訳をキャンセルしました"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "コンテンツの言語が対象言語と同じため、翻訳は不要です"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "文字認識サービスを利用できません。後でもう一度お試しください（エミュレーターでは未対応の場合があります）"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "画像翻訳"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "各ページを自動で認識・翻訳し、結果を重ねて表示します"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "章の翻訳"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "オンにすると、この章を自動で翻訳して結果を表示します"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "ページ画像を保存"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "画像をコピー"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "ページを共有"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "元の画像を表示"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "ページ画像を保存しました"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "保存に失敗しました"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "画像をギャラリーに保存"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "画像をコピーしました"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "コピーに失敗しました"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "共有に失敗しました"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "音声"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "女性（デフォルト）"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "男性"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "男性の音声が利用できない（未ダウンロード）場合は、デフォルトの女性の音声を使います。"
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "画面を常時点灯"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "音量キーでページ送り"
+    },
+    {
+      "name": "novel_justify",
+      "value": "両端揃え"
+    },
+    {
+      "name": "novel_search",
+      "value": "章内を検索"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "この章の本文を検索"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "一致するものがありません"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "ブックマーク"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "現在位置をブックマーク"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "ブックマークを追加しました"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "ブックマークはまだありません"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "自動読書をオンにしました"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "最後の章の終わりに達したため、自動読書を停止しました"
+    },
+    {
+      "name": "video_brightness",
+      "value": "明るさ"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "移動先"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "前回の位置から再開しました"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "最初から再生"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "ライブ配信はダウンロードできません"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "この動画ストリームの暗号化には対応していません"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "BitTorrent ダウンロード"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "この章は BitTorrent のトレントです。ダウンロード方法を選んでください"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "システムアプリを使う"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "内蔵エンジン"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "アプリ内でダウンロードし、再生しながらの取得に対応"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "マグネット／トレントのリンクを別のアプリ（トレントクライアントなど）に渡します"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "約 %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "選択は記憶されます。あとから「設定」>「ダウンロード」で変更できます"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "システムアプリに渡しました"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "このトレントを処理できるアプリがありません"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "ダウンロード中… データが十分になると自動で再生を開始します"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "トレントの章を %1$d 件スキップしました"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT サービス"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "オフにすると BT エンジンが停止します。BT のダウンロードを始めると再起動します"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT サービスはオフです。「設定」の BitTorrent でオンにしてください"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "ダウンロードエンジン"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "毎回確認"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "内蔵エンジン"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "システムアプリ"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT エンジンコンポーネントがインストールされていません"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "内蔵エンジンでトレントをダウンロードするときに必要です"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "インストール"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "ダウンロードしながら再生"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "トレントのダウンロード中に再生を開始します（順次ダウンロード）"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "速度制限"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "ダウンロード速度の上限"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "アップロード速度の上限"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "無制限"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "追加トラッカー"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "すべてのトレントダウンロードに追加します"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "1 行に 1 つのトラッカー URL"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "なし"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "トラッカー %1$d 件"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "シーディング"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "共有率の上限"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "従量制ネットワークでアップロードを制限"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "モバイルデータではアップロードを 10 KB/s に制限して通信量を節約します"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer フィルター"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "IP アドレスまたは範囲で Peer をブロックします"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer フィルター"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "1 行に 1 つのルール：IP（192.168.1.1）または範囲（10.0.0.0-10.255.255.255）。空にすると無効になります"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "%1$d 行目のルールが無効です"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "オフ"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d 件のルール"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi ミラー"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi ミラーを保存しました"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "API ミラー。https://your-proxy.example.com。空欄で既定の api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "アドレスは https:// で始めてください"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "画像ミラー。https://your-proxy.example.com。空欄で既定の lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "アドレスは https:// で始めてください"
+    },
+    {
+      "name": "trans_title",
+      "value": "翻訳"
+    },
+    {
+      "name": "trans_enable",
+      "value": "翻訳を有効にする"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "設定したエンジンで、ビューア内のテキストを翻訳します"
+    },
+    {
+      "name": "trans_test",
+      "value": "翻訳をテスト"
+    },
+    {
+      "name": "trans_target",
+      "value": "対象言語"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "翻訳中…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "すべてのエンジンで失敗しました"
+    },
+    {
+      "name": "trans_engines",
+      "value": "エンジンの優先順位"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "長押ししてドラッグすると並べ替え、エンジンをタップするとキーを設定できます"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "設定済み"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "未設定"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "設定不要"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "入力済み"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "百度翻訳"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "シークレットキー"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "アプリキー"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "アプリシークレット"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API トークン"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google 翻訳"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API キー"
+    },
+    {
+      "name": "action_edit",
+      "value": "編集"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "それでも追加"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "カテゴリはまだありません。"
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "重複の可能性"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "本棚に名前が似た作品があります。\n\n移行するか、それでも追加する作品を選んでください。"
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d 話"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "本棚に追加しますか？"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "ダウンロードした章を削除しますか？"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "この作品のダウンロード済みの章が削除されます。"
+    },
+    {
+      "name": "default_category",
+      "value": "デフォルトのカテゴリ"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "常に確認"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "自動（コンテンツの種類）"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "外観"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "ナビゲーション"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "一般"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "E-ink リフレッシュ点滅"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "既読の章をスキップ"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "フィルターされた章をスキップ"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "重複した章をスキップ"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "章の区切りページ"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "ページ送り時に点滅"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "点滅の色"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "白"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "黒"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "白から黒"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "点滅時間（ms）"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "N ページごとに点滅"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "余白を切り抜く（ページモード）"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "余白を切り抜く（ウェブトゥーン）"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "カラーフィルターの描画モード"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "なし"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "乗算"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "スクリーン"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "オーバーレイ"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "比較（暗）"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "比較（明）"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "縮小を無効（ウェブトゥーン）"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "ズーム開始位置"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "自動"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "左"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "右"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "中央"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L 字"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle スタイル"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D キューブ"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "スタック"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "フェード"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D フリップ"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "球体"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "タップして続ける"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "%d 章をスキップします。ソースにないか、フィルターで除外されています"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "プレーヤー設定パネルでスキップ位置を設定します"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "字幕"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "外部の .srt 字幕ファイルを読み込みます"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "字幕の文字サイズ"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "弾幕フィルター"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "これらの正規表現ルールに一致するコメントは非表示になります"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "追加"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "正規表現を入力（例: \\d+）"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "ルールが無効か、重複しています"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "フィルタルールはまだありません"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "フィルターを適用しました"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "スキップ位置を保存しました"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "時刻の形式が無効です"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "字幕を読み込みました"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "字幕ファイルが無効です"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "ファイルの読み取りに失敗しました"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "ログインに失敗しました：%s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "弾幕ライブラリに一致するエピソードがありません"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "先にログインしてください"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "この章に一致するエピソードがありません"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "送信しました"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "送信に失敗しました：%s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "関連"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "前伝"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "続編"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "スピンオフ"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "番外編"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "本編"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "総集編"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "更新間隔を変更"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "全体設定に従う"
+    },
+    {
+      "name": "interval_never",
+      "value": "しない"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "1 時間ごと"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "6 時間ごと"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "12 時間ごと"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "毎日"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "2 日ごと"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "3 日ごと"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "毎週"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "2 週間ごと"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "毎月"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "%d 時間ごと"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "全体の更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Wi-Fi のみで更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Wi-Fi 以外では本棚の更新をスキップします"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "充電中のみ更新"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "充電中でないときは本棚の更新をスキップします"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "スワイプ操作"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "開始側の操作"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "終了側の操作"
+    },
+    {
+      "name": "action_none",
+      "value": "なし"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "更新間隔"
+    },
+    {
+      "name": "detail_notes",
+      "value": "メモ"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "メモを追加"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "メモを編集"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "%d 章がありません"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "シークレット閲覧"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "この拡張機能のソースを閲覧している間、履歴と統計は記録されません"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "シークレット閲覧中 · 閲覧履歴と統計は記録されません"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "拡張機能の更新"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "拡張機能の更新を確認"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "プラグインリポジトリの更新時に、拡張機能の更新を確認して通知します"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d 件の拡張機能を更新できます"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "メール / ユーザー名"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key（Kavita のサーバー設定で生成）"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "ユーザー名（任意、Basic Auth）"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "パスワード（任意、Basic Auth）"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "この作品についてのメモ…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "拡張機能の更新"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d 件の拡張機能に新しいバージョンがあります。プラグインページで更新できます"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "「Wi-Fi のみで更新」がオンで、現在のネットワークは対象外のため、更新をスキップしました"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "「充電中のみ更新」がオンです。充電器を接続してから更新してください"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "まだ閲覧履歴がありません"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "読める章がありません"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "続きを読む：%s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "読み上げを続けています"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "読み上げできる小説がありません"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "読み上げを開始できませんでした"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "続きを聴く：%s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "本棚に「%s」が見つからなかったため、全体検索を開きました"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "本棚に「%1$s」はありましたが、章「%2$s」は見つからなかったため、作品の詳細を開きました"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "開きました：「%1$s」%2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "開きました：%s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "本棚に追加しました：%s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "本棚の更新をスキップしました：%s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "本棚の更新を開始しました"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "シークの指示を理解できませんでした：「%s」"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "実行しました：%s"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
     }
   ]
 }

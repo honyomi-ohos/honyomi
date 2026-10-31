@@ -18,6 +18,9 @@ export class AppKeys {
   // 数据脏标记（计数器递增触发 @Watch 刷新）
   static readonly LIB_DIRTY: string = 'libDirty';
   static readonly PLUGINS_DIRTY: string = 'pluginsDirty';
+  // 插件加载完成标志（loadAll 结束后置 true）：NSFW 过滤据此区分
+  // 「插件尚未加载完」（源未注册保持隐藏防闪现）与「插件未安装」（如备份恢复后待装，保留显示）
+  static readonly PLUGINS_LOADED: string = 'pluginsLoaded';
   static readonly EXT_REPO_REFRESH: string = 'extRepoRefresh';
   static readonly EXT_LOCAL_INSTALL: string = 'extLocalInstall';
   // 扩展可更新数量（checkExtensionUpdates 发布，徽标/设置页副标题消费）

@@ -329,8 +329,11 @@ export struct MangaDetailPage {
   // Bangumi 关系图半模态（「相关系列」标题右侧 account_tree 图标进入）
   @State showBgmGraphSheet: boolean = false;
   // 关系图节点点击的待跳转条目：先记录、待弹层完全收起（onDisappear）再跳转，
-  // 避免半模态收起动画与页面转场动画同帧叠加导致新页面渲染异常（内容不显示）
-  private bgmGraphPendingOpen: BgmRelatedSubject | undefined = undefined;
+  // 避免半模态收起动画与页面转场动画同帧叠加导致新页面渲染异常（内容不显示）；
+  // 中心/关联节点统一存 subjectId
+  private bgmGraphPendingOpen: number | undefined = undefined;
+  // 当前作品匹配到的 Bangumi subjectId（0 = 未匹配/未加载）：关系图中心节点点击跳详情用
+  private bgmSelfSubjectId: number = 0;
   @State showCoverViewer: boolean = false;
   @State showSettingsSheet: boolean = false;
   // 更新间隔选择弹层（对齐 Mihon SetIntervalDialog）
@@ -561,12 +564,12 @@ export struct MangaDetailPage {
   detailMenuBuilder() {
     Menu() {
       if (this.manga.inLibrary) {
-        MenuItem({ content: '更新间隔' })
+        MenuItem({ content: $r('app.string.detail_update_interval') })
           .onClick(() => {
             this.showIntervalSheet = true;
           })
       }
-      MenuItem({ content: this.manga.notes !== '' ? '笔记' : '添加笔记' })
+      MenuItem({ content: this.manga.notes !== '' ? $r('app.string.detail_notes') : $r('app.string.detail_add_note') })
         .onClick(() => {
           this.showNotesSheet = true;
         })
@@ -1140,7 +1143,7 @@ export struct MangaDetailPage {
           if (this.descExpanded) {
             Row({ space: 4 }) {
               AppIcon({ name: 'edit', iconSize: 16, tint: this.pal.primary })
-              Text('编辑笔记')
+              Text($r('app.string.detail_edit_note'))
                 .fontSize(13)
                 .fontColor(this.pal.primary)
             }
@@ -1350,7 +1353,8 @@ export struct MangaDetailPage {
   //    下段 49→156（末行透明占位），相邻行段首尾相接即贯通脊线，
   //    且精确止于首/末分支连线的上下边缘，不出头、无半线宽豁口；
   // 3. 整棵树在弹层内水平居中；
-  // 4. 分支节点点击：记录待跳转条目并收起弹层，待弹层完全收起（onDisappear）再进入条目详情
+  // 4. 节点（中心/关联）点击：记录待跳转 subjectId 并收起弹层，待弹层完全收起
+  //    （onDisappear）再进入条目详情
   @Builder
   bgmGraphSheetBuilder() {
     Column() {
@@ -1380,6 +1384,13 @@ export struct MangaDetailPage {
           }
           .width(64)
           .alignItems(HorizontalAlign.Start)
+          // 中心节点：匹配到自身 Bangumi 条目时点击同样进入条目详情
+          .onClick(() => {
+            if (this.bgmSelfSubjectId > 0) {
+              this.bgmGraphPendingOpen = this.bgmSelfSubjectId;
+              this.showBgmGraphSheet = false;
+            }
+          })
 
           // 主干连线：封面等高容器内垂直居中 → 与各分支连线同处 y=48
           Column() {
@@ -1475,8 +1486,8 @@ export struct MangaDetailPage {
                 .width(64)
                 .alignItems(HorizontalAlign.Start)
                 .onClick(() => {
-                  // 先记录待跳转条目并收起弹层，待 onDisappear（收起完成）再 push
-                  this.bgmGraphPendingOpen = item;
+                  // 先记录待跳转 subjectId 并收起弹层，待 onDisappear（收起完成）再 push
+                  this.bgmGraphPendingOpen = item.id;
                   this.showBgmGraphSheet = false;
                 })
               }
@@ -1500,7 +1511,8 @@ export struct MangaDetailPage {
     .backgroundColor(this.pal.bg)
   }
 
-  // 章节标题栏：标题/排序/筛选入口 + 批量下载 + 全部已读（对齐 Mihon ChapterHeader）
+  // 章节标题栏：章节计数标题（对齐 Mihon ChapterHeader）；
+  // 下载/筛选/更多动作统一收进右上角吸顶栏（topBarOverlay）
   @Builder
   chapterHeaderContent() {
     Column() {
@@ -1513,46 +1525,12 @@ export struct MangaDetailPage {
           .onClick(() => {
             this.showSettingsSheet = true;
           })
-        if (!ContentType.isLocal(this.manga.sourceKey)) {
-          AppIcon({ name: 'download', iconSize: 22, tint: this.pal.text })
-            .padding({ left: 10 })
-            .onClick(() => {
-              this.downloadAction(-1);
-            })
-            .bindMenu(this.bulkDownloadMenu)
-        }
-        AppIcon({
-          name: this.filterActive() ? 'filter_list' : 'sort',
-          iconSize: 22,
-          tint: this.filterActive() ? this.pal.primary : this.pal.text
-        })
-          .padding({ left: 10 })
-          .onClick(() => {
-            this.showSettingsSheet = true;
-          })
-          .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(),
-            SheetPreset.fit(this.windowW, {
-              showClose: false,
-              bg: this.pal.bg
-            }))
-        Text($r('app.string.detail_mark_all_read'))
-          .fontSize(13)
-          .fontColor(this.pal.primary)
-          .padding({
-            left: 10,
-            right: 6,
-            top: 6,
-            bottom: 6
-          })
-          .onClick(() => {
-            this.runSafe((): Promise<void> => this.markAllRead());
-          })
       }
       .width('100%')
 
       // 缺失章节提示（对齐 Mihon MissingChaptersWarning，错误色小字）
       if (this.missingCount > 0) {
-        Text(`缺失 ${this.missingCount} 章`)
+        Text($r('app.string.detail_missing_chapters', this.missingCount))
           .fontSize(12)
           .fontColor(this.pal.badgeRed)
           .maxLines(1)
@@ -1670,6 +1648,48 @@ export struct MangaDetailPage {
             .margin({ left: 8 })
         }
 
+        // 右上角动作区（对齐 Mihon 详情页顶栏）：批量下载 / 筛选排序 / 更多
+        // 图标随吸顶栏渐显换色（白色 → 主题色）；本地源无下载能力，不显示下载入口
+        if (!ContentType.isLocal(this.manga.sourceKey)) {
+          Stack() {
+            AppIcon({ name: 'download', iconSize: 22, tint: '#FFFFFF' })
+              .opacity(1 - this.topBarProgress)
+            AppIcon({ name: 'download', iconSize: 22, tint: this.pal.text })
+              .opacity(this.topBarProgress)
+          }
+          .width(40)
+          .height(40)
+          .onClick(() => {
+            this.downloadAction(-1);
+          })
+          .bindMenu(this.bulkDownloadMenu)
+        }
+        Stack() {
+          AppIcon({
+            name: this.filterActive() ? 'filter_list' : 'sort',
+            iconSize: 22,
+            tint: '#FFFFFF'
+          })
+            .opacity(1 - this.topBarProgress)
+          AppIcon({
+            name: this.filterActive() ? 'filter_list' : 'sort',
+            iconSize: 22,
+            tint: this.filterActive() ? this.pal.primary : this.pal.text
+          })
+            .opacity(this.topBarProgress)
+        }
+        .width(40)
+        .height(40)
+        .onClick(() => {
+          this.showSettingsSheet = true;
+        })
+        // 章节筛选/排序半模态挂载于筛选图标（原章节标题栏入口随图标移入顶栏）
+        .bindSheet($$this.showSettingsSheet, this.chapterSettingsSheetBuilder(),
+          SheetPreset.fit(this.windowW, {
+            showClose: false,
+            bg: this.pal.bg
+          }))
+
         // 右上角更多菜单：更新间隔 / 添加笔记 / 添加到桌面 / 编辑分类
         // 图标随吸顶栏渐显换色（白色 → 主题色），更新间隔弹层挂载于此
         Stack() {
@@ -1683,8 +1703,7 @@ export struct MangaDetailPage {
         .bindMenu(this.detailMenuBuilder)
         .bindSheet($$this.showIntervalSheet, this.intervalSheetBuilder(),
           SheetPreset.fit(this.windowW, {
-            title: '更改更新间隔',
-            detents: ['60%', SheetSize.LARGE],
+            title: $r('app.string.interval_change_title'),
             showClose: true,
             bg: this.pal.bg
           }))
@@ -1701,7 +1720,7 @@ export struct MangaDetailPage {
       // 笔记编辑弹层挂载于吸顶栏行（more_vert 节点已绑定更新间隔弹层，不可复用）
       .bindSheet($$this.showNotesSheet, this.notesSheetBuilder(),
         SheetPreset.fit(this.windowW, {
-          title: this.manga.notes !== '' ? '编辑笔记' : '添加笔记',
+          title: this.manga.notes !== '' ? $r('app.string.detail_edit_note') : $r('app.string.detail_add_note'),
           height: SheetSize.LARGE,
           detents: [SheetSize.MEDIUM, SheetSize.LARGE],
           showClose: true,
@@ -1943,6 +1962,7 @@ export struct MangaDetailPage {
   // 失败/无匹配静默隐藏区块（对齐 animeko 相关条目入口，不阻塞详情主流程）。
   private async loadBgmRelated(): Promise<void> {
     this.bgmRelated = [];
+    this.bgmSelfSubjectId = 0;
     // 依赖本地记录（sourceKey/标题/作者做匹配）：manga 未载入（首次进入 reloadLocal 之前）不加载
     if (this.manga.id !== this.mangaId) {
       return;
@@ -1965,6 +1985,8 @@ export struct MangaDetailPage {
       if (subjectId <= 0) {
         return;
       }
+      // 记录自身 subjectId：关系图中心节点点击进入 Bangumi 条目详情
+      this.bgmSelfSubjectId = subjectId;
       const list: BgmRelatedSubject[] = await BangumiApi.getSubjectRelations(subjectId);
       const filtered: BgmRelatedSubject[] = [];
       for (const item of list) {
@@ -1984,14 +2006,15 @@ export struct MangaDetailPage {
     this.pathStack.pushPathByName('SubjectDetail', params);
   }
 
-  // 关系图弹层完全收起后消费待跳转条目：节点点击时已记录 bgmGraphPendingOpen，
-  // 此处（onDisappear，收起动画已结束、无转场动画竞争）才执行跳转；
-  // Esc/下滑/关闭按钮等其他关闭路径无待跳转项，不触发跳转
+  // 关系图弹层完全收起后消费待跳转条目：节点点击时已记录 bgmGraphPendingOpen
+  // （subjectId，中心/关联节点统一），此处（onDisappear，收起动画已结束、无转场
+  // 动画竞争）才执行跳转；Esc/下滑/关闭按钮等其他关闭路径无待跳转项，不触发跳转
   private consumeBgmGraphPendingOpen(): void {
-    const pending: BgmRelatedSubject | undefined = this.bgmGraphPendingOpen;
+    const pending: number | undefined = this.bgmGraphPendingOpen;
     this.bgmGraphPendingOpen = undefined;
-    if (pending !== undefined) {
-      this.openBgmRelated(pending);
+    if (pending !== undefined && pending > 0) {
+      const params: SubjectDetailParams = { subjectId: pending };
+      this.pathStack.pushPathByName('SubjectDetail', params);
     }
   }
 
@@ -2574,14 +2597,6 @@ export struct MangaDetailPage {
   }
 
   // ----- 多选操作（对齐 Mihon 章节多选底部动作菜单） -----
-
-  private async markAllRead(): Promise<void> {
-    await ChapterRepo.markAllRead(this.mangaId, true);
-    // 手动全部标记已读：按下载设置删除已读章节的下载
-    DownloadRules.onDeleteAllRead(this.mangaId);
-    AppStorage.set(AppKeys.LIB_DIRTY, this.libDirty + 1);
-    Util.toastRes(this.getUIContext(), $r('app.string.detail_all_marked_read'));
-  }
 
   // 返回：'ok' 已入队 | 'failed' 校验/入队失败
   // 视频章节不做入队前流校验：直链与 m3u8 均可下载（m3u8 走 HLS 管线），流类型由下载时判定

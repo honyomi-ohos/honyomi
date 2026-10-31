@@ -25,11 +25,12 @@ export struct BrowseSettingsContent {
 
         // 扩展更新检查（对齐 Mihon Extension updates）：刷新插件仓库索引时
         // 比对已装插件版本，有更新时发本地通知提醒（24 小时内不重复）
-        PrefGroup({ groupTitle: '扩展更新' }) {
+        PrefGroup({ groupTitle: $r('app.string.browse_set_ext_update_group') }) {
           PrefSwitchRow({
-            title: '检查扩展更新',
+            title: $r('app.string.browse_set_check_ext_updates'),
             subtitle: this.extUpdateCount > 0 ?
-              `有 ${this.extUpdateCount} 个扩展可更新` : '刷新插件仓库时检查扩展更新并提醒',
+              $r('app.string.browse_set_ext_updates_available', this.extUpdateCount) :
+              $r('app.string.browse_set_check_ext_updates_sub'),
             initValue: Settings.getExtensionUpdateCheck(),
             apply: (value: boolean): void => {
               Settings.setExtensionUpdateCheck(value);

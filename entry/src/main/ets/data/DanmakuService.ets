@@ -247,6 +247,28 @@ export class DanmakuService {
     SecureStore.removeSync(DanmakuService.TOKEN_ALIAS);
   }
 
+  // ---- 备份导出/导入（配合 BackupService v3 敏感加密段）----
+
+  // 导出 dandanplay 登录凭据原始 JSON（未登录返回空串；进 secure 加密段）
+  static exportAccount(): string {
+    return SecureStore.getSync(DanmakuService.TOKEN_ALIAS);
+  }
+
+  // 导入登录凭据（secure 段解密后调用）：仅接受能解析出 accessToken 的合法载荷
+  static importAccount(raw: string): void {
+    if (raw === '') {
+      return;
+    }
+    try {
+      const parsed: DdpLoginResRaw = JSON.parse(raw) as DdpLoginResRaw;
+      const acct: DdpAccount | undefined = DanmakuService.parseAccount(parsed);
+      if (acct !== undefined && acct.accessToken !== '') {
+        SecureStore.putSync(DanmakuService.TOKEN_ALIAS, raw);
+      }
+    } catch (_e) {
+    }
+  }
+
   // 发送弹幕到当前章节对应剧集（POST /api/v2/comment/{episodeId}，需已登录）
   static async send(chapterId: number, text: string, timeMs: number, mode: number, color: number): Promise<void> {
     const episodeId: number = DanmakuService.episodeIdOf(chapterId);

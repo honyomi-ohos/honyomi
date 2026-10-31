@@ -46,18 +46,29 @@ export struct UpdatesFilterSheet {
     this.excludedCats = this.initExcluded.slice();
   }
 
+  // Tab 项（选中高亮 + 底部指示条，点击切换）：
+  // 不用 Tabs 组件——其在 FIT_CONTENT 半模态内会撑满剩余高度，导致弹层无法贴内容收起
   @Builder
-  tabBarLabel(index: number, label: Resource) {
+  tabLabelItem(index: number, label: Resource) {
     Column() {
       Text(label)
         .fontSize(14)
         .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
         .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
         .maxLines(1)
+      Divider()
+        .width(24)
+        .height(2)
+        .borderRadius(1)
+        .margin({ top: 5 })
+        .color(this.sheetTab === index ? this.pal.primary : Color.Transparent)
     }
-    .height(48)
-    .width('100%')
     .justifyContent(FlexAlign.Center)
+    .layoutWeight(1)
+    .height(48)
+    .onClick(() => {
+      this.sheetTab = index;
+    })
   }
 
   @Builder
@@ -92,7 +103,6 @@ export struct UpdatesFilterSheet {
       .padding({ top: 8, bottom: 16 })
       .alignItems(HorizontalAlign.Start)
     }
-    .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
   }
@@ -139,38 +149,30 @@ export struct UpdatesFilterSheet {
       .padding({ bottom: 24 })
       .alignItems(HorizontalAlign.Start)
     }
-    .height('100%')
     .scrollBar(BarState.Off)
     .align(Alignment.TopStart)
   }
 
   build() {
     Column() {
-      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
+      Row() {
         if (this.showFilterTab) {
-          TabContent() {
-            this.filterTabContent()
-          }
-          .tabBar(this.tabBarLabel(0, $r('app.string.lib_sheet_tab_filter')))
+          this.tabLabelItem(0, $r('app.string.lib_sheet_tab_filter'))
         }
-        TabContent() {
-          this.categoryTabContent()
-        }
-        .tabBar(this.tabBarLabel(this.showFilterTab ? 1 : 0, $r('app.string.categories_title')))
+        this.tabLabelItem(this.showFilterTab ? 1 : 0, $r('app.string.categories_title'))
       }
-      .layoutWeight(1)
-      .barHeight(48)
-      .barWidth('100%')
-      .barMode(BarMode.Fixed)
-      .scrollable(true)
-      .vertical(false)
-      .divider({ strokeWidth: 1, color: this.pal.divider })
-      .onChange((index: number) => {
-        this.sheetTab = index;
-      })
+      .height(48)
+      .width('100%')
+
+      Divider().color(this.pal.divider)
+
+      if (this.showFilterTab && this.sheetTab === 0) {
+        this.filterTabContent()
+      } else {
+        this.categoryTabContent()
+      }
     }
     .width('100%')
-    .height('100%')
     .backgroundColor(this.pal.bg)
   }
 

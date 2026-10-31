@@ -40,7 +40,8 @@ export default class ContinueReadingImpl extends InsightIntentEntryExecutor<stri
     const recent: HistoryItem[] = await HistoryRepo.recent(1);
     if (recent.length === 0) {
       this.openHistory();
-      return ContinueReadingImpl.result(1, '暂无阅读历史');
+      return ContinueReadingImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_continue_reading_no_history').id));
     }
     const last: HistoryItem = recent[0];
     const nextId: number = await ChapterRepo.firstUnread(last.mangaId);
@@ -48,7 +49,8 @@ export default class ContinueReadingImpl extends InsightIntentEntryExecutor<stri
     const chapterId: number = nextId > 0 ? nextId : last.chapterId;
     if (chapterId <= 0) {
       this.openHistory();
-      return ContinueReadingImpl.result(1, '暂无可读章节');
+      return ContinueReadingImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_continue_reading_no_chapter').id));
     }
     const payload: Record<string, string | number> = {
       'target': 'reader',
@@ -57,7 +59,8 @@ export default class ContinueReadingImpl extends InsightIntentEntryExecutor<stri
       'contentType': ''
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-    return ContinueReadingImpl.result(0, `继续阅读：${last.mangaTitle}`);
+    return ContinueReadingImpl.result(0,
+      context.resourceManager.getStringSync($r('app.string.intent_continue_reading_opened').id, last.mangaTitle));
   }
 
   private openHistory(): void {

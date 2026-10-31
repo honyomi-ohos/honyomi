@@ -529,10 +529,6 @@
       "value": "Đã gỡ khỏi giá sách"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Đã đánh dấu tất cả chương là đã đọc"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Đã đưa vào hàng đợi tải"
     },
@@ -571,10 +567,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Chương (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Đánh dấu đã đọc hết"
     },
     {
       "name": "detail_download",
@@ -3687,6 +3679,1514 @@
     {
       "name": "subject_infobox_duration",
       "value": "Thời lượng"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Bộ nhớ riêng của ứng dụng"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Bộ nhớ trong"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Không bao giờ"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Đã hủy xuất"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Xuất thất bại"
+    },
+    {
+      "name": "module_desc",
+      "value": "Mô tả mô-đun"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Mô tả"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Điểm nền tảng"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Khoảng cách trang"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Cuộn liên tục"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Hai trang"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Tự động (ngang)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Luôn luôn"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Tắt"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Bìa riêng một trang"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Phím âm lượng lật trang"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Giữ màn hình sáng"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Hiện tên chương và số trang"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Tải trước các trang"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Bỏ qua trang trùng"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Xóa trang trống"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Trải nghiệm đọc"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Xử lý trang"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Cuộn dọc liên tục"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Tìm trong lịch sử"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Tác phẩm liên quan"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Loạt liên quan"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Chương"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Giấy"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Tự lật trang"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Tắt"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d giây"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Đã bật tự lật trang"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Đã tắt tự lật trang"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Tự lật trang không dùng được ở chế độ Webtoon"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Thiết bị này không hỗ trợ hình trong hình"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Kho tiện ích mở rộng"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Chưa có kho tiện ích mở rộng. Nhấn + để thêm."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Thêm kho"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "URL chỉ mục kho"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Nhập URL http(s) hợp lệ"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Kho này đã được thêm"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Đang thêm…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Đã thêm kho"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Thêm kho thất bại: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Xóa kho"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Xóa kho %s?\n%s\n\nTiện ích mở rộng đã cài sẽ được giữ lại."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Đã xóa kho"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Đã sao chép vào bảng tạm"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Đang làm mới…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Đã làm mới kho"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Làm mới thất bại: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Tiện ích mở rộng không tin cậy"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Tiện ích mở rộng độc hại có thể đọc thông tin đăng nhập đã lưu hoặc chạy mã tùy ý.\n\nKhi tin cậy tiện ích này, bạn chấp nhận các rủi ro đó."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Tin cậy"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Không tin cậy"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Đã tin cậy %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Bản sao lưu đầy đủ"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Chỉ giá sách và kho tiện ích mở rộng"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Bao gồm dữ liệu nhạy cảm"
+    },
+    {
+      "name": "backup_password",
+      "value": "Mật khẩu"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Xác nhận mật khẩu"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Mật khẩu phải có ít nhất 6 ký tự"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Mật khẩu không khớp"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Cần mật khẩu để bao gồm dữ liệu nhạy cảm"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Bản sao lưu này chứa dữ liệu nhạy cảm đã mã hóa. Nhập mật khẩu bản sao lưu để khôi phục."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Mật khẩu không đúng"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (bình luận video)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Danmaku khi phát video được bật theo mặc định và có thể tắt bất cứ lúc nào trong cài đặt trình phát hoặc khi đang phát. Khi bật, tên tác phẩm đang phát được gửi tới dịch vụ danmaku bên thứ ba dandanplay (api.dandanplay.net) để khớp tập và tải kho bình luận. Không gửi định danh tài khoản hay thiết bị, và bình luận đã tải chỉ nằm trong bộ nhớ. Dịch vụ chịu sự điều chỉnh của chính sách quyền riêng tư riêng."
+    },
+    {
+      "name": "help_title",
+      "value": "Trợ giúp"
+    },
+    {
+      "name": "help_intro",
+      "value": "Sổ tay Honyomi: từ nhập nội dung và cài tiện ích mở rộng đến đọc, nghe, bản sao lưu và quyền riêng tư — giải thích các tính năng hàng ngày, kèm mẹo xử lý sự cố."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Bắt đầu"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Thêm tệp nội bộ (CBZ, EPUB và định dạng khác) qua nguồn Nội bộ hoặc bằng cách mở tệp trực tiếp. Với nội dung trực tuyến, hãy thêm kho tiện ích mở rộng trong Duyệt > Tiện ích mở rộng, cài tiện ích, rồi duyệt và tìm nguồn của chúng. Nhấn Thêm vào giá sách trên trang tác phẩm để giữ trên giá sách, và nhấn giữ mục trong giá sách để quản lý hàng loạt. Lần đầu dùng, hãy chỉnh chủ đề, màn hình khởi động và tùy chọn đọc trong Cài đặt."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Tiện ích mở rộng"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Nguồn trực tuyến do tiện ích mở rộng cung cấp, quản lý trong Duyệt > Tiện ích mở rộng: thêm kho, rồi cài, cập nhật hoặc gỡ tiện ích. Kéo danh sách xuống để kiểm tra bản cập nhật. Chỉ thêm kho bạn tin cậy — khi một kho ngừng hoạt động, tiện ích của kho đó không thể cập nhật hoặc cài lại."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Đọc và nghe"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "Trình đọc có chế độ theo trang, dọc và Webtoon, chỉnh hướng, nền và độ sáng, ghi nhớ theo từng tác phẩm. Tiểu thuyết có thể đọc thành tiếng với tốc độ điều chỉnh, hẹn giờ ngủ và phát nền; video phát trực tuyến kèm danmaku. Tiến độ đọc được ghi tự động."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Quản lý tải xuống"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Xếp hàng chương từ trang tác phẩm hoặc danh sách chương để đọc ngoại tuyến. Xem tiến độ, tạm dừng hoặc xóa tác vụ trong Thêm > Hàng chờ tải xuống; Cài đặt > Tải xuống có tải chỉ qua Wi-Fi, tự tải chương mới và tự xóa chương đã đọc."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Theo dõi và đồng bộ"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Kết nối AniList, MyAnimeList, Bangumi, Kitsu hoặc Shikimori từ mục Theo dõi trên trang tác phẩm. Sau khi liên kết, trạng thái và tiến độ đọc được đồng bộ tự động; mã thông báo chỉ lưu trên thiết bị của bạn và bạn có thể bỏ liên kết bất cứ lúc nào."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Chuyển nguồn"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Khi một tác phẩm chuyển sang nguồn khác cùng loại, hãy mở tác phẩm và chọn Chuyển từ menu. Honyomi khớp nguồn đích theo tiêu đề hoặc tác giả và chuyển tiếp tiến độ đọc cùng bản đã tải, để bạn tiếp tục liền mạch từ nguồn mới."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Cập nhật và sắp tới"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Thẻ Cập nhật kiểm tra chương mới trong giá sách — kéo xuống để làm mới, và tác phẩm có chương mới được đưa lên trước. Trang Sắp tới ước tính lần cập nhật kế tiếp của từng tác phẩm theo nhịp phát hành trước đây; ước tính chỉ mang tính tham khảo."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Dữ liệu và bộ nhớ"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Giá sách, tiến độ và cài đặt chỉ lưu trên thiết bị của bạn và không được tải lên. Dùng Thêm > Dữ liệu và bộ nhớ để sao lưu và khôi phục, xem mức dùng bộ nhớ, dọn bộ nhớ chương đệm và lên lịch sao lưu tự động. Hãy sao lưu thủ công trước khi đổi thiết bị hoặc cài lại."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Quyền riêng tư và bảo mật"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi ưu tiên dữ liệu nội bộ và không thu thập dữ liệu cá nhân. Cài đặt > Quyền riêng tư có khóa ứng dụng bằng sinh trắc, ẩn nội dung thông báo và chặn ảnh chụp màn hình; chế độ ẩn danh ở trang Thêm tạm dừng lịch sử đọc. Nguồn NSFW được ẩn cho đến khi bật trong Cài đặt > Duyệt."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Xử lý sự cố"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Nếu trang không tải được, hãy kiểm tra mạng hoặc đổi nhà cung cấp DNS-over-HTTPS trong Cài đặt > Nâng cao, và hoàn tất lời nhắc xác minh của trang khi nó xuất hiện. Nếu một nguồn hoạt động sai, kéo để làm mới danh sách tiện ích mở rộng nhằm kiểm tra bản cập nhật, hoặc cài lại tiện ích. Với sự cố dai dẳng, hãy sao lưu trong Dữ liệu và bộ nhớ trước, rồi dọn bộ nhớ chương đệm."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Giấy"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Đang dịch… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Dịch xong"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Dịch thất bại"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Đã hủy dịch"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Ngôn ngữ nội dung trùng ngôn ngữ đích, không cần dịch"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Dịch vụ nhận dạng chữ không dùng được. Hãy thử lại sau (có thể không hỗ trợ trên trình giả lập)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Dịch hình ảnh"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Tự nhận dạng và dịch mỗi trang, rồi phủ bản dịch lên"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Dịch chương"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Tự dịch chương này và hiện kết quả khi bật"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Lưu ảnh trang"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Sao chép ảnh"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Chia sẻ trang"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Xem bản gốc"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Đã lưu ảnh trang"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Lưu thất bại"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Lưu ảnh vào thư viện ảnh"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Đã sao chép ảnh"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Sao chép thất bại"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Chia sẻ thất bại"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Giọng"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Nữ (mặc định)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Nam"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Nếu giọng nam không dùng được (chưa tải xuống), hệ thống sẽ dùng giọng nữ mặc định."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Giữ màn hình sáng"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Phím âm lượng lật trang"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Căn đều"
+    },
+    {
+      "name": "novel_search",
+      "value": "Tìm trong chương"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Tìm chữ trong chương này"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Không có kết quả khớp"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Dấu trang"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Đánh dấu vị trí hiện tại"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Đã thêm dấu trang"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Chưa có dấu trang"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Đã bật đọc tự động"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Đã đến cuối chương cuối"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Độ sáng"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Tua tới"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Đã tiếp tục từ vị trí trước"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Từ đầu"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Không thể tải luồng trực tiếp"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Không hỗ trợ cách mã hóa luồng video này"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "Tải xuống BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Chương này là torrent BitTorrent. Chọn cách tải xuống"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Dùng ứng dụng hệ thống"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Công cụ tích hợp"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "Tải trong ứng dụng, hỗ trợ phát trong khi tải"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Chuyển liên kết magnet/torrent sang ứng dụng khác (ví dụ ứng dụng torrent)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Khoảng %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Lựa chọn được ghi nhớ. Bạn có thể đổi sau trong Cài đặt > Tải xuống"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Đã chuyển cho ứng dụng hệ thống"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Không có ứng dụng xử lý được torrent này"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Đang tải xuống… phát sẽ tự bắt đầu khi đủ dữ liệu"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "Đã bỏ qua %1$d chương torrent"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "Dịch vụ BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Tắt để dừng công cụ BT; công cụ khởi động lại khi bắt đầu tải BT"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Dịch vụ BT đang tắt. Hãy bật trong Cài đặt - BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Công cụ tải xuống"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Hỏi mỗi lần"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Công cụ tích hợp"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "Ứng dụng hệ thống"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "Chưa cài thành phần công cụ BT"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Cần khi tải torrent bằng công cụ tích hợp"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Cài"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Phát trong khi tải"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Bắt đầu phát khi torrent vẫn đang tải (tải tuần tự)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Giới hạn tốc độ"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Giới hạn tốc độ tải xuống"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Giới hạn tốc độ tải lên"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Không giới hạn"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Tracker bổ sung"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Thêm vào mọi lần tải torrent"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Mỗi dòng một URL tracker"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Không"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d tracker"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Chia sẻ (seed)"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Giới hạn tỷ lệ chia sẻ"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Giới hạn tải lên trên mạng tính cước"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Giới hạn tải lên ở 10 KB/s trên mạng di động để tiết kiệm dữ liệu"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Bộ lọc peer"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Chặn peer theo địa chỉ IP hoặc dải"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Bộ lọc peer"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Mỗi dòng một quy tắc: một IP (192.168.1.1) hoặc một dải (10.0.0.0-10.255.255.255). Để trống để tắt"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Quy tắc không hợp lệ ở dòng %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Tắt"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d quy tắc"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Máy chủ nhân bản Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Đã lưu máy chủ nhân bản Bangumi"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "Máy chủ nhân bản API, ví dụ https://your-proxy.example.com, để trống = mặc định api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Địa chỉ phải bắt đầu bằng https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Máy chủ nhân bản ảnh, ví dụ https://your-proxy.example.com, để trống = mặc định lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Địa chỉ phải bắt đầu bằng https://"
+    },
+    {
+      "name": "trans_title",
+      "value": "Dịch"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Bật dịch"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Dịch chữ trong trình đọc qua các công cụ đã cấu hình"
+    },
+    {
+      "name": "trans_test",
+      "value": "Thử dịch"
+    },
+    {
+      "name": "trans_target",
+      "value": "Ngôn ngữ đích"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Đang dịch…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Mọi công cụ đều dịch thất bại"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Thứ tự ưu tiên công cụ"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Nhấn giữ và kéo để sắp xếp; nhấn một công cụ để cấu hình khóa"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Sẵn sàng"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Chưa cấu hình"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Không cần thiết lập"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Đã đặt"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu Dịch"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Khóa bí mật"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "Khóa ứng dụng"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "Bí mật ứng dụng"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "Mã API"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Dịch"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "Khóa API"
+    },
+    {
+      "name": "action_edit",
+      "value": "Sửa"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Vẫn thêm"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "Bạn chưa có danh mục nào."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Có thể trùng"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "Giá sách của bạn có mục tên tương tự.\n\nChọn một mục để chuyển hoặc vẫn thêm."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d chương"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Thêm vào giá sách?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Xóa chương đã tải xuống?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Chương đã tải của mục này sẽ bị xóa."
+    },
+    {
+      "name": "default_category",
+      "value": "Danh mục mặc định"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Luôn hỏi"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Tự động (theo loại nội dung)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Giao diện"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Điều hướng"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Chung"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "Nháy làm mới mực điện tử"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Bỏ qua chương đã đọc"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Bỏ qua chương đã lọc"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Bỏ qua chương trùng"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Trang chuyển chương"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Nháy khi đổi trang"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Màu nháy"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Trắng"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Đen"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Trắng rồi đen"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Thời lượng nháy (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Nháy mỗi N trang"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Cắt viền (chế độ theo trang)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Cắt viền (Webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Chế độ hòa trộn bộ lọc màu"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Không"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Nhân"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Sáng màn hình"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Phủ"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Làm tối"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Làm sáng"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Tắt thu nhỏ (Webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Vị trí bắt đầu thu phóng"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Tự động"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Trái"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Phải"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Giữa"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "Hình chữ L"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kiểu Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "Khối 3D"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Xếp chồng"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Mờ dần"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "Lật 3D"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Hình cầu"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Nhấn để tiếp tục"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Đang bỏ qua %d chương, do nguồn thiếu chúng hoặc chúng đã bị lọc ra"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Đặt điểm bỏ qua trong bảng cài đặt trình phát"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Phụ đề"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Tải tệp phụ đề .srt bên ngoài"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Cỡ chữ phụ đề"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Bộ lọc danmaku"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Bình luận khớp bất kỳ quy tắc regex nào trong số này sẽ bị ẩn"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Thêm"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Nhập quy tắc regex, ví dụ \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Quy tắc không hợp lệ hoặc bị trùng"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Chưa có quy tắc lọc"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Đã áp dụng bộ lọc"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Đã lưu điểm bỏ qua"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Định dạng thời gian không hợp lệ"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Đã tải phụ đề"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Tệp phụ đề không hợp lệ"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Đọc tệp thất bại"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Đăng nhập thất bại: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "Không có tập khớp trong kho danmaku"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Hãy đăng nhập trước"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Chương này không có tập khớp"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Đã gửi"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Gửi thất bại: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Mục liên quan"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Tiền truyện"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Hậu truyện"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Ngoại truyện"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Đặc biệt"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Cốt truyện chính"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Tuyển tập"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Đổi khoảng cập nhật"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Theo chung"
+    },
+    {
+      "name": "interval_never",
+      "value": "Không bao giờ"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Mỗi giờ"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Mỗi 6 giờ"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Mỗi 12 giờ"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Mỗi ngày"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Mỗi 2 ngày"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Mỗi 3 ngày"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Mỗi tuần"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Mỗi 2 tuần"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Mỗi tháng"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Mỗi %d giờ"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Cập nhật chung"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Chỉ cập nhật khi dùng Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Bỏ qua cập nhật giá sách trên mạng không phải Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Chỉ cập nhật khi đang sạc"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Bỏ qua cập nhật giá sách khi không sạc"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Thao tác vuốt"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Thao tác đầu"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Thao tác cuối"
+    },
+    {
+      "name": "action_none",
+      "value": "Không"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Khoảng cập nhật"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Ghi chú"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Thêm ghi chú"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Sửa ghi chú"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Thiếu %d chương"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Duyệt ẩn danh"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Không ghi lịch sử và thống kê khi duyệt nguồn của tiện ích này"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Đang duyệt ẩn danh · Không ghi lịch sử đọc và thống kê"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Cập nhật tiện ích mở rộng"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Kiểm tra cập nhật tiện ích mở rộng"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Kiểm tra cập nhật khi làm mới kho tiện ích và thông báo"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "Có %d tiện ích mở rộng có thể cập nhật"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Email / tên người dùng"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (tạo trong cài đặt máy chủ Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Tên người dùng (tùy chọn, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Mật khẩu (tùy chọn, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Viết ghi chú về mục này…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Cập nhật tiện ích mở rộng"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d tiện ích mở rộng có phiên bản mới; hãy cập nhật ở trang tiện ích"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Đang bật chỉ cập nhật khi dùng Wi-Fi và mạng hiện tại không đủ điều kiện, đã bỏ qua lần cập nhật này"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Đang bật chỉ cập nhật khi sạc, hãy cắm sạc để cập nhật"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Chưa có lịch sử đọc"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Không có chương đọc được"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Đọc tiếp: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Đang nghe tiếp"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Không có tiểu thuyết để nghe"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Bắt đầu phát thất bại"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Nghe tiếp: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "Không thấy \"%s\" trong giá sách, đã mở tìm kiếm chung"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "Đã thấy \"%1$s\" trong giá sách nhưng không có chương khớp \"%2$s\", đã mở chi tiết tác phẩm"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Đã mở: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Đã mở: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Đã thêm vào giá sách: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Đã bỏ qua làm mới giá sách: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Đã bắt đầu làm mới giá sách"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Không hiểu lệnh tua: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Xong: %s"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS qua HTTPS"
+    },
+    {
+      "name": "tts_sleep_chapters_short",
+      "value": "%1$d chương"
     }
   ]
 }

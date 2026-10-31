@@ -81,6 +81,11 @@
       "pageSourceFile": "src/main/ets/pages/UpcomingPage.ets"
     },
     {
+      "buildFunction": "ScheduleBuilder",
+      "name": "Schedule",
+      "pageSourceFile": "src/main/ets/pages/SchedulePage.ets"
+    },
+    {
       "buildFunction": "SettingsBuilder",
       "name": "Settings",
       "pageSourceFile": "src/main/ets/pages/settings/SettingsPage.ets"

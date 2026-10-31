@@ -5,6 +5,7 @@ import { i18n } from '@kit.LocalizationKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Theme, ThemePalette } from './Theme';
 import { AppKeys } from './AppKeys';
+import { BackupPolicyRegistry, NoBackup, NoBackupPrefix, Sensitive } from './BackupPolicy';
 
 const DOMAIN = 0x0000;
 const TAG = 'Settings';
@@ -225,6 +226,7 @@ export class Settings {
   }
 
   // 小说章内阅读位置书签（按漫画持久化为 JSON，模型见 common/NovelBookmarks）
+  @NoBackupPrefix('novelBm_')
   static getNovelBookmarkJson(mangaId: number): string {
     return Settings.getStr(`novelBm_${mangaId}`, '[]');
   }
@@ -312,6 +314,7 @@ export class Settings {
     Settings.setBool('trackAutoUpdate', v);
   }
 
+  @NoBackup('lastRefreshAt')
   static getLastRefreshAt(): number {
     return Settings.getNum('lastRefreshAt', 0);
   }
@@ -320,17 +323,11 @@ export class Settings {
     Settings.setNum('lastRefreshAt', time);
   }
 
-  static getPluginRepoUrl(): string {
-    return Settings.getStr('pluginRepoUrl', '');
-  }
-
-  static setPluginRepoUrl(url: string): void {
-    Settings.setStr('pluginRepoUrl', url);
-  }
-
   // ---- 插件仓库（多仓库管理）----
 
   // 多仓库列表（JSON 数组 [{url, name, website}]）；
+  // 备份排除：与顶层 extensionRepos 区段双写冗余，恢复统一走 extensionRepos 路径
+  @NoBackup('pluginStores')
   static getPluginStores(): PluginStoreRecord[] {
     const raw = Settings.getStr('pluginStores', '');
     if (raw !== '') {
@@ -351,13 +348,6 @@ export class Settings {
         }
       } catch (_e) {
       }
-    }
-    // 旧版单仓库地址迁移：并入多仓库列表（展示名暂取主机名）
-    const legacy = Settings.getPluginRepoUrl();
-    if (legacy !== '') {
-      const list: PluginStoreRecord[] = [{ url: legacy, name: Settings.urlHostOf(legacy), website: '' }];
-      Settings.setPluginStores(list);
-      return list;
     }
     return [];
   }
@@ -406,7 +396,9 @@ export class Settings {
   // ---- 受信任插件（对齐 Mihon trustedExtensions）----
 
   // 受信任插件记录（JSON string[]，元素 "key:versionCode:contentHash"）：
-  // 插件激活（拉引擎执行插件代码）前必须命中记录；版本升级或内容变化后需重新确认信任
+  // 插件激活（拉引擎执行插件代码）前必须命中记录；版本升级或内容变化后需重新确认信任。
+  // 备份排除：导出信任状态等于在备份中静默授权执行任意插件代码，必须由用户在新设备重新确认
+  @NoBackup('trustedPlugins')
   static getTrustedPlugins(): string[] {
     const raw = Settings.getStr('trustedPlugins', '[]');
     try {
@@ -427,18 +419,6 @@ export class Settings {
 
   static setTrustedPlugins(list: string[]): void {
     Settings.setStr('trustedPlugins', JSON.stringify(list));
-  }
-
-  // 信任记录键是否存在（首次引入信任门禁时对既有安装做一次性 grandfather 迁移的判定标记）
-  static hasTrustedPlugins(): boolean {
-    if (Settings.store === undefined) {
-      return false;
-    }
-    try {
-      return Settings.store.hasSync('trustedPlugins');
-    } catch (_e) {
-      return false;
-    }
   }
 
   static isPluginTrusted(key: string, versionCode: number, contentHash: string): boolean {
@@ -484,7 +464,8 @@ export class Settings {
     Settings.setNum('backupInterval', v);
   }
 
-  // 上次自动备份时间戳（毫秒）
+  // 上次自动备份时间戳（毫秒）。备份排除：设备本地易变时间戳
+  @NoBackup('lastAutoBackupTimestamp')
   static getLastAutoBackupTimestamp(): number {
     return Settings.getNum('lastAutoBackupTimestamp', 0);
   }
@@ -523,6 +504,8 @@ export class Settings {
   }
 
   // ---- 全局标志 ----
+  // 备份排除：仅下载为易变阅读状态（非持久偏好），新设备应回默认关闭
+  @NoBackup('downloadedOnly')
   static getDownloadedOnly(): boolean {
     return Settings.getBool('downloadedOnly', false);
   }
@@ -799,7 +782,9 @@ export class Settings {
     Settings.setBool('hideNotificationContent', v);
   }
 
-  // 上次切后台时间戳：进程存活期间内存判断 + 持久化兜底（进程被杀后重启判定空闲锁定）
+  // 上次切后台时间戳：进程存活期间内存判断 + 持久化兜底（进程被杀后重启判定空闲锁定）。
+  // 备份排除：设备本地易变时间戳
+  @NoBackup('lastAppClosedAt')
   static getLastAppClosedAt(): number {
     return Settings.getNum('lastAppClosedAt', 0);
   }
@@ -963,6 +948,8 @@ export class Settings {
   }
 
   // ---- 新手引导（对齐 Mihon shownOnboarding）----
+  // 备份排除：引导标记为设备本地一次性状态，新设备应重新展示引导
+  @NoBackup('shownOnboarding')
   static getShownOnboarding(): boolean {
     return Settings.getBool('shownOnboarding', false);
   }
@@ -1010,7 +997,9 @@ export class Settings {
     Settings.setBool('librarySortAsc', v);
   }
 
-  // 值为 'ignore'（忽略）| 'include'（包含）| 'exclude'（排除）
+  // 值为 'ignore'（忽略）| 'include'（包含）| 'exclude'（排除）。
+  // 备份排除：书架筛选器当前状态为易变 UI 状态非偏好
+  @NoBackupPrefix('libFilter:')
   static getLibraryTriState(key: string): string {
     return Settings.getStr('libFilter:' + key, 'ignore');
   }
@@ -1304,6 +1293,8 @@ export class Settings {
     Settings.setNum('readerAutoPageSec', v);
   }
 
+  // 备份排除：按设备本地 manga id 拼键，跨设备 id 不一致无法映射
+  @NoBackupPrefix('viewer_mode:')
   static getViewerMode(mangaId: string): string {
     return Settings.getStr('viewer_mode:' + mangaId, '');
   }
@@ -1445,7 +1436,8 @@ export class Settings {
     Settings.setNum('videoScaleMode', v);
   }
 
-  // 播放器软件音量（0.0-1.0，键盘 ↑↓ 步进调节，M 静音）
+  // 播放器软件音量（0.0-1.0，键盘 ↑↓ 步进调节，M 静音）。备份排除：播放器运行时状态
+  @NoBackup('videoVolume')
   static getVideoVolume(): number {
     const n = Settings.getNum('videoVolume', 1.0);
     return n >= 0 && n <= 1 ? n : 1.0;
@@ -1455,7 +1447,8 @@ export class Settings {
     Settings.setNum('videoVolume', v);
   }
 
-  // 播放器亮度（0=跟随系统，(0,1]=固定亮度；左半屏上下滑手势调节）
+  // 播放器亮度（0=跟随系统，(0,1]=固定亮度；左半屏上下滑手势调节）。备份排除：播放器运行时状态
+  @NoBackup('videoBrightness')
   static getVideoBrightness(): number {
     const n = Settings.getNum('videoBrightness', 0);
     return n >= 0 && n <= 1 ? n : 0;
@@ -1549,7 +1542,9 @@ export class Settings {
     Settings.setBool('videoSkipOpEd', v);
   }
 
-  // 按漫画存储跳过区间（秒，-1 未设置）：返回 [opS, opE, edS, edE]
+  // 按漫画存储跳过区间（秒，-1 未设置）：返回 [opS, opE, edS, edE]。
+  // 备份排除：按设备本地 manga id 拼键，跨设备 id 不一致无法映射
+  @NoBackupPrefix('videoSkipRange.')
   static getVideoSkipRanges(mangaId: number): number[] {
     const raw: string = Settings.getStr(`videoSkipRange.${mangaId}`, '');
     if (raw === '') {
@@ -1597,6 +1592,8 @@ export class Settings {
   }
 
   // ---- 本地源文件夹（Mihon local source：固定一个用户文件夹，同步进沙箱扫描）----
+  // 备份排除：设备级 URI 授权跨设备无效，需在新设备重新选取授权
+  @NoBackup('localFolderUri')
   static getLocalFolderUri(): string {
     return Settings.getStr('localFolderUri', '');
   }
@@ -1605,6 +1602,8 @@ export class Settings {
     Settings.setStr('localFolderUri', v);
   }
 
+  // 备份排除：与 localFolderUri 配套的设备本地显示名
+  @NoBackup('localFolderName')
   static getLocalFolderName(): string {
     return Settings.getStr('localFolderName', '');
   }
@@ -1613,6 +1612,8 @@ export class Settings {
     Settings.setStr('localFolderName', v);
   }
 
+  // 备份排除：设备本地易变时间戳
+  @NoBackup('lastLocalSyncAt')
   static getLastLocalSyncAt(): number {
     return Settings.getNum('lastLocalSyncAt', 0);
   }
@@ -1640,7 +1641,8 @@ export class Settings {
   }
 
   // ---- 浏览：最近使用的源（图源 Tab 顶部“最近使用”分组）----
-
+  // 备份排除：最近源浏览痕迹为易变状态，跨设备无意义
+  @NoBackup('recentSources')
   static getRecentSources(): string {
     return Settings.getStr('recentSources', '[]');
   }
@@ -1915,7 +1917,8 @@ export class Settings {
     Settings.setBool('extensionUpdateCheck', v);
   }
 
-  // 上次扩展更新提醒时间戳（同批更新只提醒一次）
+  // 上次扩展更新提醒时间戳（同批更新只提醒一次）。备份排除：设备本地易变时间戳
+  @NoBackup('lastExtUpdateNotifiedAt')
   static getLastExtUpdateNotifiedAt(): number {
     return Settings.getNum('lastExtUpdateNotifiedAt', 0);
   }
@@ -2035,7 +2038,8 @@ export class Settings {
     Settings.setNum('readerFlashEveryPages', v);
   }
 
-  // 百度翻译开放平台凭据（appid + 密钥）
+  // 百度翻译开放平台凭据（appid + 密钥）。敏感凭据：仅进备份加密 secure 段
+  @Sensitive('transBaiduAppid')
   static getTransBaiduAppid(): string {
     return Settings.getStr('transBaiduAppid', '');
   }
@@ -2044,6 +2048,7 @@ export class Settings {
     Settings.setStr('transBaiduAppid', v);
   }
 
+  @Sensitive('transBaiduKey')
   static getTransBaiduKey(): string {
     return Settings.getStr('transBaiduKey', '');
   }
@@ -2053,6 +2058,7 @@ export class Settings {
   }
 
   // 有道智云凭据（应用ID + 应用密钥）
+  @Sensitive('transYoudaoKey')
   static getTransYoudaoKey(): string {
     return Settings.getStr('transYoudaoKey', '');
   }
@@ -2061,6 +2067,7 @@ export class Settings {
     Settings.setStr('transYoudaoKey', v);
   }
 
+  @Sensitive('transYoudaoSecret')
   static getTransYoudaoSecret(): string {
     return Settings.getStr('transYoudaoSecret', '');
   }
@@ -2070,6 +2077,7 @@ export class Settings {
   }
 
   // 彩云小译令牌
+  @Sensitive('transCaiyunToken')
   static getTransCaiyunToken(): string {
     return Settings.getStr('transCaiyunToken', '');
   }
@@ -2079,6 +2087,7 @@ export class Settings {
   }
 
   // 腾讯云机器翻译凭据（SecretId + SecretKey）
+  @Sensitive('transTencentSecretId')
   static getTransTencentSecretId(): string {
     return Settings.getStr('transTencentSecretId', '');
   }
@@ -2087,6 +2096,7 @@ export class Settings {
     Settings.setStr('transTencentSecretId', v);
   }
 
+  @Sensitive('transTencentSecretKey')
   static getTransTencentSecretKey(): string {
     return Settings.getStr('transTencentSecretKey', '');
   }
@@ -2096,6 +2106,7 @@ export class Settings {
   }
 
   // 火山引擎机器翻译凭据（AccessKeyID + SecretAccessKey）
+  @Sensitive('transVolcanoAccessKey')
   static getTransVolcanoAccessKey(): string {
     return Settings.getStr('transVolcanoAccessKey', '');
   }
@@ -2104,6 +2115,7 @@ export class Settings {
     Settings.setStr('transVolcanoAccessKey', v);
   }
 
+  @Sensitive('transVolcanoSecretKey')
   static getTransVolcanoSecretKey(): string {
     return Settings.getStr('transVolcanoSecretKey', '');
   }
@@ -2113,12 +2125,97 @@ export class Settings {
   }
 
   // 小牛翻译 API 密钥
+  @Sensitive('transNiutransApikey')
   static getTransNiutransApikey(): string {
     return Settings.getStr('transNiutransApikey', '');
   }
 
   static setTransNiutransApikey(v: string): void {
     Settings.setStr('transNiutransApikey', v);
+  }
+
+  // ---- 备份导出/导入（设置批量迁移，配合 BackupService v3 完整备份）----
+
+  // 明文设置导出：过滤敏感/易变/设备本地键，仅保留可 JSON 序列化的原始类型值。
+  // 备份策略（敏感/排除）由各设置访问器上的 @Sensitive/@NoBackup/@NoBackupPrefix 装饰器
+  // 声明并登记进 BackupPolicyRegistry；装饰器未生效时 fail-closed 拒绝导出，
+  // 宁可备份缺设置段，也不导出插件信任状态或敏感键明文。
+  static exportAll(): Record<string, Object> {
+    const out: Record<string, Object> = {};
+    if (Settings.store === undefined) {
+      return out;
+    }
+    if (!BackupPolicyRegistry.decoratorsApplied()) {
+      hilog.error(0x0000, TAG, 'backup policy decorators missing, refuse settings export');
+      return out;
+    }
+    try {
+      const all: Record<string, Object> = Settings.store.getAllSync() as Record<string, Object>;
+      const keys = Object.keys(all);
+      for (const key of keys) {
+        if (BackupPolicyRegistry.isSensitive(key) || BackupPolicyRegistry.isExcluded(key)) {
+          continue;
+        }
+        const v: Object | undefined = all[key];
+        if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+          out[key] = v;
+        }
+      }
+    } catch (_e) {
+    }
+    return out;
+  }
+
+  // 明文设置导入：合并覆盖（不删除本地多余键）；敏感/排除键拒绝（敏感键仅经 secure 段恢复）。
+  // 装饰器未生效时 fail-closed 拒绝导入，防止伪造备份经 settings 段注入 trustedPlugins 等排除键
+  static importAll(map: Record<string, Object>): void {
+    if (Settings.store === undefined) {
+      return;
+    }
+    if (!BackupPolicyRegistry.decoratorsApplied()) {
+      hilog.error(0x0000, TAG, 'backup policy decorators missing, refuse settings import');
+      return;
+    }
+    const keys = Object.keys(map);
+    for (const key of keys) {
+      if (BackupPolicyRegistry.isSensitive(key) || BackupPolicyRegistry.isExcluded(key)) {
+        continue;
+      }
+      const v: Object | undefined = map[key];
+      if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+        try {
+          Settings.store.putSync(key, v);
+        } catch (_e) {
+        }
+      }
+    }
+    Settings.scheduleFlush();
+  }
+
+  // 敏感设置导出（进 secure 加密段）：仅收录装饰器登记的非空值
+  static exportSensitive(): Record<string, string> {
+    const out: Record<string, string> = {};
+    for (const key of BackupPolicyRegistry.sensitiveKeyList()) {
+      const v: string = Settings.getStr(key, '');
+      if (v !== '') {
+        out[key] = v;
+      }
+    }
+    return out;
+  }
+
+  // 敏感设置导入（secure 段解密后调用）：仅接受装饰器登记的键
+  static importSensitive(map: Record<string, string>): void {
+    const keys = Object.keys(map);
+    for (const key of keys) {
+      if (!BackupPolicyRegistry.isSensitive(key)) {
+        continue;
+      }
+      const v: Object | undefined = map[key];
+      if (typeof v === 'string') {
+        Settings.setStr(key, v);
+      }
+    }
   }
 
   // 取值后 typeof 校验：跨版本类型变更时回退默认值，避免静默返回错误类型

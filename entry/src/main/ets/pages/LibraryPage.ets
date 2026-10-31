@@ -294,6 +294,8 @@ export struct LibraryPage {
   // NSFW 源显示开关：关闭时隐藏 NSFW 插件源的作品；插件注册完成后（pluginsDirty）重算过滤
   @StorageProp('showNsfw') @Watch('onDataInput') showNsfw: boolean = false;
   @StorageProp('pluginsDirty') @Watch('onDataInput') pluginsDirty: number = 0;
+  // 插件加载完成标志（见 AppKeys.PLUGINS_LOADED）：NSFW 过滤区分未加载完与未安装
+  @StorageProp('pluginsLoaded') pluginsLoaded: boolean = false;
   // 弹层状态（与 Settings 同步）；筛选/排序输入变化时重算缓存列表
   @State @Watch('onViewInput') sortKey: string = 'alpha';
   @State @Watch('onViewInput') sortAsc: boolean = true;
@@ -422,7 +424,8 @@ export struct LibraryPage {
     // 网络限制（仅 Wi-Fi / 仅充电）不满足时跳过本次批量更新并提示
     const blockReason = UpdateService.checkUpdateRestrictions();
     if (blockReason !== '') {
-      Util.toast(this.getUIContext(), blockReason);
+      Util.toast(this.getUIContext(),
+        UpdateService.restrictionText(Util.hostAbilityContext(this.getUIContext()), blockReason));
       return;
     }
     this.refreshing = true;
@@ -449,7 +452,8 @@ export struct LibraryPage {
     // 网络限制（仅 Wi-Fi / 仅充电）不满足时跳过本次批量更新并提示
     const blockReason = UpdateService.checkUpdateRestrictions();
     if (blockReason !== '') {
-      Util.toast(this.getUIContext(), blockReason);
+      Util.toast(this.getUIContext(),
+        UpdateService.restrictionText(Util.hostAbilityContext(this.getUIContext()), blockReason));
       return;
     }
     this.refreshing = true;
@@ -742,10 +746,9 @@ export struct LibraryPage {
     .height('100%')
     .backgroundColor(this.pal.bg)
     // 筛选弹层（头部筛选图标经 libFilterSheetReq 信号触发）
+    // 高度自适应内容（SheetPreset 默认 FIT_CONTENT）：选项少时贴内容收起，多时内部滚动
     .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
       SheetPreset.fit(this.windowW, {
-        height: Bp.sheetHeight(this.windowW),
-        detents: ['70%', SheetSize.LARGE],
         showClose: false,
         bg: this.pal.bg
       }))
@@ -930,9 +933,14 @@ export struct LibraryPage {
     // 关闭“显示 NSFW 源”时隐藏来自 NSFW 插件源的作品；
     // 源未注册（插件尚未加载完/已卸载）时无法确认非 NSFW，同样隐藏，避免冷启动闪现
     if (!this.showNsfw) {
+      // 插件加载完成前源未注册保持隐藏（防冷启动 NSFW 闪现）；
+      // 完成后仍未注册 = 插件未安装（如备份恢复后待装），保留显示
       list = list.filter((m: MangaRecord): boolean => {
         const source: Source | undefined = SourceRegistry.get(m.sourceKey);
-        return source !== undefined && !source.nsfw;
+        if (!this.pluginsLoaded) {
+          return source !== undefined && !source.nsfw;
+        }
+        return source === undefined || !source.nsfw;
       });
     }
     const q = this.searchQuery.trim().toLowerCase();

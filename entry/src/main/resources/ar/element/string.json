@@ -533,10 +533,6 @@
       "value": "أُزيلت من المكتبة"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "تم تعليم كل الفصول كمقروءة"
-    },
-    {
       "name": "detail_download_queued",
       "value": "أُضيفت إلى قائمة انتظار التنزيل"
     },
@@ -575,10 +571,6 @@
     {
       "name": "detail_chapters_count",
       "value": "الفصول (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "تعليم الكل كمقروء"
     },
     {
       "name": "detail_download",
@@ -3566,7 +3558,7 @@
     },
     {
       "name": "video_danmaku_logged_in",
-      "value": "Logged in"
+      "value": "تم تسجيل الدخول: %s"
     },
     {
       "name": "video_danmaku_logout",
@@ -3735,6 +3727,1466 @@
     {
       "name": "subject_infobox_duration",
       "value": "المدة"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "التخزين الخاص للتطبيق"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "التخزين الداخلي"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "أبدًا"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "أُلغي التصدير"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "فشل التصدير"
+    },
+    {
+      "name": "module_desc",
+      "value": "وصف الوحدة"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "وصف"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "تقييم المنصة"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "تباعد الصفحات"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "تمرير مستمر"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "صفحتان"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "تلقائي (أفقي)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "دائمًا"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "إيقاف"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "الغلاف في صفحة مستقلة"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "مفاتيح الصوت تقلب الصفحات"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "إبقاء الشاشة مضاءة"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "إظهار اسم الفصل ورقم الصفحة"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "تحميل الصفحات مسبقًا"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "تخطي الصفحات المكررة"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "إزالة الصفحات الفارغة"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "تجربة القراءة"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "معالجة الصفحات"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "تمرير عمودي مستمر"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "البحث في السجل"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "أعمال ذات صلة"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "سلسلة ذات صلة"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "الفصول"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "ورق"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "تقليب تلقائي للصفحات"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "إيقاف"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d ث"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "تم تشغيل التقليب التلقائي"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "تم إيقاف التقليب التلقائي"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "التقليب التلقائي غير متاح في وضع الويبتون"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "صورة داخل صورة غير متاحة على هذا الجهاز"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "مستودعات الإضافات"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "لا توجد مستودعات إضافات بعد. اضغط + لإضافة واحد."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "إضافة مستودع"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "عنوان URL لفهرس المستودع"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "أدخل عنوان http(s) صالحًا"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "هذا المستودع مضاف بالفعل"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "جارٍ الإضافة…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "تمت إضافة المستودع"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "فشلت إضافة المستودع: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "حذف المستودع"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "حذف المستودع %s؟\n%s\n\nستُبقى الإضافات المثبّتة."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "تم حذف المستودع"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "تم النسخ إلى الحافظة"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "جارٍ التحديث…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "تم تحديث المستودعات"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "فشل التحديث: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "إضافة غير موثوقة"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "قد تقرأ الإضافات الضارة أي بيانات تسجيل دخول محفوظة أو تنفّذ تعليمات برمجية عشوائية.\n\nبثقتك في هذه الإضافة، فإنك تقبل هذه المخاطر."
+    },
+    {
+      "name": "ext_trust",
+      "value": "وثّق"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "غير موثوق"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "تم الوثوق بـ %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "نسخة إحتياطية كاملة"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "المكتبة ومستودعات الإضافات فقط"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "تضمين البيانات الحساسة"
+    },
+    {
+      "name": "backup_password",
+      "value": "كلمة السر"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "تأكيد كلمة السر"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "يجب أن تكون كلمة السر 6 أحرف على الأقل"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "كلمتا السر غير متطابقتين"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "يلزم تعيين كلمة سر لتضمين البيانات الحساسة"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "تحتوي هذه النسخة الإحتياطية على بيانات حساسة مشفّرة. أدخل كلمة سر النسخة لاستعادتها."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "كلمة السر غير صحيحة"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "دانماكو (تعليقات الفيديو)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "يُفعَّل الدانماكو لتشغيل الفيديو افتراضيًا ويمكن إيقافه في أي وقت من إعدادات المشغّل أو أثناء التشغيل. أثناء التفعيل، يُرسَل عنوان العمل الجاري تشغيله إلى خدمة الدانماكو الخارجية dandanplay (api.dandanplay.net) لمطابقة الحلقة وتحميل مجموعة تعليقاتها. لا تُرسَل أي معرفات حساب أو جهاز، وتُحفظ التعليقات المنزّلة في الذاكرة فقط. تخضع الخدمة لسياسة الخصوصية الخاصة بها."
+    },
+    {
+      "name": "help_title",
+      "value": "المساعدة"
+    },
+    {
+      "name": "help_intro",
+      "value": "دليل Honyomi: من استيراد المحتوى وتثبيت الإضافات إلى القراءة والاستماع والنسخ الإحتياطي والخصوصية — شرح للميزات اليومية مع نصائح لاستكشاف الأخطاء."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "البدء"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "أضف الملفات المحلية (CBZ وEPUB وغيرها) عبر المصدر المحلي أو بفتح ملف مباشرة. للمحتوى عبر الإنترنت، أضف مستودع إضافات في تصفح > الإضافات، ثم ثبّت الإضافات وتصفح مصادرها وابحث فيها. اضغط «إضافة إلى المكتبة» في صفحة العمل لإبقائه في المكتبة، واضغط مطولًا على عناصر المكتبة لإدارتها دفعة واحدة. عند أول استخدام، اضبط السمة وشاشة البدء وتفضيلات القراءة في الإعدادات."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "الإضافات"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "توفّر الإضافات المصادر عبر الإنترنت، وتُدار في تصفح > الإضافات: أضف المستودعات ثم ثبّت الإضافات أو حدّثها أو أزلها. اسحب القائمة للأسفل للتحقق من تحديثات الإضافات. أضف فقط المستودعات التي تثق بها — إذا توقف مستودع عن العمل، لن يعود بالإمكان تحديث إضافاته أو إعادة تثبيتها."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "القراءة والاستماع"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "يوفر القارئ أوضاع الصفحات والعمودي والويبتون مع اتجاه وخلفية وسطوع قابلة للضبط، وتُحفظ لكل عمل. يمكن قراءة الروايات بصوت عالٍ مع سرعة قابلة للضبط ومؤقت نوم وتشغيل في الخلفية؛ وتُشغَّل الفيديوهات عبر الإنترنت مع دعم الدانماكو. يُسجَّل تقدم القراءة تلقائيًا."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "إدارة التنزيل"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "أضف الفصول إلى قائمة الانتظار من صفحة العمل أو قائمة الفصول للقراءة دون اتصال. راجع التقدم أو أوقف المهام مؤقتًا أو أزلها في المزيد > قائمة التنزيلات؛ وتوفر الإعدادات > التنزيلات التنزيل عبر Wi-Fi فقط والتنزيل التلقائي للفصول الجديدة والحذف التلقائي للفصول المقروءة."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "التتبع والمزامنة"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "اربط AniList أو MyAnimeList أو Bangumi أو Kitsu أو Shikimori من قسم التتبع في صفحة العمل. تُزامَن حالتك وتقدم القراءة تلقائيًا بعد الربط؛ وتُحفظ الرموز على جهازك فقط ويمكنك فك الربط في أي وقت."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "نقل المصادر"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "عندما ينتقل عمل إلى مصدر آخر من النوع نفسه، افتحه واختر نقل من القائمة. يطابق Honyomi المصدر الهدف حسب العنوان أو الكاتب وينقل تقدم القراءة والتنزيلات، لتتابع بسلاسة من المصدر الجديد."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "التحديثات والقادم"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "تتحقق علامة التحديثات من المكتبة بحثًا عن فصول جديدة — اسحب للأسفل للتحديث، وتظهر الأعمال ذات الفصول الجديدة أولًا. تقدّر صفحة القادم موعد التحديث التالي لكل عمل من إيقاع إصداره السابق؛ والتقديرات إرشادية فقط."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "البيانات والتخزين"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "تُخزَّن مكتبتك وتقدمك وإعداداتك على جهازك فقط ولا تُرفع أبدًا. استخدم المزيد > البيانات والتخزين للنسخ الإحتياطي والاستعادة ومراجعة استخدام التخزين ومسح الذاكرة المؤقتة للفصول وجدولة النسخ التلقائي. أنشئ نسخة إحتياطية يدويًا قبل تبديل الجهاز أو إعادة التثبيت."
+    },
+    {
+      "name": "help_security_title",
+      "value": "الخصوصية والأمان"
+    },
+    {
+      "name": "help_security_body",
+      "value": "يعتمد Honyomi على الجهاز أولًا ولا يجمع بيانات شخصية. توفر الإعدادات > الخصوصية قفل التطبيق بالسمات الحيوية وإخفاء محتوى الإشعارات ومنع لقطات الشاشة؛ ويوقف الوضع المخفي في صفحة المزيد سجل القراءة. تبقى مصادر NSFW مخفية حتى تفعيلها في الإعدادات > تصفح."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "استكشاف الأخطاء"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "إذا فشل تحميل الصفحات، تحقق من الشبكة أو بدّل مزوّد DNS-over-HTTPS ضمن الإعدادات > متقدم، وأكمل مطالبة التحقق في الموقع عند ظهورها. إذا تعطل مصدر، اسحب لتحديث قائمة الإضافات للتحقق من تحديثاتها، أو أعد تثبيت الإضافة. للمشكلات المستعصية، أنشئ نسخة إحتياطية في البيانات والتخزين أولًا، ثم امسح الذاكرة المؤقتة للفصول."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "ورق"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "جارٍ الترجمة… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "اكتملت الترجمة"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "فشلت الترجمة"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "أُلغيت الترجمة"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "لغة المحتوى تطابق اللغة الهدف، لا حاجة للترجمة"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "خدمة التعرف على النص غير متاحة. حاول لاحقًا (قد لا تكون مدعومة على المحاكيات)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "ترجمة الصورة"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "التعرف على كل صفحة وترجمتها تلقائيًا وعرض الترجمة فوقها"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "ترجمة الفصل"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "ترجمة هذا الفصل تلقائيًا وإظهار النتيجة عند التفعيل"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "حفظ صورة الصفحة"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "نسخ الصورة"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "مشاركة الصفحة"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "عرض الأصل"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "تم حفظ صورة الصفحة"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "فشل الحفظ"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "حفظ الصورة في المعرض"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "تم نسخ الصورة"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "فشل النسخ"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "فشلت المشاركة"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "الصوت"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "أنثى (افتراضي)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "ذكر"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "إذا كان الصوت الذكوري غير متاح (غير منزّل)، سيُستخدم الصوت الأنثوي الافتراضي."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "إبقاء الشاشة مضاءة"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "مفاتيح الصوت تقلب الصفحات"
+    },
+    {
+      "name": "novel_justify",
+      "value": "محاذاة الطرفين"
+    },
+    {
+      "name": "novel_search",
+      "value": "البحث في الفصل"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "ابحث في نص هذا الفصل"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "لا توجد تطابقات"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "الإشارات"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "إضافة إشارة عند الموضع الحالي"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "تمت إضافة الإشارة"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "لا توجد إشارات بعد"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "تم تشغيل القراءة التلقائية"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "بلغت نهاية الفصل الأخير"
+    },
+    {
+      "name": "video_brightness",
+      "value": "السطوع"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "الانتقال إلى"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "تم الاستئناف من آخر موضع"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "من البداية"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "لا يمكن تنزيل البث المباشر"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "تشفير بث الفيديو غير مدعوم"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "تنزيل BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "هذا الفصل تورنت BitTorrent. اختر طريقة تنزيله"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "استخدام تطبيق النظام"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "المحرك المدمج"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "التنزيل داخل التطبيق، مع دعم التشغيل أثناء التنزيل"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "تسليم رابط المغناطيس أو التورنت إلى تطبيق آخر (مثل عميل تورنت)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "حوالي %1$d ميغابايت"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "يُحفظ اختيارك. يمكنك تغييره لاحقًا في الإعدادات > التنزيلات"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "تم التسليم لتطبيق النظام"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "لا يوجد تطبيق يمكنه معالجة هذا التورنت"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "جارٍ التنزيل… سيبدأ التشغيل تلقائيًا عند توفر بيانات كافية"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "تم تخطي %1$d فصول تورنت"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "خدمة BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "أوقفه لإيقاف محرك BT؛ ويعود عند بدء تنزيل BT"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "خدمة BT متوقفة. فعّلها في الإعدادات - BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "محرك التنزيل"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "السؤال في كل مرة"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "المحرك المدمج"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "تطبيق النظام"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "مكوّن محرك BT غير مثبّت"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "مطلوب لتنزيل التورنت بالمحرك المدمج"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "تثبيت"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "التشغيل أثناء التنزيل"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "بدء التشغيل أثناء تنزيل التورنت (تنزيل متسلسل)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "حدود السرعة"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "حد سرعة التنزيل"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "حد سرعة الرفع"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "بلا حد"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "متتبعات إضافية"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "تُضاف إلى كل تنزيل تورنت"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "عنوان URL لمتتبع واحد في كل سطر"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "لا شيء"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d متتبعات"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "البذر"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "حد معدل المشاركة"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "تقييد الرفع على الشبكات المحدودة"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "حصر الرفع عند 10 KB/s على الشبكة الخلوية لتوفير البيانات"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "تصفية الأقران"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "حظر الأقران حسب عنوان IP أو النطاق"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "تصفية الأقران"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "قاعدة واحدة في كل سطر: عنوان IP (192.168.1.1) أو نطاق (10.0.0.0-10.255.255.255). اتركه فارغًا للتعطيل"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "قاعدة غير صالحة في السطر %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "إيقاف"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d قواعد"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "مرآة Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "تم حفظ مرآة Bangumi"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "مرآة API، مثل https://your-proxy.example.com، فارغ = الافتراضي api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "يجب أن يبدأ العنوان بـ https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "مرآة الصور، مثل https://your-proxy.example.com، فارغ = الافتراضي lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "يجب أن يبدأ العنوان بـ https://"
+    },
+    {
+      "name": "trans_title",
+      "value": "الترجمة"
+    },
+    {
+      "name": "trans_enable",
+      "value": "تفعيل الترجمة"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "ترجمة النص في القارئ عبر المحركات المهيأة"
+    },
+    {
+      "name": "trans_test",
+      "value": "اختبار الترجمة"
+    },
+    {
+      "name": "trans_target",
+      "value": "اللغة الهدف"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "جارٍ الترجمة…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "فشلت كل المحركات"
+    },
+    {
+      "name": "trans_engines",
+      "value": "أولوية المحركات"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "اضغط مطولًا واسحب لإعادة الترتيب؛ اضغط محركًا لتهيئة مفاتيحه"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "جاهز"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "غير مهيأ"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "بلا إعداد"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "تم الضبط"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "ترجمة Baidu"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "المفتاح السري"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "مفتاح التطبيق"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "سر التطبيق"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "رمز API"
+    },
+    {
+      "name": "trans_google",
+      "value": "ترجمة Google"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "سحابة Tencent"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "محرك Volcano"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "مفتاح API"
+    },
+    {
+      "name": "action_edit",
+      "value": "تعديل"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "إضافة على أي حال"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "ليس لديك أي فئات بعد."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "تكرارات محتملة"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "توجد أعمال في مكتبتك بأسماء مشابهة.\n\nاختر عملًا لنقله أو أضفه على أي حال."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d فصول"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "إضافة إلى المكتبة؟"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "حذف الفصول المنزّلة؟"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "ستُحذف الفصول المنزّلة لهذا العمل."
+    },
+    {
+      "name": "default_category",
+      "value": "الفئة الافتراضية"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "السؤال دائمًا"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "تلقائي (حسب نوع المحتوى)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "المظهر"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "التنقل"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "عام"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "وميض تحديث الحبر الإلكتروني"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "تخطي الفصول المقروءة"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "تخطي الفصول المصفاة"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "تخطي الفصول المكررة"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "صفحة انتقال الفصل"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "الوميض عند تغيير الصفحة"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "لون الوميض"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "أبيض"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "أسود"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "أبيض ثم أسود"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "مدة الوميض (مللي ثانية)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "الوميض كل N صفحات"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "قص الحواف (أوضاع الصفحات)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "قص الحواف (ويبتون)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "وضع مزج مرشح الألوان"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "لا شيء"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "ضرب"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "شاشة"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "تراكب"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "تغميق"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "تفتيح"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "تعطيل التصغير (ويبتون)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "موضع بدء التكبير"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "تلقائي"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "يسار"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "يمين"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "الوسط"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "شكل L"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "نمط Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "مكعب ثلاثي الأبعاد"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "تكديس"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "تلاشي"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "قلب ثلاثي الأبعاد"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "كرة"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "اضغط للمتابعة"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "يتم تخطي %d فصول، إما أن المصدر يفتقدها أو أنها استُبعدت بالتصفية"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "عيّن نقاط التخطي في لوحة إعدادات المشغّل"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "الترجمات"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "تحميل ملفات ترجمة .srt خارجية"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "حجم نص الترجمات"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "فلاتر الدانماكو"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "تُخفى التعليقات المطابقة لأي من قواعد التعبير النمطي هذه"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "إضافة"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "أدخل قاعدة تعبير نمطي، مثل \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "قاعدة غير صالحة أو مكررة"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "لا توجد قواعد تصفية بعد"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "تم تطبيق الفلاتر"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "تم حفظ نقاط التخطي"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "تنسيق الوقت غير صالح"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "تم تحميل الترجمة"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "ملف ترجمة غير صالح"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "فشل قراءة الملف"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "فشل تسجيل الدخول: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "لا توجد حلقة مطابقة في مكتبة الدانماكو"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "يرجى تسجيل الدخول أولًا"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "لا توجد حلقة مطابقة لهذا الفصل"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "تم الإرسال"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "فشل الإرسال: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "مدخلات ذات صلة"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "الجزء السابق"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "الجزء التالي"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "عمل مشتق"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "خاص"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "القصة الرئيسية"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "تجميع"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "تغيير فاصل التحديث"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "اتباع الإعداد العام"
+    },
+    {
+      "name": "interval_never",
+      "value": "أبدًا"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "كل ساعة"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "كل 6 ساعات"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "كل 12 ساعة"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "كل يوم"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "كل يومين"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "كل 3 أيام"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "كل أسبوع"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "كل أسبوعين"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "كل شهر"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "كل %d ساعات"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "التحديث العام"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "التحديث عبر Wi-Fi فقط"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "تخطي تحديثات المكتبة على الشبكات غير Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "التحديث أثناء الشحن فقط"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "تخطي تحديثات المكتبة عند عدم الشحن"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "إجراءات السحب"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "إجراء البداية"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "إجراء النهاية"
+    },
+    {
+      "name": "action_none",
+      "value": "لا شيء"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "فاصل التحديث"
+    },
+    {
+      "name": "detail_notes",
+      "value": "ملاحظات"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "إضافة ملاحظة"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "تعديل الملاحظة"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "%d فصول مفقودة"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "التصفح المخفي"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "لا يُسجَّل السجل والإحصاءات عند تصفح مصادر هذه الإضافة"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "تصفح مخفي · لا يُسجَّل سجل القراءة والإحصاءات"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "تحديثات الإضافات"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "التحقق من تحديثات الإضافات"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "التحقق من التحديثات عند تحديث مستودعات الإضافات والتنبيه"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "يمكن تحديث %d إضافات"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "البريد / اسم المستخدم"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "مفتاح API (يُنشأ في إعدادات خادم Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "اسم المستخدم (اختياري، Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "كلمة السر (اختياري، Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "اكتب ملاحظات عن هذا العمل…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "تحديثات الإضافات"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "لدى %d إضافات إصدارات جديدة؛ حدّثها في صفحة الإضافات"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "تحديث Wi-Fi فقط مفعّل والشبكة الحالية غير مؤهلة، تم تخطي هذا التحديث"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "التحديث أثناء الشحن فقط مفعّل، وصّل الشاحن للتحديث"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "لا يوجد سجل قراءة بعد"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "لا يوجد فصل قابل للقراءة"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "متابعة القراءة: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "متابعة الاستماع"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "لا توجد رواية متاحة للاستماع"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "فشل بدء التشغيل"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "متابعة الاستماع: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "لم يُعثر على «%s» في مكتبتك، فُتح البحث العام"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "عُثر على «%1$s» في مكتبتك لكن لا يوجد فصل يطابق «%2$s»، فُتحت تفاصيل العمل"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "تم الفتح: «%1$s» %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "تم الفتح: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "أُضيف إلى المكتبة: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "تم تخطي تحديث المكتبة: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "بدأ تحديث المكتبة"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "تعذر فهم أمر التقديم: «%s»"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "تم: %s"
     }
   ]
 }

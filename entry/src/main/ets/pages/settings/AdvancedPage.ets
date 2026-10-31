@@ -14,7 +14,7 @@ import { MangaRecord } from '../../model/Models';
 import { SourceRegistry } from '../../source/Source';
 import { NavGlassPage } from '../../common/HdsNavHost';
 import { IconRow, PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
-import { ConfirmDialog, InputDialog } from '../components/Dialogs';
+import { ConfirmDialog, DualInputDialog, InputDialog } from '../components/Dialogs';
 import { OnboardingParams } from '../../model/RouteParams';
 
 // 高级设置内容（对齐 Mihon SettingsAdvancedScreen，按平台裁剪）：
@@ -118,18 +118,11 @@ export struct AdvancedContent {
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
           TextRow({
-            title: $r('app.string.pref_bangumi_api_mirror'),
+            title: $r('app.string.pref_bangumi_mirror'),
             value: Settings.urlHostOf(this.bgmApiBase),
+            secondaryValue: this.bgmImgHostDisplay(),
             onTap: (): void => {
-              this.editBangumiApiBase();
-            }
-          })
-          Divider().color(this.pal.divider).margin({ left: 16 })
-          TextRow({
-            title: $r('app.string.pref_bangumi_img_mirror'),
-            value: Settings.urlHostOf(this.bgmImgBase),
-            onTap: (): void => {
-              this.editBangumiImgBase();
+              this.editBangumiMirrors();
             }
           })
           Divider().color(this.pal.divider).margin({ left: 16 })
@@ -323,24 +316,37 @@ export struct AdvancedContent {
     Util.toastRes(this.getUIContext(), $r('app.string.pref_user_agent_saved'));
   }
 
-  // Bangumi 镜像通用编辑流程：输入留空恢复默认；非空强制 https:// 前缀；
-  // onApply 返回 false 表示应用失败（不再提示已保存）
-  private editBangumiBase(title: Resource, hint: Resource, invalid: Resource, saved: Resource,
-    current: string, onApply: (input: string) => boolean): void {
+  // 图片镜像行显示：与 API 镜像主机相同时省略第二段（避免重复展示）
+  private bgmImgHostDisplay(): string {
+    const apiHost: string = Settings.urlHostOf(this.bgmApiBase);
+    const imgHost: string = Settings.urlHostOf(this.bgmImgBase);
+    return apiHost === imgHost ? '' : imgHost;
+  }
+
+  // Bangumi 镜像统一编辑：一个弹窗内分别输入 API / 图片镜像，
+  // 任一输入留空即恢复对应默认地址（api.bgm.tv / lain.bgm.tv）
+  private editBangumiMirrors(): void {
     const dialog = new CustomDialogController({
-      builder: InputDialog({
-        title: title,
-        placeholder: hint,
-        initialText: current,
-        onConfirm: (text: string): void => {
-          const input: string = text.trim();
-          if (input !== '' && !/^https:\/\//.test(input)) {
-            Util.toastRes(this.getUIContext(), invalid);
+      builder: DualInputDialog({
+        title: $r('app.string.pref_bangumi_mirror'),
+        firstPlaceholder: $r('app.string.pref_bangumi_api_mirror_hint'),
+        secondPlaceholder: $r('app.string.pref_bangumi_img_mirror_hint'),
+        initialFirst: Settings.getBangumiApiBaseInput(),
+        initialSecond: Settings.getBangumiImgBaseInput(),
+        onConfirm: (api: string, img: string): void => {
+          if (api !== '' && !/^https:\/\//.test(api)) {
+            Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_api_mirror_invalid'));
             return;
           }
-          if (onApply(input)) {
-            Util.toastRes(this.getUIContext(), saved);
+          if (img !== '' && !/^https:\/\//.test(img)) {
+            Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_img_mirror_invalid'));
+            return;
           }
+          Settings.setBangumiApiBase(api);
+          Settings.setBangumiImgBase(img);
+          this.bgmApiBase = Settings.bangumiApiBase();
+          this.bgmImgBase = Settings.bangumiImgBase();
+          Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_mirror_saved'));
         },
         onClose: (): void => {
           dialog.close();
@@ -349,32 +355,6 @@ export struct AdvancedContent {
       autoCancel: true,
     });
     dialog.open();
-  }
-
-  private editBangumiApiBase(): void {
-    this.editBangumiBase($r('app.string.pref_bangumi_api_mirror'),
-      $r('app.string.pref_bangumi_api_mirror_hint'),
-      $r('app.string.pref_bangumi_api_mirror_invalid'),
-      $r('app.string.pref_bangumi_api_mirror_saved'),
-      Settings.getBangumiApiBaseInput(),
-      (input: string): boolean => {
-        Settings.setBangumiApiBase(input);
-        this.bgmApiBase = Settings.bangumiApiBase();
-        return true;
-      });
-  }
-
-  private editBangumiImgBase(): void {
-    this.editBangumiBase($r('app.string.pref_bangumi_img_mirror'),
-      $r('app.string.pref_bangumi_img_mirror_hint'),
-      $r('app.string.pref_bangumi_img_mirror_invalid'),
-      $r('app.string.pref_bangumi_img_mirror_saved'),
-      Settings.getBangumiImgBaseInput(),
-      (input: string): boolean => {
-        Settings.setBangumiImgBase(input);
-        this.bgmImgBase = Settings.bangumiImgBase();
-        return true;
-      });
   }
 
   // ---- 书库 ----

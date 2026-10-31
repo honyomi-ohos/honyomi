@@ -13,6 +13,7 @@ import { AppIcon } from './components/AppIcon';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { SmartImage } from './components/SmartImage';
 import { UpdatesFilterSheet } from './components/UpdatesFilterSheet';
+import { EmptyScreen } from './components/EmptyScreen';
 
 // 即将推出页帮助：跳转应用内帮助文档（更新与「即将更新」小节）
 const DAY_MS: number = 24 * 60 * 60 * 1000;
@@ -322,6 +323,12 @@ export struct UpcomingPage {
     }, (row: UpcomingRow, idx: number) => row.isHeader ? `uh-${row.dateMs}` : `ui-${row.manga?.mangaId ?? idx}`)
   }
 
+  // 列表区空状态：书架内无连载中/完结连载作品（或全被分类筛选排除）
+  @Builder
+  upcomingEmpty() {
+    EmptyScreen({ message: $r('app.string.card_empty_upcoming') })
+  }
+
   // 窄屏单列：日历为列表首项，与更新列表同容器滚动
   @Builder
   compactBody() {
@@ -330,7 +337,19 @@ export struct UpcomingPage {
         this.calendarBlock()
       }
 
-      this.updatingRows()
+      if (this.rows.length === 0) {
+        ListItem() {
+          Column() {
+            this.upcomingEmpty()
+          }
+          .width('100%')
+          .constraintSize({ minHeight: 200 })
+          .justifyContent(FlexAlign.Center)
+          .padding({ bottom: this.navBarH + 16 })
+        }
+      } else {
+        this.updatingRows()
+      }
     }
     .layoutWeight(1)
     .scrollBar(BarState.Auto)
@@ -359,13 +378,22 @@ export struct UpcomingPage {
         .height('100%')
         .backgroundColor(this.pal.divider)
 
-      List({ scroller: this.scroller }) {
-        this.updatingRows()
+      if (this.rows.length === 0) {
+        Column() {
+          this.upcomingEmpty()
+        }
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+        .padding({ bottom: this.navBarH + 16 })
+      } else {
+        List({ scroller: this.scroller }) {
+          this.updatingRows()
+        }
+        .layoutWeight(1)
+        .height('100%')
+        .scrollBar(BarState.Auto)
+        .contentEndOffset(this.navBarH + 16)
       }
-      .layoutWeight(1)
-      .height('100%')
-      .scrollBar(BarState.Auto)
-      .contentEndOffset(this.navBarH + 16)
     }
     .width(this.widePaneW())
     .height('100%')
@@ -392,8 +420,6 @@ export struct UpcomingPage {
       .height('100%')
       .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
         SheetPreset.fit(this.windowW, {
-          height: Bp.sheetHeight(this.windowW),
-          detents: ['60%', SheetSize.LARGE],
           showClose: false,
           bg: this.pal.bg
         }))

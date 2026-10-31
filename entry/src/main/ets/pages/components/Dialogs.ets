@@ -5,6 +5,7 @@ import { KeyCode } from '@kit.InputKit';
 import { AppIcon } from './AppIcon';
 import { SmartImage } from './SmartImage';
 import { SourceRegistry } from '../../source/Source';
+import { BackupOptions } from '../../data/BackupService';
 
 // 文本输入弹窗（新建分类 / 导入漫画命名 / 敏感偏好输入）
 @CustomDialog
@@ -149,6 +150,99 @@ export struct CredentialsDialog {
           .onClick(() => {
             this.dismiss();
             this.onConfirm(this.username.trim(), this.password);
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
+
+// 双输入弹窗（Bangumi 镜像：API 地址 + 图片地址一次编辑，留空恢复默认）
+@CustomDialog
+export struct DualInputDialog {
+  controller?: CustomDialogController;
+  title: Resource | string = '';
+  firstPlaceholder: Resource | string = '';
+  secondPlaceholder: Resource | string = '';
+  initialFirst: string = '';
+  initialSecond: string = '';
+  @State first: string = '';
+  @State second: string = '';
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirm: (first: string, second: string) => void = (_f: string, _s: string) => {
+  };
+  onClose: () => void = () => {
+  };
+
+  aboutToAppear(): void {
+    this.first = this.initialFirst;
+    this.second = this.initialSecond;
+  }
+
+  build() {
+    Column({ space: 16 }) {
+      Text(this.title)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+      TextInput({
+        placeholder: this.firstPlaceholder,
+        text: this.first,
+      })
+        .defaultFocus(true)
+        .enterKeyType(EnterKeyType.Next)
+        .onChange((value: string) => {
+          this.first = value;
+        })
+        .onSubmit(() => {
+          // 首个输入框回车跳第二个（手动迁移焦点，失败时仍可 Tab 切换）
+          try {
+            this.getUIContext().getFocusController().requestFocus('dualSecondKey');
+          } catch (e) {
+          }
+        })
+      TextInput({
+        placeholder: this.secondPlaceholder,
+        text: this.second,
+      })
+        .id('dualSecondKey')
+        .enterKeyType(EnterKeyType.Done)
+        .onChange((value: string) => {
+          this.second = value;
+        })
+        .onSubmit(() => {
+          this.dismiss();
+          this.onConfirm(this.first.trim(), this.second.trim());
+        })
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.dismiss();
+            this.onConfirm(this.first.trim(), this.second.trim());
           })
       }
       .width('100%')
@@ -721,5 +815,280 @@ export struct SaveConfirmDialog {
       this.controller.close();
     }
     this.onCancel();
+  }
+}
+
+// 备份导出选项弹窗（v3 双档位：完整备份 / 仅作品与插件仓库；
+// 完整档可选包含敏感配置，包含时强制设置 ≥6 位密码用于加密）
+@CustomDialog
+export struct BackupOptionsDialog {
+  controller?: CustomDialogController;
+  // 档位：true 完整备份（默认）/ false 仅作品与插件仓库
+  @State scopeFull: boolean = true;
+  @State includeSecure: boolean = false;
+  @State pwdInput: string = '';
+  @State pwdConfirm: string = '';
+  // 校验错误提示（空串 = 无错误）
+  @State pwdError: Resource | string = '';
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirm: (options: BackupOptions) => void = (_o: BackupOptions) => {
+  };
+  onClose: () => void = () => {
+  };
+
+  build() {
+    Column({ space: 16 }) {
+      Text($r('app.string.data_create_backup'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+
+      // 档位单选（完整备份在后：勾选后展开的敏感配置选项紧随其下）
+      Row() {
+        Radio({ value: 'minimal', group: 'backupScope' })
+          .checked(!this.scopeFull)
+          .radioStyle({
+            checkedBackgroundColor: this.pal.primary,
+            uncheckedBorderColor: this.pal.sub
+          })
+          .width(20)
+          .height(20)
+          .onChange((isChecked: boolean) => {
+            if (isChecked) {
+              this.scopeFull = false;
+            }
+          })
+        Text($r('app.string.backup_scope_minimal'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .margin({ left: 8 })
+      }
+      .width('100%')
+      .onClick(() => {
+        this.scopeFull = false;
+      })
+
+      Row() {
+        Radio({ value: 'full', group: 'backupScope' })
+          .checked(this.scopeFull)
+          .radioStyle({
+            checkedBackgroundColor: this.pal.primary,
+            uncheckedBorderColor: this.pal.sub
+          })
+          .width(20)
+          .height(20)
+          .onChange((isChecked: boolean) => {
+            if (isChecked) {
+              this.scopeFull = true;
+            }
+          })
+        Text($r('app.string.backup_scope_full'))
+          .fontSize(15)
+          .fontColor(this.pal.text)
+          .margin({ left: 8 })
+      }
+      .width('100%')
+      .onClick(() => {
+        this.scopeFull = true;
+      })
+
+      // 敏感配置开关（仅完整档可选）
+      if (this.scopeFull) {
+        Row() {
+          Toggle({ type: ToggleType.Switch, isOn: this.includeSecure })
+            .selectedColor(this.pal.primary)
+            .height(24)
+            .onChange((isOn: boolean) => {
+              this.includeSecure = isOn;
+              this.pwdError = '';
+            })
+          Text($r('app.string.backup_include_secure'))
+            .fontSize(15)
+            .fontColor(this.pal.text)
+            .margin({ left: 8 })
+            .layoutWeight(1)
+        }
+        .width('100%')
+
+        // 密码 + 确认密码（勾选敏感配置后出现）
+        if (this.includeSecure) {
+          TextInput({
+            placeholder: $r('app.string.backup_password'),
+            text: this.pwdInput,
+          })
+            .type(InputType.Password)
+            .showPasswordIcon(true)
+            .height(44)
+            .fontSize(14)
+            .fontColor(this.pal.text)
+            .placeholderFont({ size: 14 })
+            .onChange((value: string) => {
+              this.pwdInput = value;
+            })
+
+          TextInput({
+            placeholder: $r('app.string.backup_password_confirm'),
+            text: this.pwdConfirm,
+          })
+            .type(InputType.Password)
+            .showPasswordIcon(true)
+            .height(44)
+            .fontSize(14)
+            .fontColor(this.pal.text)
+            .placeholderFont({ size: 14 })
+            .onChange((value: string) => {
+              this.pwdConfirm = value;
+            })
+
+          Text($r('app.string.backup_password_hint'))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+        }
+      }
+
+      // 校验错误提示
+      if (this.pwdError !== '') {
+        Text(this.pwdError)
+          .fontSize(12)
+          .fontColor('#D32F2F')
+      }
+
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_save'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .onClick(() => {
+            this.confirm();
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+    .focusable(true)
+    .defaultFocus(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  // 校验并回调：包含敏感配置时要求密码 ≥6 位且两次一致
+  private confirm(): void {
+    if (this.scopeFull && this.includeSecure) {
+      if (this.pwdInput === '') {
+        this.pwdError = $r('app.string.backup_password_required');
+        return;
+      }
+      if (this.pwdInput.length < 6) {
+        this.pwdError = $r('app.string.backup_password_hint');
+        return;
+      }
+      if (this.pwdInput !== this.pwdConfirm) {
+        this.pwdError = $r('app.string.backup_password_mismatch');
+        return;
+      }
+    }
+    const options: BackupOptions = {
+      full: this.scopeFull,
+      includeSensitive: this.scopeFull && this.includeSecure,
+      password: this.scopeFull && this.includeSecure ? this.pwdInput : '',
+    };
+    this.dismiss();
+    this.onConfirm(options);
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
+  }
+}
+
+// 备份导入密码弹窗（v3 含加密敏感段时解密所需）
+@CustomDialog
+export struct BackupPasswordDialog {
+  controller?: CustomDialogController;
+  @State pwdInput: string = '';
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  onConfirm: (password: string) => void = (_p: string) => {
+  };
+  onClose: () => void = () => {
+  };
+
+  build() {
+    Column({ space: 16 }) {
+      Text($r('app.string.backup_password'))
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(this.pal.text)
+
+      Text($r('app.string.backup_need_password_hint'))
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+
+      TextInput({
+        placeholder: $r('app.string.backup_password'),
+        text: this.pwdInput,
+      })
+        .type(InputType.Password)
+        .showPasswordIcon(true)
+        .height(44)
+        .fontSize(14)
+        .fontColor(this.pal.text)
+        .placeholderFont({ size: 14 })
+        .defaultFocus(true)
+        .onChange((value: string) => {
+          this.pwdInput = value;
+        })
+
+      Row({ space: 12 }) {
+        Button($r('app.string.common_cancel'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.chip)
+          .fontColor(this.pal.text)
+          .onClick(() => {
+            this.dismiss();
+          })
+        Button($r('app.string.common_ok'))
+          .layoutWeight(1)
+          .backgroundColor(this.pal.primary)
+          .fontColor(this.pal.onPrimary)
+          .enabled(this.pwdInput.length >= 6)
+          .onClick(() => {
+            const password: string = this.pwdInput;
+            this.dismiss();
+            this.onConfirm(password);
+          })
+      }
+      .width('100%')
+    }
+    .padding(20)
+    .width('100%')
+    .focusable(true)
+    .onKeyEvent((event: KeyEvent) => {
+      if (event.type === KeyType.Down && event.keyCode === KeyCode.KEYCODE_ESCAPE) {
+        this.dismiss();
+      }
+    })
+  }
+
+  private dismiss(): void {
+    if (this.controller !== undefined) {
+      this.controller.close();
+    }
+    this.onClose();
   }
 }

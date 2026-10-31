@@ -22,7 +22,7 @@
     },
     {
       "name": "data_storage_location_info",
-      "value": "用于自动备份、章节下载、本地图源。"
+      "value": "用于自动备份、章节下载、本地源。"
     },
     {
       "name": "data_backup_restore",
@@ -881,10 +881,6 @@
       "value": "已移出书架"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "已全部标记为已读"
-    },
-    {
       "name": "detail_download_queued",
       "value": "已加入下载队列"
     },
@@ -931,10 +927,6 @@
     {
       "name": "detail_chapters_count",
       "value": "章节（%d）"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "全部已读"
     },
     {
       "name": "detail_download",
@@ -1605,6 +1597,46 @@
       "value": "导入失败"
     },
     {
+      "name": "backup_scope_full",
+      "value": "完整备份"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "仅作品与插件仓库"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "包含敏感配置"
+    },
+    {
+      "name": "backup_password",
+      "value": "密码"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "确认密码"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "密码至少需 6 位"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "两次输入的密码不一致"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "包含敏感配置时必须设置密码"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "该备份包含加密的敏感配置，请输入备份密码以继续恢复"
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "密码错误"
+    },
+    {
       "name": "about_title",
       "value": "关于"
     },
@@ -2086,7 +2118,7 @@
     },
     {
       "name": "browse_tab_sources",
-      "value": "图源"
+      "value": "源"
     },
     {
       "name": "browse_tab_extensions",
@@ -2438,7 +2470,7 @@
     },
     {
       "name": "lib_badge_local",
-      "value": "本地图源"
+      "value": "本地源"
     },
     {
       "name": "lib_badge_language",
@@ -2594,7 +2626,7 @@
     },
     {
       "name": "browse_type_empty",
-      "value": "这个类型还没有图源"
+      "value": "这个类型还没有源"
     },
     {
       "name": "browse_local_novel_name",
@@ -4069,36 +4101,28 @@
       "value": "自定义 User-Agent"
     },
     {
-      "name": "pref_bangumi_api_mirror",
-      "value": "Bangumi API 镜像"
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi 镜像"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi 镜像已保存"
     },
     {
       "name": "pref_bangumi_api_mirror_hint",
-      "value": "如 https://your-proxy.example.com，留空恢复默认 api.bgm.tv"
+      "value": "API 镜像，如 https://your-proxy.example.com，留空恢复默认 api.bgm.tv"
     },
     {
       "name": "pref_bangumi_api_mirror_invalid",
       "value": "地址需以 https:// 开头"
     },
     {
-      "name": "pref_bangumi_api_mirror_saved",
-      "value": "Bangumi API 镜像已保存"
-    },
-    {
-      "name": "pref_bangumi_img_mirror",
-      "value": "Bangumi 图片镜像"
-    },
-    {
       "name": "pref_bangumi_img_mirror_hint",
-      "value": "如 https://your-proxy.example.com，留空恢复默认 lain.bgm.tv"
+      "value": "图片镜像，如 https://your-proxy.example.com，留空恢复默认 lain.bgm.tv"
     },
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "地址需以 https:// 开头"
-    },
-    {
-      "name": "pref_bangumi_img_mirror_saved",
-      "value": "Bangumi 图片镜像已保存"
     },
     {
       "name": "pref_user_agent_hint",
@@ -4522,7 +4546,7 @@
     },
     {
       "name": "missing_chapters_warning",
-      "value": "跳过了 %d 章，可能是图源没有这些章节，或者被筛选规则排除了"
+      "value": "跳过了 %d 章，可能是源没有这些章节，或者被筛选规则排除了"
     },
     {
       "name": "player_set_skip_oped",
@@ -4915,6 +4939,254 @@
     {
       "name": "theme_name_catppuccin",
       "value": "Catppuccin"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "更改更新间隔"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "跟随全局"
+    },
+    {
+      "name": "interval_never",
+      "value": "永不"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "每小时"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "每 6 小时"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "每 12 小时"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "每天"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "每 2 天"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "每 3 天"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "每周"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "每 2 周"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "每月"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "每 %d 小时"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "全局更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "仅 Wi-Fi 时更新"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "非 Wi-Fi 网络时跳过书架更新"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "仅充电时更新"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "未连接充电器时跳过书架更新"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "滑动操作"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "起始端动作"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "末端动作"
+    },
+    {
+      "name": "action_none",
+      "value": "无"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "更新间隔"
+    },
+    {
+      "name": "detail_notes",
+      "value": "笔记"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "添加笔记"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "编辑笔记"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "缺失 %d 章"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "隐身浏览"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "浏览此插件的源时不记录阅读历史与统计"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "无痕浏览中 · 不记录阅读历史与统计"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "扩展更新"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "检查扩展更新"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "刷新插件仓库时检查扩展更新并提醒"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "有 %d 个扩展可更新"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "邮箱 / 用户名"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key（Kavita 服务器设置生成）"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "用户名（可选，Basic Auth）"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "密码（可选，Basic Auth）"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "记录关于这部作品的备注…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "扩展更新"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d 个扩展有新版本，可在插件页更新"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "已开启「仅 Wi-Fi 时更新」，当前网络不满足，已跳过本次更新"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "已开启「仅充电时更新」，请连接充电器后再更新"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "暂无阅读历史"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "暂无可读章节"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "继续阅读：%s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "继续听书"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "暂无可听的小说"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "听书启动失败"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "继续听书：%s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "书架未找到\"%s\"，已打开全局搜索"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "书架已找到《%1$s》，未匹配到章节\"%2$s\"，已打开作品详情"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "已打开：《%1$s》%2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "已打开：%s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "已加入书架：%s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "已跳过书库刷新：%s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "书库刷新已开始"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "无法理解快进指令：\"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "已执行：%s"
+    },
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "描述"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
     }
   ]
 }

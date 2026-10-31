@@ -114,7 +114,8 @@ export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> 
     }
     if (best === undefined || bestScore <= 0) {
       this.fallbackGlobalSearch(mangaQuery);
-      return OpenChapterImpl.result(1, `书架未找到"${mangaQuery}"，已打开全局搜索`);
+      return OpenChapterImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_open_not_in_library').id, mangaQuery));
     }
     let chapters: ChapterRecord[] = [];
     try {
@@ -125,7 +126,8 @@ export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> 
     const chapter: ChapterRecord | undefined = OpenChapterImpl.matchChapter(chapterQuery, chapters);
     if (chapter === undefined) {
       this.openDetail(best.id);
-      return OpenChapterImpl.result(1, `书架已找到《${best.title}》，未匹配到章节"${chapterQuery}"，已打开作品详情`);
+      return OpenChapterImpl.result(1, context.resourceManager.getStringSync(
+        $r('app.string.intent_open_chapter_no_match').id, best.title, chapterQuery));
     }
     const payload: Record<string, string | number> = {
       'target': 'reader',
@@ -134,7 +136,8 @@ export default class OpenChapterImpl extends InsightIntentEntryExecutor<string> 
       'contentType': best.contentType
     };
     AppStorage.setOrCreate(AppKeys.CARD_ACTION, JSON.stringify(payload));
-    return OpenChapterImpl.result(0, `已打开：《${best.title}》${chapter.name}`);
+    return OpenChapterImpl.result(0, context.resourceManager.getStringSync(
+      $r('app.string.intent_open_chapter_opened').id, best.title, chapter.name));
   }
 
   private fallbackGlobalSearch(query: string): void {

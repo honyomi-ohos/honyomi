@@ -141,6 +141,8 @@ export struct HistoryPage {
   // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的历史；插件注册完成后（pluginsDirty）重算过滤
   @StorageProp('showNsfw') @Watch('onLibDirty') showNsfw: boolean = false;
   @StorageProp('pluginsDirty') @Watch('onLibDirty') pluginsDirty: number = 0;
+  // 插件加载完成标志（见 AppKeys.PLUGINS_LOADED）：NSFW 过滤区分未加载完与未安装
+  @StorageProp('pluginsLoaded') pluginsLoaded: boolean = false;
   @State items: HistoryItem[] = [];
   @State loading: boolean = true;
   // 确认清空态经 AppStorage 发布（头部 HistoryHeader 的 delete_sweep 图标着色读）
@@ -173,11 +175,15 @@ export struct HistoryPage {
       await AppDb.ready(context);
       let items = await HistoryRepo.recent(100);
       // 关闭“显示 NSFW 源”时隐藏 NSFW 插件源的历史条目；
-      // 源未注册（插件尚未加载完/已卸载）时无法确认非 NSFW，同样隐藏，避免冷启动闪现
+      // 插件加载完成前源未注册保持隐藏（防冷启动闪现）；
+      // 完成后仍未注册 = 插件未安装（如备份恢复后待装），保留显示
       if (!this.showNsfw) {
         items = items.filter((it: HistoryItem): boolean => {
           const source = SourceRegistry.get(it.sourceKey);
-          return source !== undefined && !source.nsfw;
+          if (!this.pluginsLoaded) {
+            return source !== undefined && !source.nsfw;
+          }
+          return source === undefined || !source.nsfw;
         });
       }
       this.items = items;

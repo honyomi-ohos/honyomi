@@ -43,7 +43,8 @@ export default class RefreshLibraryImpl extends InsightIntentEntryExecutor<strin
     const blockReason = UpdateService.checkUpdateRestrictions();
     if (blockReason !== '') {
       hilog.info(DOMAIN, 'Mihon', 'RefreshLibrary intent skipped: %{public}s', blockReason);
-      return Promise.resolve(RefreshLibraryImpl.result(0, `已跳过书库刷新：${blockReason}`));
+      return Promise.resolve(RefreshLibraryImpl.result(0, context.resourceManager.getStringSync(
+        $r('app.string.intent_refresh_skipped').id, UpdateService.restrictionText(context, blockReason))));
     }
     // 异步刷新：不阻塞意图返回
     UpdateService.refreshLibrary(context).then((newCount: number) => {
@@ -55,6 +56,7 @@ export default class RefreshLibraryImpl extends InsightIntentEntryExecutor<strin
     }).catch((e: Error) => {
       hilog.warn(DOMAIN, 'Mihon', 'RefreshLibrary intent failed: %{public}s', e.message);
     });
-    return Promise.resolve(RefreshLibraryImpl.result(0, '书库刷新已开始'));
+    return Promise.resolve(RefreshLibraryImpl.result(0,
+      context.resourceManager.getStringSync($r('app.string.intent_refresh_started').id)));
   }
 }

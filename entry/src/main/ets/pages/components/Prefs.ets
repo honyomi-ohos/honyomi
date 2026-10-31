@@ -50,6 +50,9 @@ export struct TextRow {
   // 动态取值（如亮度标签/缓存大小/UA）必须 @Prop：普通成员仅创建时赋值，
   // 父组件状态变化后行文本不会刷新
   @Prop value: Resource | string = '';
+  // 第二段取值（如 Bangumi 镜像 API/图片双域名）：非空时与 value 以 · 并列，
+  // 各自独立省略（flexShrink 按比例收缩），窄屏下两段均保持可见
+  @Prop secondaryValue: Resource | string = '';
   onTap: () => void = () => {
   };
 
@@ -60,7 +63,28 @@ export struct TextRow {
         .fontColor(this.pal.text)
         .layoutWeight(1)
         .maxLines(1)
-      if (this.value !== '') {
+      if (this.secondaryValue !== '') {
+        Row({ space: 4 }) {
+          Text(this.value)
+            .fontSize(14)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .flexShrink(1)
+          Text('·')
+            .fontSize(14)
+            .fontColor(this.pal.sub)
+          Text(this.secondaryValue)
+            .fontSize(14)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .flexShrink(1)
+        }
+        // 值组占满标题剩余空间前先封顶，保证标题不被挤没；组内两段各自省略
+        .constraintSize({ maxWidth: '60%' })
+        .alignItems(VerticalAlign.Center)
+      } else if (this.value !== '') {
         Text(this.value)
           .fontSize(14)
           .fontColor(this.pal.sub)

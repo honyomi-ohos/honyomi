@@ -40,7 +40,8 @@ export default class ContinueListeningImpl extends InsightIntentEntryExecutor<st
         TtsPlaybackService.resume();
       }
       this.openTtsPlayer();
-      return ContinueListeningImpl.result(0, '继续听书');
+      return ContinueListeningImpl.result(0,
+        context.resourceManager.getStringSync($r('app.string.intent_continue_listening_resumed').id));
     }
     try {
       await AppDb.ready(context);
@@ -50,15 +51,18 @@ export default class ContinueListeningImpl extends InsightIntentEntryExecutor<st
     const last: HistoryItem | undefined = await HistoryRepo.lastNovel();
     if (last === undefined) {
       this.openHistory();
-      return ContinueListeningImpl.result(1, '暂无可听的小说');
+      return ContinueListeningImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_continue_listening_no_novel').id));
     }
     const started: boolean = await TtsPlaybackService.start(last.mangaId, last.chapterId, 0, context);
     if (!started) {
       this.openHistory();
-      return ContinueListeningImpl.result(1, '听书启动失败');
+      return ContinueListeningImpl.result(1,
+        context.resourceManager.getStringSync($r('app.string.intent_continue_listening_failed').id));
     }
     this.openTtsPlayer();
-    return ContinueListeningImpl.result(0, `继续听书：${last.mangaTitle}`);
+    return ContinueListeningImpl.result(0,
+      context.resourceManager.getStringSync($r('app.string.intent_continue_listening_opened').id, last.mangaTitle));
   }
 
   private openTtsPlayer(): void {

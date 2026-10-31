@@ -525,10 +525,6 @@
       "value": "Dihapus dari rak buku"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Semua bab ditandai sudah dibaca"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Masuk antrean unduhan"
     },
@@ -567,10 +563,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Bab (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Tandai semua dibaca"
     },
     {
       "name": "detail_download",
@@ -3611,6 +3603,1590 @@
     {
       "name": "subject_infobox_duration",
       "value": "Durasi"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Penyimpanan pribadi aplikasi"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Penyimpanan internal"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Tidak pernah"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Ekspor dibatalkan"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Ekspor gagal"
+    },
+    {
+      "name": "module_desc",
+      "value": "Deskripsi modul"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Deskripsi"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Penilaian"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Jarak halaman"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Kontinu"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dua halaman"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Otomatis (lanskap)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Selalu"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Matikan"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Halaman sampul sendiri"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Tombol volume membalik halaman"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Layar tetap menyala"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Tampilkan nama bab dan nomor halaman"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Pramuat halaman"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Lewati halaman duplikat"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Hapus halaman kosong"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Pengalaman membaca"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Penanganan halaman"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Vertikal kontinu"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Cari riwayat"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Terkait"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Seri terkait"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Bab"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Kertas"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Balik halaman otomatis"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Matikan"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d dtk"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Balik halaman otomatis diaktifkan"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Balik halaman otomatis dimatikan"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Balik halaman otomatis tidak tersedia dalam mode Webtoon"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Gambar dalam gambar tidak tersedia di perangkat ini"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Repositori ekstensi"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Belum ada repositori ekstensi. Ketuk + untuk menambahkan."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Tambah repositori"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "URL indeks repositori"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Masukkan URL http(s) yang valid"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Repositori ini sudah ditambahkan"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Menambahkan…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Repositori ditambahkan"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Gagal menambahkan repositori: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Hapus repositori"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Hapus repositori %s?\n%s\n\nEkstensi yang terpasang akan dipertahankan."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Repositori dihapus"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Disalin ke papan klip"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Menyegarkan…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Repositori disegarkan"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Gagal menyegarkan: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Ekstensi tidak tepercaya"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Ekstensi berbahaya dapat membaca kredensial masuk yang tersimpan atau menjalankan kode sembarang.\n\nDengan memercayai ekstensi ini, Anda menerima risiko tersebut."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Percayai"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Tidak tepercaya"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Dipercaya %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Cadangan penuh"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Hanya rak buku dan repositori ekstensi"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Sertakan data sensitif"
+    },
+    {
+      "name": "backup_password",
+      "value": "Kata sandi"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Konfirmasi kata sandi"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Kata sandi minimal 6 karakter"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Kata sandi tidak cocok"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Kata sandi wajib untuk menyertakan data sensitif"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Cadangan ini berisi data sensitif terenkripsi. Masukkan kata sandi cadangan untuk memulihkannya."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Kata sandi salah"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (komentar video)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Danmaku untuk pemutaran video diaktifkan secara default dan dapat dimatikan kapan saja di pengaturan pemutar atau saat pemutaran. Saat aktif, judul karya yang diputar dikirim ke layanan Danmaku pihak ketiga dandanplay (api.dandanplay.net) untuk mencocokkan episode dan memuat kumpulan komentarnya. Tidak ada pengenal akun atau perangkat yang dikirim, dan komentar yang diunduh hanya disimpan di memori. Layanan ini diatur oleh kebijakan privasinya sendiri."
+    },
+    {
+      "name": "help_title",
+      "value": "Bantuan"
+    },
+    {
+      "name": "help_intro",
+      "value": "Buku panduan Honyomi: dari mengimpor konten dan memasang ekstensi hingga membaca, mendengarkan, cadangan, dan privasi — fitur sehari-hari dijelaskan, plus tips pemecahan masalah."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Memulai"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Tambahkan berkas lokal (CBZ, EPUB, dan lainnya) lewat sumber Lokal atau dengan membuka berkas secara langsung. Untuk konten daring, tambahkan repositori ekstensi di Jelajah > Ekstensi, pasang ekstensi, lalu jelajahi dan cari sumbernya. Ketuk Tambah ke rak buku di halaman karya untuk menyimpannya di rak, dan tekan lama item rak buku untuk mengelola secara massal. Saat pertama kali, sesuaikan tema, layar awal, dan preferensi membaca di Pengaturan."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Ekstensi dan plugin"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Sumber daring disediakan oleh plugin ekstensi, dikelola di Jelajah > Ekstensi: tambahkan repositori, lalu pasang, perbarui, atau hapus ekstensi. Tarik daftar ke bawah untuk memeriksa pembaruan plugin. Hanya tambahkan repositori yang Anda percayai — setelah repositori offline, ekstensinya tidak lagi dapat diperbarui atau dipasang ulang."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Membaca dan mendengarkan"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "Pembaca menawarkan mode halaman, vertikal, dan Webtoon dengan arah, latar, dan kecerahan yang dapat diatur, diingat per karya. Novel dapat dibacakan dengan kecepatan yang dapat diatur, pengatur waktu tidur, dan pemutaran latar belakang; video diputar daring dengan dukungan Danmaku. Progres membaca dicatat secara otomatis."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Pengelolaan unduhan"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Antrekan bab dari halaman karya atau daftar bab untuk dibaca offline. Tinjau progres, jeda, atau hapus tugas di Lainnya > Pengelola unduhan; Pengaturan > Unduhan menawarkan unduhan hanya lewat Wi-Fi, unduh otomatis bab baru, dan penghapusan otomatis bab yang sudah dibaca."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Pelacakan dan sinkron"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Hubungkan AniList, MyAnimeList, Bangumi, Kitsu, atau Shikimori dari bagian Pelacakan di halaman karya. Status dan progres membaca disinkronkan secara otomatis setelah terhubung; token hanya disimpan di perangkat Anda dan Anda dapat memutus kapan saja."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Memigrasi sumber"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Saat sebuah karya pindah ke sumber lain yang sejenis, buka karyanya lalu pilih Migrasi dari menu. Honyomi mencocokkan sumber tujuan menurut judul atau penulis dan membawa progres membaca serta unduhan, sehingga Anda dapat melanjutkan dengan mulus dari sumber baru."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Pembaruan dan akan datang"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Tab Pembaruan memeriksa rak buku untuk bab baru — tarik ke bawah untuk menyegarkan, dan karya dengan bab baru ditampilkan lebih dulu. Halaman Mendatang memperkirakan waktu pembaruan berikutnya tiap karya dari ritme rilis historisnya; perkiraan hanya bersifat indikatif."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Data dan penyimpanan"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Rak buku, progres, dan pengaturan Anda hanya disimpan di perangkat dan tidak pernah diunggah. Gunakan Lainnya > Data dan penyimpanan untuk mencadangkan dan memulihkan, meninjau penggunaan penyimpanan, menghapus cache bab, serta menjadwalkan cadangan otomatis. Cadangkan secara manual sebelum berganti perangkat atau memasang ulang."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Privasi dan keamanan"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi mengutamakan lokal dan tidak mengumpulkan data pribadi. Pengaturan > Privasi menawarkan kunci aplikasi biometrik, penyembunyian isi notifikasi, dan pemblokiran tangkapan layar; mode penyamaran di halaman Lainnya menjeda riwayat membaca. Sumber NSFW tetap tersembunyi sampai diaktifkan di Pengaturan > Jelajah."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Pemecahan masalah"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Jika halaman gagal dimuat, periksa jaringan atau ganti penyedia DNS-over-HTTPS di Pengaturan > Lanjutan, dan selesaikan permintaan verifikasi situs saat muncul. Jika sumber bermasalah, tarik untuk menyegarkan daftar ekstensi guna memeriksa pembaruan plugin, atau pasang ulang ekstensi. Untuk masalah yang membandel, cadangkan dulu di Data dan penyimpanan, lalu hapus cache bab."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Kertas"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Menerjemahkan… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Terjemahan selesai"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Terjemahan gagal"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Terjemahan dibatalkan"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Bahasa konten sama dengan bahasa target, terjemahan tidak diperlukan"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Layanan pengenalan teks tidak tersedia. Coba lagi nanti (mungkin tidak didukung di emulator)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Terjemahan gambar"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Kenali dan terjemahkan setiap halaman secara otomatis, lalu tampilkan hasilnya di atas"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Terjemahan bab"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Terjemahkan bab ini secara otomatis dan tampilkan hasilnya saat diaktifkan"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Simpan gambar halaman"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Salin gambar"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Bagikan halaman"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Lihat asli"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Gambar halaman disimpan"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Gagal menyimpan"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Simpan gambar ke galeri"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Gambar disalin"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Gagal menyalin"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Gagal berbagi"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Suara"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Wanita (default)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Pria"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Jika suara pria tidak tersedia (belum diunduh), suara wanita default akan digunakan."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Layar tetap menyala"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Tombol volume membalik halaman"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Rata kanan-kiri"
+    },
+    {
+      "name": "novel_search",
+      "value": "Cari dalam bab"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Cari teks dalam bab ini"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Tidak ada yang cocok"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Markah"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Tandai posisi saat ini"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Markah ditambahkan"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Belum ada markah"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Baca otomatis diaktifkan"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Sudah di akhir bab terakhir, baca otomatis berhenti"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Kecerahan"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Loncat ke"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Dilanjutkan dari posisi terakhir"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Mulai dari awal"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Siaran langsung tidak dapat diunduh"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Enkripsi aliran video tidak didukung"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "Unduhan BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Bab ini adalah torrent BitTorrent. Pilih cara mengunduhnya"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Gunakan aplikasi sistem"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Mesin bawaan"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "Unduh di dalam aplikasi, mendukung pemutaran progresif"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Serahkan tautan magnet/torrent ke aplikasi lain (misalnya klien torrent)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Sekitar %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Pilihan Anda akan diingat. Anda dapat mengubahnya nanti di Pengaturan > Unduhan"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Diserahkan ke aplikasi sistem"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Tidak ada aplikasi yang dapat menangani torrent ini"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Mengunduh… pemutaran akan dimulai otomatis saat data cukup"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "%1$d bab torrent dilewati"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "Layanan BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Matikan untuk menghentikan mesin BT; mesin dimulai lagi saat unduhan BT dimulai"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Layanan BT mati. Aktifkan di Pengaturan - BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Mesin unduhan"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Tanya setiap kali"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Mesin bawaan"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "Aplikasi sistem"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "Komponen mesin BT belum terpasang"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Diperlukan untuk unduhan torrent dengan mesin bawaan"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Pasang"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Pemutaran progresif"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Mulai memutar saat torrent masih diunduh (unduh berurutan)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Batas kecepatan"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Batas kecepatan unduh"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Batas kecepatan unggah"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Tanpa batas"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Tracker tambahan"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Ditambahkan ke setiap unduhan torrent"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Satu URL tracker per baris"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Tidak ada"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d tracker"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Seeding"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Batas rasio berbagi"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Batasi unggah di jaringan berbayar"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Batasi unggah pada 10 KB/s di seluler untuk menghemat data"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Filter peer"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Blokir peer menurut alamat IP atau rentang"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Filter peer"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Satu aturan per baris: sebuah IP (192.168.1.1) atau rentang (10.0.0.0-10.255.255.255). Kosongkan untuk menonaktifkan"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Aturan tidak valid di baris %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Matikan"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d aturan"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Cermin Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Cermin Bangumi disimpan"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "Cermin API, https://your-proxy.example.com, kosong = default api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Alamat harus diawali https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Cermin gambar, https://your-proxy.example.com, kosong = default lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Alamat harus diawali https://"
+    },
+    {
+      "name": "trans_title",
+      "value": "Terjemahan"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Aktifkan terjemahan"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Terjemahkan teks di pembaca lewat mesin yang dikonfigurasi"
+    },
+    {
+      "name": "trans_test",
+      "value": "Uji terjemahan"
+    },
+    {
+      "name": "trans_target",
+      "value": "Bahasa target"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Menerjemahkan…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Semua mesin gagal"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Prioritas mesin"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Tekan lama dan seret untuk mengurutkan; ketuk mesin untuk mengatur kuncinya"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Siap"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Belum dikonfigurasi"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Tidak perlu pengaturan"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Sudah diatur"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu Terjemahan"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Kunci rahasia"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "Kunci aplikasi"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "Rahasia aplikasi"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "Token API"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Terjemahan"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "Kunci API"
+    },
+    {
+      "name": "action_edit",
+      "value": "Sunting"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Tambah saja"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "Anda belum memiliki kategori."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Kemungkinan duplikat"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "Ada entri di rak buku Anda dengan nama yang mirip.\n\nPilih entri untuk dimigrasi atau tambah saja."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d bab"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Tambah ke rak buku?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Hapus bab yang diunduh?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Bab yang diunduh dari entri ini akan dihapus."
+    },
+    {
+      "name": "default_category",
+      "value": "Kategori default"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Selalu tanya"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Otomatis (menurut jenis konten)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Tampilan"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Navigasi"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Umum"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "Kedip penyegaran E-ink"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Lewati bab yang sudah dibaca"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Lewati bab yang disaring"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Lewati bab duplikat"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Halaman transisi bab"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Kedip saat ganti halaman"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Warna kedip"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Putih"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Hitam"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Putih lalu hitam"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Durasi kedip (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Kedip setiap N halaman"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Pangkas tepi (mode halaman)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Pangkas tepi (Webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Mode campuran filter warna"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Tidak ada"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Perkalian"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Layar"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Hamparan"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Gelapkan"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Terangkan"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Nonaktifkan perkecil (Webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Posisi awal zoom"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Otomatis"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Kiri"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Kanan"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Tengah"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "Bentuk L"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Gaya Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "Kubus 3D"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Tumpukan"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Pudar"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "Balik 3D"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Bola"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Ketuk untuk lanjut"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Melewati %d bab, sumber tidak memilikinya atau bab telah disaring"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Atur titik lewati di panel pengaturan pemutar"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Subtitle"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Muat file subtitle .srt eksternal"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Ukuran teks subtitle"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Filter Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Komentar yang cocok dengan aturan regex mana pun akan disembunyikan"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Tambah"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Masukkan aturan regex, mis. \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Aturan tidak valid atau duplikat"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Belum ada aturan filter"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Filter diterapkan"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Titik lewati disimpan"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Format waktu tidak valid"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Subtitle dimuat"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "File subtitle tidak valid"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Gagal membaca file"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Gagal masuk: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "Tidak ada episode yang cocok di perpustakaan Danmaku"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Silakan masuk terlebih dahulu"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Bab ini tidak memiliki episode yang cocok"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Terkirim"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Gagal mengirim: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Terkait"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Prequel"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Sekuel"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Spin-off"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Spesial"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Cerita utama"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Kompilasi"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Ubah interval pembaruan"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Ikuti global"
+    },
+    {
+      "name": "interval_never",
+      "value": "Tidak pernah"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Tiap jam"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Tiap 6 jam"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Tiap 12 jam"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Tiap hari"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Tiap 2 hari"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Tiap 3 hari"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Tiap minggu"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Tiap 2 minggu"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Tiap bulan"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Tiap %d jam"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Pembaruan global"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Perbarui hanya lewat Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Lewati pembaruan rak buku di jaringan non-Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Perbarui hanya saat mengisi daya"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Lewati pembaruan rak buku saat tidak mengisi daya"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Aksi geser"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Aksi awal"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Aksi akhir"
+    },
+    {
+      "name": "action_none",
+      "value": "Tidak ada"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Interval pembaruan"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Catatan"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Tambah catatan"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Edit catatan"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Hilang %d bab"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Jelajah mode penyamaran"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Riwayat dan statistik tidak dicatat saat menjelajah sumber ekstensi ini"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Menjelajah mode penyamaran · Riwayat membaca dan statistik tidak dicatat"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Pembaruan ekstensi"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Periksa pembaruan ekstensi"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Periksa pembaruan saat menyegarkan repositori plugin dan beri tahu"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d ekstensi dapat diperbarui"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Email / nama pengguna"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "Kunci API (dibuat di pengaturan server Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Nama pengguna (opsional, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Kata sandi (opsional, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Tulis catatan tentang entri ini…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Pembaruan ekstensi"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d ekstensi memiliki versi baru; perbarui di halaman plugin"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Pembaruan hanya lewat Wi-Fi aktif dan jaringan saat ini tidak memenuhi syarat, pembaruan dilewati"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Pembaruan hanya saat mengisi daya aktif, hubungkan pengisi daya untuk memperbarui"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Belum ada riwayat baca"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Tidak ada bab yang dapat dibaca"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Lanjutkan membaca: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Melanjutkan buku audio"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Tidak ada novel yang dapat didengarkan"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Gagal memulai pemutaran"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Lanjutkan mendengarkan: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "\"%s\" tidak ditemukan di rak buku Anda, pencarian global dibuka"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "Menemukan \"%1$s\" di rak buku Anda tetapi tidak ada bab yang cocok dengan \"%2$s\", detail entri dibuka"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Dibuka: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Dibuka: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Ditambah ke rak buku: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Penyegaran rak buku dilewati: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Penyegaran rak buku dimulai"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Tidak dapat memahami perintah loncat: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Selesai: %s"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "detail_filter_tab",
+      "value": "Saring"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "ext_multi_lang",
+      "value": "Multi"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "track_status",
+      "value": "Status"
+    },
+    {
+      "name": "stats_total_chapters",
+      "value": "Jumlah"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Saring"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Default"
+    },
+    {
+      "name": "common_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavender"
+    },
+    {
+      "name": "settings_data",
+      "value": "Data"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Fon"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Default"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Tanpa serif"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Monospace"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Data"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS melalui HTTPS"
+    },
+    {
+      "name": "action_filter",
+      "value": "Saring"
+    },
+    {
+      "name": "theme_name_yin_yang",
+      "value": "Yin dan Yang"
     }
   ]
 }

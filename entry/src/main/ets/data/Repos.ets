@@ -1242,6 +1242,8 @@ export class HistoryRepo {
     return Settings.isPluginIncognito(pluginKey);
   }
 
+  // 最近阅读记录（按作品去重）：同一作品仅保留 seenAt 最新一条，再按 seenAt 倒序返回。
+  // limit 作用于去重后的条目数（历史页/继续阅读意图/小组件共用）。
   static async recent(limit: number): Promise<HistoryItem[]> {
     const store = await AppDb.get();
     return queryAll<HistoryItem>(safeQuerySql(store,
@@ -1254,6 +1256,9 @@ export class HistoryRepo {
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
+       WHERE h.rowid = (SELECT h2.rowid FROM history h2
+                        WHERE h2.mangaId = h.mangaId
+                        ORDER BY h2.seenAt DESC, h2.rowid DESC LIMIT 1)
        ORDER BY h.seenAt DESC LIMIT ?`, [limit]),
       (rs: relationalStore.ResultSet): HistoryItem => HistoryRepo.rowToItem(rs), 'recent history failed');
   }
@@ -1609,6 +1614,13 @@ export class UpcomingRepo {
 }
 
 // 追踪仓库（多追踪器，对齐 Mihon TrackRepo：每漫画 × 每 syncId 一条记录）
+// 追踪记录 + 作品源身份（备份导出联表行）
+export interface TrackExportRow {
+  track: TrackRecord;
+  sourceKey: string;
+  url: string;
+}
+
 export class TrackRepo {
   private static readonly COLUMNS: string[] = [
     'id', 'mangaId', 'syncId', 'remoteId', 'libraryId', 'title', 'status', 'lastChapterRead',
@@ -1738,6 +1750,29 @@ export class TrackRepo {
       await store.delete(pred);
     } catch (e) {
       throw new Error(`delete track failed: ${e}`);
+    }
+  }
+
+  // 备份导出用：全部追踪记录联表作品源身份（sourceKey + url 跨设备定位）
+  static async listAllWithManga(): Promise<TrackExportRow[]> {
+    const store = await AppDb.get();
+    const sql = `SELECT t.id, t.mangaId, t.syncId, t.remoteId, t.libraryId, t.title, t.status, ` +
+      `t.lastChapterRead, t.score, t.totalChapters, t.remoteUrl, t.startDate, t.finishDate, t.isPrivate, ` +
+      `m.sourceKey, m.url AS mangaUrl FROM track t JOIN manga m ON t.mangaId = m.id`;
+    return queryAll<TrackExportRow>(safeQuerySql(store, sql),
+      (rs: relationalStore.ResultSet): TrackExportRow => TrackRepo.rowToExportRow(rs), 'list all tracks failed');
+  }
+
+  private static rowToExportRow(rs: relationalStore.ResultSet): TrackExportRow {
+    try {
+      const row: TrackExportRow = {
+        track: TrackRepo.rowToTrack(rs),
+        sourceKey: rs.getString(rs.getColumnIndex('sourceKey')),
+        url: rs.getString(rs.getColumnIndex('mangaUrl')),
+      };
+      return row;
+    } catch (e) {
+      throw new Error(`map track export row failed: ${e}`);
     }
   }
 

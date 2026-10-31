@@ -525,10 +525,6 @@
       "value": "Tinanggal sa aklatan"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Lahat ng kabanata ay minarkahang nabasa"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Nasa pila na ng download"
     },
@@ -567,10 +563,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Mga kabanata (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Markahan lahat na nabasa"
     },
     {
       "name": "detail_download",
@@ -3503,6 +3495,1698 @@
     {
       "name": "subject_infobox_duration",
       "value": "Haba"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Pribadong storage ng app"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Internal storage"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Hindi kailanman"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Kinansela ang pag-export"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Nabigo ang pag-export"
+    },
+    {
+      "name": "module_desc",
+      "value": "Paglalarawan ng module"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Paglalarawan"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Rating"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Agwat ng pahina"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Tuloy-tuloy"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Dalawang pahina"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Auto (pahiga)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Palagi"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Naka-off"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Mag-isang cover"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Volume keys ang nagpapalit ng pahina"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Panatilihing naka-on ang screen"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Ipakita ang pangalan ng kabanata at numero ng pahina"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "I-preload ang mga pahina"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Laktawan ang mga dobleng pahina"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Alisin ang mga blangkong pahina"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Karanasan sa pagbasa"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Paghawak ng pahina"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Patayong tuloy-tuloy"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Maghanap sa kasaysayan"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Kaugnay"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Kaugnay na serye"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Mga kabanata"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Papel"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Awtomatikong paglipat ng pahina"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Naka-off"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d s"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Naka-on ang awtomatikong paglipat ng pahina"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Naka-off ang awtomatikong paglipat ng pahina"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Hindi available ang awtomatikong paglipat ng pahina sa Webtoon mode"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Hindi available ang picture-in-picture sa device na ito"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Mga repository ng extension"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Wala pang repository ng extension. I-tap ang + para magdagdag."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Magdagdag ng repository"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "URL ng index ng repository"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Maglagay ng valid na http(s) URL"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Naidagdag na ang repository na ito"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Idinaragdag…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Naidagdag ang repository"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Nabigo ang pagdagdag ng repository: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Tanggalin ang repository"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Tanggalin ang repository na %s?\n%s\n\nPapanatilihin ang mga naka-install na extension."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Tinanggal ang repository"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Nakopya sa clipboard"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Nire-refresh…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Na-refresh ang mga repository"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Nabigo ang pag-refresh: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Hindi pinagkakatiwalaang extension"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Maaaring basahin ng malisyosong extension ang anumang nakaimbak na kredensyal sa pag-log in o magpatakbo ng arbitraryong code.\n\nSa pagtitiwala sa extension na ito, tinatanggap mo ang mga panganib na ito."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Pagkatiwalaan"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Hindi pinagkakatiwalaan"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Pinagkatiwalaan ang %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Buong backup"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Aklatan at mga repository ng extension lang"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Isama ang sensitibong data"
+    },
+    {
+      "name": "backup_password",
+      "value": "Password"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Kumpirmahin ang password"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Dapat may hindi bababa sa 6 na karakter ang password"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Hindi magkatugma ang mga password"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Kailangan ng password para isama ang sensitibong data"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "May naka-encrypt na sensitibong data ang backup na ito. Ilagay ang password ng backup para i-restore ito."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Mali ang password"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Danmaku (mga komento sa video)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Naka-on nang default ang Danmaku para sa pag-playback ng video at maaaring i-off anumang oras sa mga setting ng player o habang nagpe-play. Habang naka-on, ipinapadala ang pamagat ng akdang pinapatugtog sa third-party na serbisyo ng Danmaku na dandanplay (api.dandanplay.net) para itugma ang episode at i-load ang comment pool nito. Walang ipinapadalang identifier ng account o device, at ang mga na-download na komento ay nasa memory lang. Ang serbisyo ay saklaw ng sarili nitong patakaran sa privacy."
+    },
+    {
+      "name": "help_title",
+      "value": "Tulong"
+    },
+    {
+      "name": "help_intro",
+      "value": "Ang handbook ng Honyomi: mula sa pag-import ng content at pag-install ng mga extension hanggang sa pagbasa, pakikinig, backup, at privacy — paliwanag ng mga pang-araw-araw na feature, kasama ang mga tip sa pag-troubleshoot."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Pagsisimula"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Magdagdag ng mga lokal na file (CBZ, EPUB, at iba pa) sa pamamagitan ng Lokal na source o sa direktang pagbukas ng file. Para sa online na content, magdagdag ng repository ng extension sa Mag-browse > Mga extension, mag-install ng mga extension, tapos mag-browse at maghanap sa mga source nila. I-tap ang Idagdag sa aklatan sa pahina ng akda para itago ito sa aklatan, at i-long press ang mga item sa aklatan para pamahalaan nang maramihan. Sa unang paggamit, isaayos ang tema, panimulang screen, at mga kagustuhan sa pagbasa sa Mga setting."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Mga extension at plugin"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Ang mga online na source ay mula sa mga plugin na extension, pinamamahalaan sa Mag-browse > Mga extension: magdagdag ng mga repository, tapos mag-install, mag-update, o mag-alis ng mga extension. Hilahin pababa ang listahan para tingnan ang mga update ng plugin. Magdagdag lang ng mga repository na pinagkakatiwalaan mo — kapag nag-offline ang isang repository, hindi na maa-update o mai-install muli ang mga extension nito."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Pagbasa at pakikinig"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "Nag-aalok ang reader ng mga mode na paged, patayo, at Webtoon na may naiaayos na direksyon, background, at liwanag, naaalala bawat akda. Maaaring basahin nang malakas ang mga nobela na may naiaayos na bilis, sleep timer, at background playback; nagpe-play online ang mga video na may suporta sa Danmaku. Awtomatikong naitatala ang progreso ng pagbasa."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Pamamahala ng download"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Ilagay sa pila ang mga kabanata mula sa pahina ng akda o listahan ng kabanata para basahin offline. Suriin ang progreso, i-pause, o alisin ang mga gawain sa Higit pa > Download manager; nag-aalok ang Mga setting > Mga download ng download sa Wi-Fi lang, awtomatikong download ng mga bagong kabanata, at awtomatikong pagtanggal ng mga nabasang kabanata."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Tracking at sync"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Ikonekta ang AniList, MyAnimeList, Bangumi, Kitsu, o Shikimori mula sa seksyong Tracking ng pahina ng akda. Awtomatikong nagsi-sync ang status at progreso ng pagbasa kapag naka-link na; ang mga token ay naka-store lang sa device mo at maaari mong i-unlink anumang oras."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Paglipat ng mga source"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Kapag lumipat ang isang akda sa ibang source na parehong uri, buksan ito at piliin ang Ilipat mula sa menu. Itinutugma ng Honyomi ang target na source ayon sa pamagat o may-akda at dinadala ang progreso ng pagbasa at mga download, kaya maaari kang magpatuloy nang tuluy-tuloy mula sa bagong source."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Mga update at paparating"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Tinitingnan ng tab na Mga update ang aklatan mo para sa mga bagong kabanata — hilahin pababa para mag-refresh, at unang ipinapakita ang mga akdang may bagong kabanata. Tinatantya ng pahinang Paparating ang susunod na oras ng update ng bawat akda mula sa nakaraang ritmo ng paglabas; indikasyon lang ang mga tantya."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Datos at storage"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Ang aklatan, progreso, at mga setting mo ay naka-store lang sa device at hindi kailanman ina-upload. Gamitin ang Higit pa > Datos at storage para mag-backup at mag-restore, suriin ang paggamit ng storage, linisin ang cache ng kabanata, at mag-iskedyul ng awtomatikong backup. Mag-backup nang mano-mano bago magpalit ng device o mag-install muli."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Privacy at seguridad"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Lokal-muna ang Honyomi at hindi nangongolekta ng personal na data. Nag-aalok ang Mga setting > Privacy ng biometric na app lock, pagtatago ng nilalaman ng notification, at pagharang sa screenshot; pinapa-pause ng incognito na mode sa pahinang Higit pa ang kasaysayan ng pagbasa. Nananatiling nakatago ang mga NSFW source hanggang i-enable sa Mga setting > Mag-browse."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Pag-troubleshoot"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Kung hindi ma-load ang mga pahina, tingnan ang network o palitan ang provider ng DNS-over-HTTPS sa Mga setting > Advanced, at kumpletuhin ang verification prompt ng site kapag lumitaw. Kung may problema ang isang source, hilahin para i-refresh ang listahan ng extension para tingnan ang mga update ng plugin, o i-install muli ang extension. Para sa matitigas na isyu, mag-backup muna sa Datos at storage, tapos linisin ang cache ng kabanata."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Papel"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Nagsasalin… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Tapos na ang pagsasalin"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Nabigo ang pagsasalin"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Kinansela ang pagsasalin"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Tumutugma ang wika ng content sa target na wika, hindi kailangan ng pagsasalin"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Hindi available ang serbisyo ng pagkilala ng teksto. Subukan muli mamaya (maaaring hindi suportado sa mga emulator)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Pagsasalin ng larawan"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Awtomatikong kilalanin at isalin ang bawat pahina, na naka-overlay ang resulta"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Pagsasalin ng kabanata"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "Awtomatikong isalin ang kabanatang ito at ipakita ang resulta kapag naka-enable"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "I-save ang larawan ng pahina"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Kopyahin ang larawan"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Ibahagi ang pahina"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Tingnan ang orihinal"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Na-save ang larawan ng pahina"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Nabigo ang pag-save"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "I-save ang larawan sa gallery"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Nakopya ang larawan"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Nabigo ang pagkopya"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Nabigo ang pagbabahagi"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Boses"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Babae (default)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Lalaki"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Kung hindi available ang boses na lalaki (hindi na-download), gagamitin ang default na boses na babae."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Panatilihing naka-on ang screen"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Volume keys ang nagpapalit ng pahina"
+    },
+    {
+      "name": "novel_justify",
+      "value": "I-justify ang teksto"
+    },
+    {
+      "name": "novel_search",
+      "value": "Maghanap sa kabanata"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Maghanap ng teksto sa kabanatang ito"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Walang tugma"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Mga bookmark"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "I-bookmark ang kasalukuyang posisyon"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Naidagdag ang bookmark"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Wala pang bookmark"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Naka-on ang awtomatikong pagbasa"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Naabot na ang dulo ng huling kabanata, huminto ang awtomatikong pagbasa"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Liwanag"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Lumaktaw sa"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Ipinagpatuloy mula sa huling posisyon"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "Simulan mula sa simula"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Hindi ma-download ang mga live stream"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Hindi suportado ang encryption ng video stream"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "Download ng BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Ang kabanatang ito ay torrent ng BitTorrent. Piliin kung paano ito i-download"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Gamitin ang system app"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Built-in na engine"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "I-download sa app, sumusuporta sa progressive playback"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Ibigay ang magnet/torrent link sa ibang app (hal. isang torrent client)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Humigit-kumulang %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Matatandaan ang pinili mo. Maaari mo itong baguhin sa Mga setting > Mga download"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Naibigay sa system app"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Walang app na kayang hawakan ang torrent na ito"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Nagda-download… awtomatikong magsisimula ang playback kapag sapat na ang data"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "Nilaktawan ang %1$d torrent na kabanata"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "Serbisyo ng BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "I-off para ihinto ang BT engine; magre-restart ito kapag nagsimula ang BT download"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Naka-off ang serbisyo ng BT. I-enable ito sa Mga setting - BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Download engine"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Magtanong sa bawat pagkakataon"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Built-in na engine"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "System app"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "Hindi naka-install ang component ng BT engine"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Kailangan para sa mga torrent download gamit ang built-in na engine"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "I-install"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Progressive playback"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Simulang mag-play habang dina-download pa ang torrent (sequential download)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Mga limit ng bilis"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Limit ng bilis ng download"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Limit ng bilis ng upload"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Walang limit"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Mga dagdag na tracker"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Idinadagdag sa bawat torrent download"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Isang tracker URL bawat linya"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Wala"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d tracker"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Seeding"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Limit ng share ratio"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Limitahan ang upload sa mga metered network"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "I-cap ang upload sa 10 KB/s sa cellular para makatipid ng data"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer filter"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "I-block ang mga peer ayon sa IP address o range"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer filter"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Isang tuntunin bawat linya: isang IP (192.168.1.1) o isang range (10.0.0.0-10.255.255.255). Iwanang walang laman para i-disable"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Hindi valid ang tuntunin sa linya %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Naka-off"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d tuntunin"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Mirror ng Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Na-save ang mirror ng Bangumi"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "API mirror, https://your-proxy.example.com, walang laman = default api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Dapat magsimula sa https:// ang address"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Image mirror, https://your-proxy.example.com, walang laman = default lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Dapat magsimula sa https:// ang address"
+    },
+    {
+      "name": "trans_title",
+      "value": "Pagsasalin"
+    },
+    {
+      "name": "trans_enable",
+      "value": "I-enable ang pagsasalin"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Isalin ang teksto sa reader sa pamamagitan ng mga naka-configure na engine"
+    },
+    {
+      "name": "trans_test",
+      "value": "Subukan ang pagsasalin"
+    },
+    {
+      "name": "trans_target",
+      "value": "Target na wika"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Nagsasalin…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Nabigo ang lahat ng engine"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Priyoridad ng engine"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "I-long press at i-drag para ayusin; i-tap ang engine para i-configure ang mga key nito"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Handa"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Hindi naka-configure"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Hindi kailangan ng setup"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Naka-set"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Baidu Translate"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Secret key"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "App key"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "App secret"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API token"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google Translate"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API key"
+    },
+    {
+      "name": "action_edit",
+      "value": "I-edit"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Idagdag pa rin"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "Wala ka pang anumang kategorya."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Mga posibleng duplicate"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "May mga entry sa aklatan mo na magkahawig ang pangalan.\n\nPumili ng entry na ililipat o idagdag pa rin."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d kabanata"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Idagdag sa aklatan?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Tanggalin ang mga naka-download na kabanata?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Tatanggalin ang mga naka-download na kabanata ng entry na ito."
+    },
+    {
+      "name": "default_category",
+      "value": "Default na kategorya"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Laging magtanong"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Awtomatiko (ayon sa uri ng nilalaman)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Hitsura"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Nabigasyon"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Pangkalahatan"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "Flash ng refresh ng E-ink"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Laktawan ang mga nabasang kabanata"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Laktawan ang mga na-filter na kabanata"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Laktawan ang mga dobleng kabanata"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Pahina ng paglipat ng kabanata"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Flash kapag nagpalit ng pahina"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Kulay ng flash"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Puti"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Itim"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Puti saka itim"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Tagal ng flash (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Flash kada N pahina"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "I-crop ang mga gilid (mga paged mode)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "I-crop ang mga gilid (Webtoon)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Blend mode ng filter ng kulay"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Wala"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "I-multiply"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Screen"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Overlay"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Padilimin"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Paliwanag"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "I-disable ang pag-zoom out (Webtoon)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Panimulang posisyon ng zoom"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Awtomatiko"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Kaliwa"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Kanan"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "Gitna"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "Hugis L"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Istilo ng Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D cube"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Stack"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Fade"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D flip"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Sphere"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "I-tap para magpatuloy"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Nilalaktawan ang %d kabanata, maaaring wala ang mga ito sa source o na-filter na"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Itakda ang mga skip point sa panel ng mga setting ng player"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Mga subtitle"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Mag-load ng mga panlabas na .srt subtitle file"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Laki ng teksto ng subtitle"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Mga filter ng Danmaku"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Itatago ang mga komentong tumutugma sa alinman sa mga regex rule na ito"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Idagdag"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Maglagay ng regex rule, hal. \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Hindi valid o duplicate na tuntunin"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Wala pang filter rule"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Na-apply ang mga filter"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Na-save ang mga skip point"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Hindi valid ang format ng oras"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Na-load ang subtitle"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Hindi valid ang subtitle file"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Nabigo ang pagbasa ng file"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Nabigo ang pag-log in: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "Walang tumugmang episode sa library ng Danmaku"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Mag-log in muna"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Walang tumugmang episode ang kabanatang ito"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Naipadala"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Nabigo ang pagpapadala: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Kaugnay"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Prequel"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Sequel"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Spin-off"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Special"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Pangunahing kuwento"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Compilation"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Baguhin ang interval ng update"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Sundin ang global"
+    },
+    {
+      "name": "interval_never",
+      "value": "Hindi kailanman"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Kada oras"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Kada 6 na oras"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Kada 12 oras"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Araw-araw"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Kada 2 araw"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Kada 3 araw"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Linggo-linggo"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Kada 2 linggo"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Buwan-buwan"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Kada %d oras"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Global na update"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Mag-update sa Wi-Fi lang"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Laktawan ang mga update ng aklatan sa mga network na hindi Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Mag-update lang habang nagcha-charge"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Laktawan ang mga update ng aklatan kapag hindi nagcha-charge"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Mga swipe action"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Panimulang aksyon"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Pangwakas na aksyon"
+    },
+    {
+      "name": "action_none",
+      "value": "Wala"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Interval ng update"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Mga tala"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Magdagdag ng tala"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "I-edit ang tala"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Nawawala ang %d kabanata"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Pag-browse nang incognito"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "Hindi naitatala ang kasaysayan at estadistika habang nagba-browse sa mga source ng extension na ito"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Nagba-browse nang incognito · Hindi naitatala ang kasaysayan ng pagbasa at estadistika"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Mga update ng extension"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Tingnan ang mga update ng extension"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Tingnan ang mga update kapag nire-refresh ang mga repository ng plugin at mag-abiso"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d extension ang maaaring i-update"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Email / username"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (ginawa sa mga setting ng server ng Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Username (opsyonal, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Password (opsyonal, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Sumulat ng mga tala tungkol sa entry na ito…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Mga update ng extension"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d extension ang may bagong bersyon; i-update ang mga ito sa pahina ng plugin"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Naka-on ang update sa Wi-Fi lang at hindi kwalipikado ang kasalukuyang network, nilaktawan ang update"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Naka-on ang update habang nagcha-charge lang, ikonekta ang charger para mag-update"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Wala pang kasaysayan ng pagbasa"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Walang nababasang kabanata"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Magpatuloy sa pagbasa: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Ipinagpapatuloy ang audiobook"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Walang nobelang mapakikinggan"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Nabigo ang pagsisimula ng playback"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Magpatuloy sa pakikinig: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "Hindi nahanap ang \"%s\" sa aklatan mo, binuksan ang global search"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "Nahanap ang \"%1$s\" sa aklatan mo pero walang kabanata na tumutugma sa \"%2$s\", binuksan ang detalye ng entry"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Binuksan: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Binuksan: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Idinagdag sa aklatan: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Nilaktawan ang pag-refresh ng aklatan: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Nagsimula ang pag-refresh ng aklatan"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Hindi maunawaan ang seek command: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Tapos na: %s"
+    },
+    {
+      "name": "lib_display_grid_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "common_ok",
+      "value": "OK"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Tako"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Yotsuba"
+    },
+    {
+      "name": "detail_action_tracking",
+      "value": "Tracking"
+    },
+    {
+      "name": "reader_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "reader_theme_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_auto",
+      "value": "Auto"
+    },
+    {
+      "name": "reader_set_mode_webtoon",
+      "value": "Webtoon"
+    },
+    {
+      "name": "browse_type_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "player_set_title",
+      "value": "Player"
+    },
+    {
+      "name": "player_set_danmaku",
+      "value": "Danmaku"
+    },
+    {
+      "name": "danmaku_speed_normal",
+      "value": "Normal"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "category_manga",
+      "value": "Manga"
+    },
+    {
+      "name": "track_title",
+      "value": "Tracking"
+    },
+    {
+      "name": "tts_sleep_minutes",
+      "value": "%1$d min"
+    },
+    {
+      "name": "lib_sheet_tab_filter",
+      "value": "Filter"
+    },
+    {
+      "name": "lib_sheet_tab_display",
+      "value": "Display"
+    },
+    {
+      "name": "lib_sort_random",
+      "value": "Random"
+    },
+    {
+      "name": "lib_display_cover",
+      "value": "Grid ng cover"
+    },
+    {
+      "name": "reader_filter_contrast",
+      "value": "Contrast"
+    },
+    {
+      "name": "reader_nav_default",
+      "value": "Default"
+    },
+    {
+      "name": "stats_minute_short",
+      "value": "%dm"
+    },
+    {
+      "name": "stats_second_short",
+      "value": "%ds"
+    },
+    {
+      "name": "common_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_default",
+      "value": "Default"
+    },
+    {
+      "name": "theme_name_strawberry_daiquiri",
+      "value": "Daiquiri ng Strawberry"
+    },
+    {
+      "name": "theme_name_lavender",
+      "value": "Lavender"
+    },
+    {
+      "name": "reader_background",
+      "value": "Background"
+    },
+    {
+      "name": "plugin_site_preview_title",
+      "value": "Website"
+    },
+    {
+      "name": "settings_start_tab",
+      "value": "Panimulang screen"
+    },
+    {
+      "name": "settings_reader",
+      "value": "Reader"
+    },
+    {
+      "name": "settings_data",
+      "value": "Datos"
+    },
+    {
+      "name": "settings_advanced",
+      "value": "Advanced"
+    },
+    {
+      "name": "advanced_title",
+      "value": "Advanced"
+    },
+    {
+      "name": "dl_set_network",
+      "value": "Network"
+    },
+    {
+      "name": "lib_set_display_group",
+      "value": "Display"
+    },
+    {
+      "name": "reader_set_title",
+      "value": "Reader"
+    },
+    {
+      "name": "reader_set_display_group",
+      "value": "Display"
+    },
+    {
+      "name": "novel_tab_display",
+      "value": "Display"
+    },
+    {
+      "name": "novel_anim_slide",
+      "value": "Slide"
+    },
+    {
+      "name": "novel_font_family",
+      "value": "Font"
+    },
+    {
+      "name": "novel_font_default",
+      "value": "Default"
+    },
+    {
+      "name": "novel_font_serif",
+      "value": "Serif"
+    },
+    {
+      "name": "novel_font_sans",
+      "value": "Sans-serif"
+    },
+    {
+      "name": "novel_font_mono",
+      "value": "Monospace"
+    },
+    {
+      "name": "player_set_playback",
+      "value": "Playback"
+    },
+    {
+      "name": "track_username",
+      "value": "Username"
+    },
+    {
+      "name": "track_password",
+      "value": "Password"
+    },
+    {
+      "name": "privacy_title",
+      "value": "Privacy"
+    },
+    {
+      "name": "pref_group_data",
+      "value": "Datos"
+    },
+    {
+      "name": "pref_group_network",
+      "value": "Network"
+    },
+    {
+      "name": "pref_group_reader",
+      "value": "Reader"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS sa HTTPS"
+    },
+    {
+      "name": "debug_screen",
+      "value": "Screen"
     }
   ]
 }

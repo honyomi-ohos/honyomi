@@ -533,10 +533,6 @@
       "value": "서재에서 제거했습니다"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "모든 회차를 읽음으로 표시했습니다"
-    },
-    {
       "name": "detail_download_queued",
       "value": "다운로드 대기열에 추가했습니다"
     },
@@ -579,10 +575,6 @@
     {
       "name": "detail_chapters_count",
       "value": "회차 (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "모두 읽음"
     },
     {
       "name": "detail_download",
@@ -3739,6 +3731,1462 @@
     {
       "name": "subject_infobox_duration",
       "value": "길이"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "앱 비공개 저장공간"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "내부 저장공간"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "백업한 적 없음"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "내보내기를 취소했습니다"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "내보내기에 실패했습니다"
+    },
+    {
+      "name": "module_desc",
+      "value": "모듈 설명"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "설명"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "평점"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "페이지 간격"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "연속 스크롤"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "두 페이지"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "자동 (가로)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "항상 두 페이지"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "끄기"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "표지 단독 페이지"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "음량 키로 페이지 넘김"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "화면 항상 켜기"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "회차 이름과 페이지 번호 표시"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "미리 불러올 페이지 수"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "중복 페이지 건너뛰기"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "빈 페이지 제거"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "읽기 환경"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "페이지 처리"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "세로 연속 스크롤"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "기록 검색"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "관련 시리즈"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "회차 목록"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "종이"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "자동 페이지 넘김"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "끄기"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d초"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "자동 페이지 넘김을 켰습니다"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "자동 페이지 넘김을 껐습니다"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "웹툰 모드에서는 자동 페이지 넘김을 사용할 수 없습니다"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "이 기기에서는 화면 속 화면을 지원하지 않습니다"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "확장 기능 저장소"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "확장 기능 저장소가 아직 없습니다. +를 눌러 추가하세요."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "저장소 추가"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "저장소 색인 URL"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "유효한 http(s) URL을 입력하세요"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "이 저장소는 이미 추가되어 있습니다"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "추가 중…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "저장소를 추가했습니다"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "저장소 추가 실패: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "저장소 삭제"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "저장소 %s을(를) 삭제할까요?\n%s\n\n설치된 확장 기능은 유지됩니다."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "저장소를 삭제했습니다"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "클립보드에 복사했습니다"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "새로고침 중…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "저장소를 새로고침했습니다"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "새로고침 실패: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "신뢰할 수 없는 확장 기능"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "악성 확장 기능은 저장된 로그인 정보를 읽거나 임의의 코드를 실행할 수 있습니다.\n\n이 확장 기능을 신뢰하면 이러한 위험을 받아들이게 됩니다."
+    },
+    {
+      "name": "ext_trust",
+      "value": "신뢰"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "미신뢰"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "%s을(를) 신뢰했습니다"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "전체 백업"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "서재와 확장 기능 저장소만"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "민감한 데이터 포함"
+    },
+    {
+      "name": "backup_password",
+      "value": "비밀번호"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "비밀번호 확인"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "비밀번호는 6자 이상이어야 합니다"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "비밀번호가 일치하지 않습니다"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "민감한 데이터를 포함하려면 비밀번호가 필요합니다"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "이 백업에는 암호화된 민감한 데이터가 포함되어 있습니다. 복원하려면 백업 비밀번호를 입력하세요."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "비밀번호가 올바르지 않습니다"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "탄막(동영상 댓글)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "동영상 재생의 탄막은 기본적으로 켜져 있으며 플레이어 설정이나 재생 중에 언제든지 끌 수 있습니다. 켜져 있는 동안 재생 중인 작품 제목이 타사 탄막 서비스 dandanplay(api.dandanplay.net)로 전송되어 에피소드를 맞추고 댓글을 불러옵니다. 계정이나 기기 식별자는 전송되지 않으며, 받은 댓글은 메모리에만 보관됩니다. 이 서비스는 자체 개인정보 처리방침을 따릅니다."
+    },
+    {
+      "name": "help_title",
+      "value": "도움말"
+    },
+    {
+      "name": "help_intro",
+      "value": "Honyomi 안내서입니다. 콘텐츠 가져오기와 확장 기능 설치부터 읽기, 낭독, 백업, 개인정보까지 자주 쓰는 기능 설명과 문제 해결 팁을 모았습니다."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "시작하기"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "로컬 소스에서 또는 파일을 직접 열어 CBZ, EPUB 등의 로컬 파일을 추가할 수 있습니다. 온라인 콘텐츠는 찾아보기 > 확장 기능에서 확장 기능 저장소를 추가하고 확장 기능을 설치한 뒤, 해당 소스를 둘러보고 검색하세요. 작품 페이지에서 서재에 추가를 누르면 서재에 남고, 서재 항목을 길게 누르면 한꺼번에 관리할 수 있습니다. 처음에는 설정에서 테마, 시작 화면, 읽기 환경을 조정하세요."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "확장 기능과 플러그인"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "온라인 소스는 확장 기능 플러그인이 제공하며 찾아보기 > 확장 기능에서 관리합니다. 저장소를 추가하면 확장 기능을 설치, 업데이트, 제거할 수 있습니다. 목록을 아래로 당겨 플러그인 업데이트를 확인하세요. 신뢰하는 저장소만 추가하세요. 저장소가 오프라인이 되면 해당 확장 기능은 더 이상 업데이트하거나 다시 설치할 수 없습니다."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "읽기와 낭독"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "뷰어는 페이지, 세로, 웹툰 모드를 제공하며 방향, 배경, 밝기를 작품마다 기억합니다. 소설은 속도 조절, 취침 타이머, 백그라운드 재생으로 낭독할 수 있습니다. 동영상은 온라인 재생과 탄막을 지원합니다. 읽기 진행도는 자동으로 기록됩니다."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "다운로드 관리"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "작품 페이지나 회차 목록에서 회차를 다운로드에 넣으면 오프라인으로 읽을 수 있습니다. 더보기 > 다운로드에서 진행도를 확인하고, 일시 중지하거나 작업을 삭제할 수 있습니다. 설정 > 다운로드에서는 Wi-Fi 전용 다운로드, 새 회차 자동 다운로드, 읽은 회차 자동 삭제를 설정할 수 있습니다."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "트래킹과 동기화"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "작품 페이지의 트래킹에서 AniList, MyAnimeList, Bangumi, Kitsu, Shikimori에 연결할 수 있습니다. 연결하면 상태와 읽기 진행도가 자동으로 동기화됩니다. 토큰은 기기에만 저장되며 언제든지 연결을 해제할 수 있습니다."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "소스 이전"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "같은 유형의 다른 소스로 작품을 옮길 때는 작품을 열고 메뉴에서 이전을 선택하세요. Honyomi는 제목이나 작가로 대상 소스를 맞추고 읽기 진행도와 다운로드를 옮기므로, 새 소스에서 이어서 볼 수 있습니다."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "업데이트와 업데이트 예정"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "업데이트 탭은 서재의 새 회차를 확인합니다. 아래로 당기면 새로고침되고, 새 회차가 있는 작품이 먼저 표시됩니다. 업데이트 예정은 과거 공개 간격으로 다음 업데이트 시각을 추정하며, 추정은 참고용입니다."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "데이터와 저장공간"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "서재, 진행도, 설정은 기기에만 저장되며 업로드되지 않습니다. 더보기 > 데이터와 저장공간에서 백업과 복원, 저장공간 사용량 확인, 회차 캐시 삭제, 자동 백업 예약을 할 수 있습니다. 기기를 바꾸거나 다시 설치하기 전에 수동으로 백업하세요."
+    },
+    {
+      "name": "help_security_title",
+      "value": "개인정보와 보안"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi는 로컬 우선이며 개인 데이터를 수집하지 않습니다. 설정 > 개인정보에서는 생체 인식 앱 잠금, 알림 내용 숨기기, 스크린샷 차단을 제공합니다. 더보기의 시크릿 모드는 읽은 기록 저장을 일시 중지합니다. NSFW 소스는 설정 > 찾아보기에서 켜기 전까지 숨겨집니다."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "문제 해결"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "페이지를 불러오지 못하면 네트워크를 확인하거나 설정 > 고급에서 DNS-over-HTTPS 제공자를 바꾸세요. 사이트의 확인 안내가 나오면 지시에 따라 완료하세요. 소스가 이상하면 확장 기능 목록을 아래로 당겨 플러그인 업데이트를 확인하거나 확장 기능을 다시 설치하세요. 그래도 해결되지 않으면 데이터와 저장공간에서 먼저 백업한 뒤 회차 캐시를 삭제하세요."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "종이"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "번역 중… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "번역이 완료되었습니다"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "번역에 실패했습니다"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "번역을 취소했습니다"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "콘텐츠 언어가 대상 언어와 같아 번역이 필요 없습니다"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "문자 인식 서비스를 사용할 수 없습니다. 나중에 다시 시도하세요 (에뮬레이터에서는 지원되지 않을 수 있습니다)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "이미지 번역"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "모든 페이지를 자동으로 인식하고 번역해 결과를 겹쳐 표시합니다"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "회차 번역"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "켜면 이 회차를 자동으로 번역하고 결과를 표시합니다"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "페이지 이미지 저장"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "이미지 복사"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "페이지 공유"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "원본 보기"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "페이지 이미지를 저장했습니다"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "저장에 실패했습니다"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "이미지를 갤러리에 저장"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "이미지를 복사했습니다"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "복사에 실패했습니다"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "공유에 실패했습니다"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "음성"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "여성 (기본)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "남성"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "남성 음성을 사용할 수 없으면(다운로드되지 않음) 기본 여성 음성을 사용합니다."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "화면 항상 켜기"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "음량 키로 페이지 넘김"
+    },
+    {
+      "name": "novel_justify",
+      "value": "양쪽 맞춤"
+    },
+    {
+      "name": "novel_search",
+      "value": "회차 내 검색"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "이 회차의 본문 검색"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "일치하는 항목 없음"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "북마크"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "현재 위치 북마크"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "북마크를 추가했습니다"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "아직 북마크가 없습니다"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "자동 읽기를 켰습니다"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "마지막 회차의 끝에 도달해 자동 읽기를 중지했습니다"
+    },
+    {
+      "name": "video_brightness",
+      "value": "밝기"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "이동 위치"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "마지막 위치에서 이어 재생합니다"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "처음부터 재생"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "라이브 스트림은 다운로드할 수 없습니다"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "지원하지 않는 동영상 스트림 암호화입니다"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "BitTorrent 다운로드"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "이 회차는 BitTorrent 토렌트입니다. 다운로드 방법을 선택하세요"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "시스템 앱 사용"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "내장 엔진"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "앱에서 다운로드하며 받으면서 재생할 수 있습니다"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "마그넷/토렌트 링크를 다른 앱(토렌트 클라이언트 등)에 넘깁니다"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "약 %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "선택은 기억됩니다. 나중에 설정 > 다운로드에서 바꿀 수 있습니다"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "시스템 앱으로 넘겼습니다"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "이 토렌트를 처리할 수 있는 앱이 없습니다"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "다운로드 중… 데이터가 충분해지면 자동으로 재생을 시작합니다"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "토렌트 회차 %1$d개를 건너뛰었습니다"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "BT 서비스"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "끄면 BT 엔진이 중지됩니다. BT 다운로드를 시작하면 다시 켜집니다"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "BT 서비스가 꺼져 있습니다. 설정의 BitTorrent에서 켜세요"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "다운로드 엔진"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "매번 묻기"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "내장 엔진"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "시스템 앱"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "BT 엔진 구성 요소가 설치되지 않았습니다"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "내장 엔진으로 토렌트를 다운로드할 때 필요합니다"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "설치"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "받으면서 재생"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "토렌트를 다운로드하는 동안 재생을 시작합니다 (순차 다운로드)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "속도 제한"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "다운로드 속도 제한"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "업로드 속도 제한"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "무제한"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "추가 트래커"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "모든 토렌트 다운로드에 추가합니다"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "한 줄에 트래커 URL 하나"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "없음"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "트래커 %1$d개"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "시딩"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "공유율 제한"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "종량제 네트워크에서 업로드 제한"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "셀룰러에서는 업로드를 10 KB/s로 제한해 데이터를 절약합니다"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Peer 필터"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "IP 주소 또는 범위로 Peer를 차단합니다"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Peer 필터"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "한 줄에 규칙 하나: IP(192.168.1.1) 또는 범위(10.0.0.0-10.255.255.255). 비워 두면 사용하지 않습니다"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "%1$d번째 줄의 규칙이 잘못되었습니다"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "끄기"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "규칙 %1$d개"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi 미러"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi 미러를 저장했습니다"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "API 미러, https://your-proxy.example.com, 비우면 기본 api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "주소는 https://로 시작해야 합니다"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "이미지 미러, https://your-proxy.example.com, 비우면 기본 lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "주소는 https://로 시작해야 합니다"
+    },
+    {
+      "name": "trans_title",
+      "value": "번역"
+    },
+    {
+      "name": "trans_enable",
+      "value": "번역 사용"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "구성한 엔진으로 뷰어의 텍스트를 번역합니다"
+    },
+    {
+      "name": "trans_test",
+      "value": "번역 테스트"
+    },
+    {
+      "name": "trans_target",
+      "value": "대상 언어"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "번역 중…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "모든 엔진에서 실패했습니다"
+    },
+    {
+      "name": "trans_engines",
+      "value": "엔진 우선순위"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "길게 눌러 끌어 순서를 바꾸고, 엔진을 누르면 키를 설정할 수 있습니다"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "설정됨"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "설정 안 됨"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "설정 불필요"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "입력됨"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "바이두 번역"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "시크릿 키"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "앱 키"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "앱 시크릿"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "API 토큰"
+    },
+    {
+      "name": "trans_google",
+      "value": "Google 번역"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Tencent Cloud"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "API 키"
+    },
+    {
+      "name": "action_edit",
+      "value": "편집"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "그래도 추가"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "아직 카테고리가 없습니다."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "중복 가능성"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "서재에 이름이 비슷한 작품이 있습니다.\n\n이전하거나 그대로 추가할 작품을 선택하세요."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d화"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "서재에 추가할까요?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "다운로드한 회차를 삭제할까요?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "이 작품의 다운로드된 회차가 삭제됩니다."
+    },
+    {
+      "name": "default_category",
+      "value": "기본 카테고리"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "항상 묻기"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "자동 (콘텐츠 유형)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "모양"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "탐색"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "일반"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "E-ink 새로고침 깜빡임"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "읽은 회차 건너뛰기"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "필터링된 회차 건너뛰기"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "중복 회차 건너뛰기"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "회차 전환 페이지"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "페이지를 넘길 때 깜빡임"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "깜빡임 색"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "흰색"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "검정"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "흰색에서 검정"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "깜빡임 시간 (ms)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "N페이지마다 깜빡임"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "가장자리 자르기 (페이지 모드)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "가장자리 자르기 (웹툰)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "색상 필터 혼합 모드"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "없음"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "곱하기"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "스크린"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "오버레이"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "어둡게"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "밝게"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "축소 사용 안 함 (웹툰)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "확대 시작 위치"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "자동"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "왼쪽"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "오른쪽"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "가운데"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L자"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Kindle 스타일"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D 큐브"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "스택"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "페이드"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D 플립"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "구체"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "탭하여 계속"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "회차 %d개를 건너뜁니다. 소스에 없거나 필터에서 빠졌습니다"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "플레이어 설정 패널에서 건너뛸 지점을 설정합니다"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "자막"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "외부 .srt 자막 파일을 불러옵니다"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "자막 글자 크기"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "탄막 필터"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "이 정규식 규칙 중 하나와 일치하는 댓글은 숨겨집니다"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "추가"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "정규식을 입력하세요. 예: \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "규칙이 잘못되었거나 중복되었습니다"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "아직 필터 규칙이 없습니다"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "필터를 적용했습니다"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "건너뛸 지점을 저장했습니다"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "시간 형식이 잘못되었습니다"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "자막을 불러왔습니다"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "자막 파일이 잘못되었습니다"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "파일을 읽지 못했습니다"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "로그인 실패: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "탄막 라이브러리에서 일치하는 에피소드가 없습니다"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "먼저 로그인해 주세요"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "이 회차와 일치하는 에피소드가 없습니다"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "전송했습니다"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "전송 실패: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "관련"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "전편"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "후속편"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "스핀오프"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "번외편"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "본편"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "총집편"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "업데이트 간격 변경"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "전역 설정 따르기"
+    },
+    {
+      "name": "interval_never",
+      "value": "안 함"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "1시간"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "6시간"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "12시간"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "1일"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "2일"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "3일"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "1주"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "2주"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "1개월"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "%d시간"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "전역 업데이트"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Wi-Fi에서만 업데이트"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Wi-Fi가 아닌 네트워크에서는 서재 업데이트를 건너뜁니다"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "충전 중에만 업데이트"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "충전 중이 아니면 서재 업데이트를 건너뜁니다"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "스와이프 동작"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "시작 쪽 동작"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "끝 쪽 동작"
+    },
+    {
+      "name": "action_none",
+      "value": "없음"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "업데이트 간격"
+    },
+    {
+      "name": "detail_notes",
+      "value": "메모"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "메모 추가"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "메모 편집"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "회차 %d개 없음"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "시크릿 탐색"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "이 확장 기능의 소스를 둘러보는 동안 기록과 통계는 저장되지 않습니다"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "시크릿 탐색 중 · 읽은 기록과 통계는 저장되지 않습니다"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "확장 기능 업데이트"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "확장 기능 업데이트 확인"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "플러그인 저장소를 새로고침할 때 확장 기능 업데이트를 확인하고 알립니다"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "확장 기능 %d개를 업데이트할 수 있습니다"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "이메일 / 사용자 이름"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (Kavita 서버 설정에서 생성)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "사용자 이름 (선택, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "비밀번호 (선택, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "이 작품에 대한 메모…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "확장 기능 업데이트"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "확장 기능 %d개에 새 버전이 있습니다. 플러그인 페이지에서 업데이트하세요"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Wi-Fi에서만 업데이트가 켜져 있고 현재 네트워크는 조건에 맞지 않아 업데이트를 건너뛰었습니다"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "충전 중에만 업데이트가 켜져 있습니다. 충전기를 연결한 뒤 업데이트하세요"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "아직 읽은 기록이 없습니다"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "읽을 수 있는 회차가 없습니다"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "이어서 읽기: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "낭독을 계속합니다"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "낭독할 수 있는 소설이 없습니다"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "낭독을 시작하지 못했습니다"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "이어서 듣기: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "서재에서 \"%s\"을(를) 찾지 못해 전체 검색을 열었습니다"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "서재에서 \"%1$s\"을(를) 찾았지만 \"%2$s\"와(과) 일치하는 회차가 없어 작품 상세를 열었습니다"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "열었습니다: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "열었습니다: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "서재에 추가했습니다: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "서재 업데이트를 건너뛰었습니다: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "서재 업데이트를 시작했습니다"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "탐색 명령을 이해하지 못했습니다: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "실행했습니다: %s"
     }
   ]
 }

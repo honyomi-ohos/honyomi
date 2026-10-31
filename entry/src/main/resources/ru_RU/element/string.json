@@ -533,10 +533,6 @@
       "value": "Удалено из библиотеки"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "Все главы отмечены как прочитанные"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Добавлено в очередь загрузки"
     },
@@ -575,10 +571,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Главы (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Отметить всё прочитанным"
     },
     {
       "name": "detail_download",
@@ -3711,6 +3703,1490 @@
     {
       "name": "subject_infobox_duration",
       "value": "Длительность"
+    },
+    {
+      "name": "data_storage_location_value",
+      "value": "Приватное хранилище приложения"
+    },
+    {
+      "name": "data_storage_name",
+      "value": "Внутреннее хранилище"
+    },
+    {
+      "name": "data_never_backed_up",
+      "value": "Никогда"
+    },
+    {
+      "name": "data_export_canceled",
+      "value": "Экспорт отменён"
+    },
+    {
+      "name": "data_export_failed",
+      "value": "Не удалось экспортировать"
+    },
+    {
+      "name": "module_desc",
+      "value": "описание модуля"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "описание"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Honyomi"
+    },
+    {
+      "name": "lib_sort_rating",
+      "value": "Рейтинг"
+    },
+    {
+      "name": "reader_webtoon_gap",
+      "value": "Интервал страниц"
+    },
+    {
+      "name": "reader_mode_continuous",
+      "value": "Непрерывная прокрутка"
+    },
+    {
+      "name": "reader_dual_page",
+      "value": "Две страницы"
+    },
+    {
+      "name": "reader_dual_auto",
+      "value": "Авто (альбомная)"
+    },
+    {
+      "name": "reader_dual_force",
+      "value": "Всегда"
+    },
+    {
+      "name": "reader_dual_off",
+      "value": "Выключено"
+    },
+    {
+      "name": "reader_dual_cover",
+      "value": "Обложка отдельно"
+    },
+    {
+      "name": "reader_volume_turn",
+      "value": "Клавиши громкости листают страницы"
+    },
+    {
+      "name": "reader_keep_screen_on",
+      "value": "Не выключать экран"
+    },
+    {
+      "name": "reader_show_header_footer",
+      "value": "Показывать название главы и номер страницы"
+    },
+    {
+      "name": "reader_preload_pages",
+      "value": "Предзагрузка страниц"
+    },
+    {
+      "name": "reader_skip_duplicate_pages",
+      "value": "Пропускать повторяющиеся страницы"
+    },
+    {
+      "name": "reader_clean_blank_pages",
+      "value": "Удалять пустые страницы"
+    },
+    {
+      "name": "reader_set_experience_group",
+      "value": "Удобство чтения"
+    },
+    {
+      "name": "reader_set_page_process_group",
+      "value": "Обработка страниц"
+    },
+    {
+      "name": "reader_set_mode_continuous",
+      "value": "Непрерывная вертикальная прокрутка"
+    },
+    {
+      "name": "theme_name_tachiyomi",
+      "value": "Tachiyomi"
+    },
+    {
+      "name": "theme_name_nord",
+      "value": "Nord"
+    },
+    {
+      "name": "theme_name_catppuccin",
+      "value": "Catppuccin"
+    },
+    {
+      "name": "history_search_hint",
+      "value": "Поиск в истории"
+    },
+    {
+      "name": "detail_related_works",
+      "value": "Связанные"
+    },
+    {
+      "name": "detail_bgm_related",
+      "value": "Связанные серии"
+    },
+    {
+      "name": "reader_chapter_list",
+      "value": "Главы"
+    },
+    {
+      "name": "reader_theme_paper",
+      "value": "Бумага"
+    },
+    {
+      "name": "reader_set_auto_page",
+      "value": "Автолистание"
+    },
+    {
+      "name": "reader_auto_off",
+      "value": "Выключено"
+    },
+    {
+      "name": "reader_auto_sec_fmt",
+      "value": "%d с"
+    },
+    {
+      "name": "reader_auto_page_on",
+      "value": "Автолистание включено"
+    },
+    {
+      "name": "reader_auto_page_off",
+      "value": "Автолистание выключено"
+    },
+    {
+      "name": "reader_auto_page_webtoon_off",
+      "value": "Автолистание недоступно в режиме вебтуна"
+    },
+    {
+      "name": "video_pip_unsupported",
+      "value": "Картинка в картинке недоступна на этом устройстве"
+    },
+    {
+      "name": "ext_stores_title",
+      "value": "Репозитории расширений"
+    },
+    {
+      "name": "ext_stores_empty",
+      "value": "Репозиториев расширений пока нет. Нажмите +, чтобы добавить."
+    },
+    {
+      "name": "ext_stores_add_title",
+      "value": "Добавить репозиторий"
+    },
+    {
+      "name": "ext_stores_url_label",
+      "value": "URL индекса репозитория"
+    },
+    {
+      "name": "ext_stores_url_hint",
+      "value": "https://example.com/index.json"
+    },
+    {
+      "name": "ext_stores_url_invalid",
+      "value": "Введите корректный адрес http(s)"
+    },
+    {
+      "name": "ext_stores_already_exists",
+      "value": "Этот репозиторий уже добавлен"
+    },
+    {
+      "name": "ext_stores_processing",
+      "value": "Добавление…"
+    },
+    {
+      "name": "ext_stores_added",
+      "value": "Репозиторий добавлен"
+    },
+    {
+      "name": "ext_stores_add_failed",
+      "value": "Не удалось добавить репозиторий: %s"
+    },
+    {
+      "name": "ext_stores_delete_title",
+      "value": "Удалить репозиторий"
+    },
+    {
+      "name": "ext_stores_delete_body",
+      "value": "Удалить репозиторий %s?\n%s\n\nУстановленные расширения будут сохранены."
+    },
+    {
+      "name": "ext_stores_deleted",
+      "value": "Репозиторий удалён"
+    },
+    {
+      "name": "ext_stores_copied",
+      "value": "Скопировано в буфер"
+    },
+    {
+      "name": "ext_stores_refreshing",
+      "value": "Обновление…"
+    },
+    {
+      "name": "ext_stores_refreshed",
+      "value": "Репозитории обновлены"
+    },
+    {
+      "name": "ext_stores_refresh_failed",
+      "value": "Не удалось обновить: %s"
+    },
+    {
+      "name": "ext_untrusted_title",
+      "value": "Недоверенное расширение"
+    },
+    {
+      "name": "ext_untrusted_message",
+      "value": "Вредоносные расширения могут читать сохранённые учётные данные или выполнять произвольный код.\n\nДоверяя этому расширению, вы принимаете эти риски."
+    },
+    {
+      "name": "ext_trust",
+      "value": "Доверять"
+    },
+    {
+      "name": "ext_untrusted_tag",
+      "value": "Недоверенное"
+    },
+    {
+      "name": "plugin_trust_done",
+      "value": "Доверено %s"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Полная резервная копия"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Только библиотека и репозитории расширений"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Включить конфиденциальные данные"
+    },
+    {
+      "name": "backup_password",
+      "value": "Пароль"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Подтвердите пароль"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Пароль должен быть не короче 6 символов"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Пароли не совпадают"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "Чтобы включить конфиденциальные данные, нужен пароль"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "Эта резервная копия содержит зашифрованные конфиденциальные данные. Введите пароль резервной копии, чтобы восстановить её."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Неверный пароль"
+    },
+    {
+      "name": "privacy_policy_danmaku_title",
+      "value": "Данмаку (комментарии к видео)"
+    },
+    {
+      "name": "privacy_policy_danmaku_body",
+      "value": "Данмаку при воспроизведении видео включены по умолчанию, и их можно в любой момент выключить в настройках плеера или во время просмотра. Пока функция включена, название воспроизводимого произведения отправляется стороннему сервису данмаку dandanplay (api.dandanplay.net), чтобы сопоставить серию и загрузить набор комментариев. Идентификаторы учётной записи и устройства не отправляются, а загруженные комментарии хранятся только в памяти. Сервис подчиняется собственной политике конфиденциальности."
+    },
+    {
+      "name": "help_title",
+      "value": "Помощь"
+    },
+    {
+      "name": "help_intro",
+      "value": "Справочник Honyomi: от импорта содержимого и установки расширений до чтения, прослушивания, резервных копий и конфиденциальности — пояснения к повседневным функциям и советы по устранению неполадок."
+    },
+    {
+      "name": "help_getting_started_title",
+      "value": "Начало работы"
+    },
+    {
+      "name": "help_getting_started_body",
+      "value": "Добавляйте локальные файлы (CBZ, EPUB и другие) через локальный источник или открывая файл напрямую. Для онлайн-содержимого добавьте репозиторий расширений в «Обзор → Расширения», установите расширения, затем просматривайте источники и ищите по ним. Нажмите «В библиотеку» на странице произведения, чтобы оставить его в библиотеке, и удерживайте элементы библиотеки для массовых действий. При первом запуске настройте тему, начальный экран и параметры чтения в «Настройках»."
+    },
+    {
+      "name": "help_extensions_title",
+      "value": "Расширения и плагины"
+    },
+    {
+      "name": "help_extensions_body",
+      "value": "Онлайн-источники предоставляют плагины расширений. Ими управляют в «Обзор → Расширения»: добавляйте репозитории, затем устанавливайте, обновляйте или удаляйте расширения. Потяните список вниз, чтобы проверить обновления плагинов. Добавляйте только те репозитории, которым доверяете: когда репозиторий станет недоступен, его расширения нельзя будет обновить или установить заново."
+    },
+    {
+      "name": "help_reader_title",
+      "value": "Чтение и прослушивание"
+    },
+    {
+      "name": "help_reader_body",
+      "value": "В читалке есть постраничный, вертикальный режимы и вебтун; направление, фон и яркость настраиваются и запоминаются для каждого произведения. Новеллы можно слушать: регулируются скорость, таймер сна и фоновое воспроизведение; видео воспроизводится онлайн с поддержкой данмаку. Прогресс чтения записывается автоматически."
+    },
+    {
+      "name": "help_downloads_title",
+      "value": "Управление загрузками"
+    },
+    {
+      "name": "help_downloads_body",
+      "value": "Ставьте главы в очередь со страницы произведения или из списка глав, чтобы читать офлайн. Прогресс, паузу и удаление задач смотрите в «Ещё → Очередь загрузки». В «Настройки → Загрузки» есть загрузка только по Wi-Fi, автозагрузка новых глав и автоматическое удаление прочитанных глав."
+    },
+    {
+      "name": "help_tracking_title",
+      "value": "Трекеры и синхронизация"
+    },
+    {
+      "name": "help_tracking_body",
+      "value": "Подключите AniList, MyAnimeList, Bangumi, Kitsu или Shikimori в разделе трекинга на странице произведения. После привязки статус и прогресс чтения синхронизируются автоматически; токены хранятся только на устройстве, и отвязать сервис можно в любой момент."
+    },
+    {
+      "name": "help_migration_title",
+      "value": "Перенос источников"
+    },
+    {
+      "name": "help_migration_body",
+      "value": "Когда произведение переходит на другой источник того же типа, откройте его и выберите «Перенести» в меню. Honyomi сопоставляет целевой источник по названию или автору и переносит прогресс чтения и загрузки, чтобы можно было продолжить с нового источника."
+    },
+    {
+      "name": "help_updates_title",
+      "value": "Обновления и предстоящие"
+    },
+    {
+      "name": "help_updates_body",
+      "value": "Вкладка «Обновления» проверяет библиотеку на новые главы — потяните вниз, чтобы обновить; произведения с новыми главами показываются первыми. Страница «Предстоящие» оценивает время следующего обновления по прежнему ритму выхода; оценка только ориентировочная."
+    },
+    {
+      "name": "help_storage_title",
+      "value": "Данные и хранение"
+    },
+    {
+      "name": "help_storage_body",
+      "value": "Библиотека, прогресс и настройки хранятся только на устройстве и никуда не отправляются. В «Ещё → Данные и хранение» можно создать и восстановить резервную копию, посмотреть занятое место, очистить кэш глав и задать период автоматических резервных копий. Перед сменой устройства или переустановкой сделайте резервную копию вручную."
+    },
+    {
+      "name": "help_security_title",
+      "value": "Конфиденциальность и безопасность"
+    },
+    {
+      "name": "help_security_body",
+      "value": "Honyomi работает локально и не собирает личные данные. В «Настройки → Конфиденциальность» есть блокировка приложения биометрией, скрытие текста уведомлений и защита экрана; режим инкогнито на странице «Ещё» приостанавливает историю чтения. Источники NSFW скрыты, пока их не включить в «Настройки → Обзор»."
+    },
+    {
+      "name": "help_troubleshooting_title",
+      "value": "Устранение неполадок"
+    },
+    {
+      "name": "help_troubleshooting_body",
+      "value": "Если страницы не загружаются, проверьте сеть или смените поставщика DNS-over-HTTPS в «Настройки → Дополнительно» и пройдите проверку сайта, когда она появится. Если источник работает неверно, потяните список расширений, чтобы проверить обновления плагинов, или установите расширение заново. Если проблема не уходит, сначала сделайте резервную копию в «Данные и хранение», затем очистите кэш глав."
+    },
+    {
+      "name": "reader_set_theme_paper",
+      "value": "Бумага"
+    },
+    {
+      "name": "novel_trans_progress",
+      "value": "Перевод… %1$d%%"
+    },
+    {
+      "name": "novel_trans_done",
+      "value": "Перевод завершён"
+    },
+    {
+      "name": "novel_trans_failed",
+      "value": "Не удалось перевести"
+    },
+    {
+      "name": "novel_trans_cancel",
+      "value": "Перевод отменён"
+    },
+    {
+      "name": "trans_same_lang",
+      "value": "Язык содержимого совпадает с целевым, перевод не нужен"
+    },
+    {
+      "name": "manga_ocr_unavailable",
+      "value": "Служба распознавания текста недоступна. Повторите позже (может не поддерживаться на эмуляторах)"
+    },
+    {
+      "name": "manga_trans_image",
+      "value": "Перевод изображений"
+    },
+    {
+      "name": "manga_trans_image_sub",
+      "value": "Автоматически распознавать и переводить каждую страницу, накладывая результат"
+    },
+    {
+      "name": "novel_trans_chapter",
+      "value": "Перевод главы"
+    },
+    {
+      "name": "novel_trans_chapter_sub",
+      "value": "При включении автоматически переводит эту главу и показывает перевод"
+    },
+    {
+      "name": "reader_ctx_save_page",
+      "value": "Сохранить изображение страницы"
+    },
+    {
+      "name": "reader_ctx_copy_page",
+      "value": "Копировать изображение"
+    },
+    {
+      "name": "reader_ctx_share_page",
+      "value": "Поделиться страницей"
+    },
+    {
+      "name": "reader_ctx_view_original",
+      "value": "Показать оригинал"
+    },
+    {
+      "name": "reader_page_saved",
+      "value": "Изображение страницы сохранено"
+    },
+    {
+      "name": "reader_page_save_failed",
+      "value": "Не удалось сохранить"
+    },
+    {
+      "name": "reader_save_confirm_title",
+      "value": "Сохранить изображение в галерею"
+    },
+    {
+      "name": "reader_page_copied",
+      "value": "Изображение скопировано"
+    },
+    {
+      "name": "reader_page_copy_failed",
+      "value": "Не удалось скопировать"
+    },
+    {
+      "name": "reader_page_share_failed",
+      "value": "Не удалось поделиться"
+    },
+    {
+      "name": "novel_tts_voice",
+      "value": "Голос"
+    },
+    {
+      "name": "tts_voice_default",
+      "value": "Женский (по умолчанию)"
+    },
+    {
+      "name": "tts_voice_male",
+      "value": "Мужской"
+    },
+    {
+      "name": "tts_voice_male_hint",
+      "value": "Если мужской голос недоступен (не загружен), используется женский голос по умолчанию."
+    },
+    {
+      "name": "novel_keep_screen_on",
+      "value": "Не выключать экран"
+    },
+    {
+      "name": "novel_volume_turn",
+      "value": "Клавиши громкости листают страницы"
+    },
+    {
+      "name": "novel_justify",
+      "value": "Выравнивать по ширине"
+    },
+    {
+      "name": "novel_search",
+      "value": "Поиск в главе"
+    },
+    {
+      "name": "novel_search_hint",
+      "value": "Искать текст в этой главе"
+    },
+    {
+      "name": "novel_search_empty",
+      "value": "Совпадений нет"
+    },
+    {
+      "name": "novel_bookmarks",
+      "value": "Закладки"
+    },
+    {
+      "name": "novel_bookmark_add",
+      "value": "Закладка на текущей позиции"
+    },
+    {
+      "name": "novel_bookmark_added",
+      "value": "Закладка добавлена"
+    },
+    {
+      "name": "novel_bookmark_empty",
+      "value": "Закладок пока нет"
+    },
+    {
+      "name": "novel_auto_on",
+      "value": "Авточтение включено"
+    },
+    {
+      "name": "novel_auto_end",
+      "value": "Достигнут конец последней главы, авточтение остановлено"
+    },
+    {
+      "name": "video_brightness",
+      "value": "Яркость"
+    },
+    {
+      "name": "video_seek_to",
+      "value": "Перейти к"
+    },
+    {
+      "name": "video_resume_tip",
+      "value": "Продолжено с последней позиции"
+    },
+    {
+      "name": "video_resume_restart",
+      "value": "С начала"
+    },
+    {
+      "name": "download_error_hls_live",
+      "value": "Прямые трансляции нельзя скачать"
+    },
+    {
+      "name": "download_error_hls_encrypted",
+      "value": "Неподдерживаемое шифрование видеопотока"
+    },
+    {
+      "name": "bt_choice_title",
+      "value": "Загрузка BitTorrent"
+    },
+    {
+      "name": "bt_choice_msg",
+      "value": "Эта глава — торрент BitTorrent. Выберите способ загрузки"
+    },
+    {
+      "name": "bt_choice_system",
+      "value": "Системное приложение"
+    },
+    {
+      "name": "bt_choice_module",
+      "value": "Встроенный движок"
+    },
+    {
+      "name": "bt_choice_module_desc",
+      "value": "Загрузка в приложении, можно смотреть по мере загрузки"
+    },
+    {
+      "name": "bt_choice_system_desc",
+      "value": "Передать magnet- или torrent-ссылку другому приложению (например, торрент-клиенту)"
+    },
+    {
+      "name": "bt_choice_size_mb",
+      "value": "Около %1$d MB"
+    },
+    {
+      "name": "bt_choice_hint",
+      "value": "Выбор запоминается. Позже его можно изменить в «Настройки → Загрузки»"
+    },
+    {
+      "name": "bt_handoff_started",
+      "value": "Передано системному приложению"
+    },
+    {
+      "name": "bt_handoff_failed",
+      "value": "Нет приложения для этого торрента"
+    },
+    {
+      "name": "bt_progressive_waiting",
+      "value": "Загрузка… воспроизведение начнётся автоматически, когда данных будет достаточно"
+    },
+    {
+      "name": "bt_batch_skipped",
+      "value": "Пропущено торрент-глав: %1$d"
+    },
+    {
+      "name": "bt_set_group",
+      "value": "BitTorrent"
+    },
+    {
+      "name": "bt_set_service",
+      "value": "Служба BT"
+    },
+    {
+      "name": "bt_set_service_sub",
+      "value": "Выключите, чтобы остановить движок BT; он снова запустится, когда начнётся загрузка BT"
+    },
+    {
+      "name": "bt_service_disabled",
+      "value": "Служба BT выключена. Включите её в «Настройки» — BitTorrent"
+    },
+    {
+      "name": "bt_set_engine",
+      "value": "Движок загрузки"
+    },
+    {
+      "name": "bt_engine_ask",
+      "value": "Спрашивать каждый раз"
+    },
+    {
+      "name": "bt_engine_module",
+      "value": "Встроенный движок"
+    },
+    {
+      "name": "bt_engine_system",
+      "value": "Системное приложение"
+    },
+    {
+      "name": "bt_engine_module_missing",
+      "value": "Компонент движка BT не установлен"
+    },
+    {
+      "name": "bt_engine_module_missing_sub",
+      "value": "Нужен, чтобы скачивать торренты встроенным движком"
+    },
+    {
+      "name": "bt_engine_install",
+      "value": "Установить"
+    },
+    {
+      "name": "bt_set_progressive",
+      "value": "Воспроизведение во время загрузки"
+    },
+    {
+      "name": "bt_set_progressive_sub",
+      "value": "Начинать воспроизведение, пока торрент ещё скачивается (последовательная загрузка)"
+    },
+    {
+      "name": "bt_set_speed_limits",
+      "value": "Ограничения скорости"
+    },
+    {
+      "name": "bt_set_download_limit",
+      "value": "Ограничение скорости загрузки"
+    },
+    {
+      "name": "bt_set_upload_limit",
+      "value": "Ограничение скорости отдачи"
+    },
+    {
+      "name": "bt_limit_unlimited",
+      "value": "Без ограничений"
+    },
+    {
+      "name": "bt_limit_kb",
+      "value": "%1$d KB/s"
+    },
+    {
+      "name": "bt_limit_mb",
+      "value": "%1$d MB/s"
+    },
+    {
+      "name": "bt_rate_mb",
+      "value": "%1$s MB/s"
+    },
+    {
+      "name": "bt_set_extra_trackers",
+      "value": "Дополнительные трекеры"
+    },
+    {
+      "name": "bt_set_extra_trackers_sub",
+      "value": "Добавляются к каждой загрузке торрента"
+    },
+    {
+      "name": "bt_set_extra_trackers_hint",
+      "value": "Один URL трекера на строку"
+    },
+    {
+      "name": "bt_trackers_none",
+      "value": "Нет"
+    },
+    {
+      "name": "bt_trackers_n",
+      "value": "%1$d трекеров"
+    },
+    {
+      "name": "bt_set_share_group",
+      "value": "Раздача"
+    },
+    {
+      "name": "bt_set_share_ratio",
+      "value": "Ограничение коэффициента раздачи"
+    },
+    {
+      "name": "bt_share_ratio_value",
+      "value": "%1$s"
+    },
+    {
+      "name": "bt_set_limit_upload_metered",
+      "value": "Ограничить отдачу в тарифицируемых сетях"
+    },
+    {
+      "name": "bt_set_limit_upload_metered_sub",
+      "value": "Ограничить отдачу до 10 KB/s в сотовой сети, чтобы экономить трафик"
+    },
+    {
+      "name": "bt_set_peer_filter",
+      "value": "Фильтр пиров"
+    },
+    {
+      "name": "bt_set_peer_filter_sub",
+      "value": "Блокировать пиры по IP-адресу или диапазону"
+    },
+    {
+      "name": "bt_peer_filter_title",
+      "value": "Фильтр пиров"
+    },
+    {
+      "name": "bt_peer_filter_hint",
+      "value": "Одно правило на строку: IP (192.168.1.1) или диапазон (10.0.0.0-10.255.255.255). Оставьте пустым, чтобы отключить"
+    },
+    {
+      "name": "bt_peer_filter_invalid",
+      "value": "Недопустимое правило в строке %1$d"
+    },
+    {
+      "name": "bt_peer_filter_none",
+      "value": "Выключено"
+    },
+    {
+      "name": "bt_peer_filter_n",
+      "value": "%1$d правил"
+    },
+    {
+      "name": "pref_bangumi_mirror",
+      "value": "Зеркало Bangumi"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Зеркало Bangumi сохранено"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_hint",
+      "value": "Зеркало API, https://your-proxy.example.com, пусто = по умолчанию api.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_invalid",
+      "value": "Адрес должен начинаться с https://"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_hint",
+      "value": "Зеркало изображений, https://your-proxy.example.com, пусто = по умолчанию lain.bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_invalid",
+      "value": "Адрес должен начинаться с https://"
+    },
+    {
+      "name": "trans_title",
+      "value": "Перевод"
+    },
+    {
+      "name": "trans_enable",
+      "value": "Включить перевод"
+    },
+    {
+      "name": "trans_enable_sub",
+      "value": "Переводить текст в читалке настроенными движками"
+    },
+    {
+      "name": "trans_test",
+      "value": "Проверить перевод"
+    },
+    {
+      "name": "trans_target",
+      "value": "Целевой язык"
+    },
+    {
+      "name": "trans_test_running",
+      "value": "Перевод…"
+    },
+    {
+      "name": "trans_test_fail",
+      "value": "Ни один движок не смог перевести"
+    },
+    {
+      "name": "trans_engines",
+      "value": "Приоритет движков"
+    },
+    {
+      "name": "trans_engines_hint",
+      "value": "Удерживайте и перетаскивайте, чтобы изменить порядок; нажмите движок, чтобы задать ключи"
+    },
+    {
+      "name": "trans_status_ready",
+      "value": "Готово"
+    },
+    {
+      "name": "trans_status_missing",
+      "value": "Не настроено"
+    },
+    {
+      "name": "trans_status_free",
+      "value": "Настройка не нужна"
+    },
+    {
+      "name": "trans_status_set",
+      "value": "Задано"
+    },
+    {
+      "name": "trans_baidu",
+      "value": "Переводчик Baidu"
+    },
+    {
+      "name": "trans_baidu_appid",
+      "value": "App ID"
+    },
+    {
+      "name": "trans_baidu_key",
+      "value": "Секретный ключ"
+    },
+    {
+      "name": "trans_youdao",
+      "value": "Youdao Zhiyun"
+    },
+    {
+      "name": "trans_youdao_key",
+      "value": "ID приложения"
+    },
+    {
+      "name": "trans_youdao_secret",
+      "value": "Секрет приложения"
+    },
+    {
+      "name": "trans_caiyun",
+      "value": "Caiyun Xiaoyi"
+    },
+    {
+      "name": "trans_caiyun_token",
+      "value": "Токен API"
+    },
+    {
+      "name": "trans_google",
+      "value": "Переводчик Google"
+    },
+    {
+      "name": "trans_deepl",
+      "value": "DeepL"
+    },
+    {
+      "name": "trans_microsoft",
+      "value": "Microsoft Bing"
+    },
+    {
+      "name": "trans_tencent",
+      "value": "Облако Tencent"
+    },
+    {
+      "name": "trans_tencent_secret_id",
+      "value": "SecretId"
+    },
+    {
+      "name": "trans_tencent_secret_key",
+      "value": "SecretKey"
+    },
+    {
+      "name": "trans_volcano",
+      "value": "Volcano Engine"
+    },
+    {
+      "name": "trans_volcano_access_key",
+      "value": "Access Key ID"
+    },
+    {
+      "name": "trans_volcano_secret_key",
+      "value": "Secret Access Key"
+    },
+    {
+      "name": "trans_niutrans",
+      "value": "NiuTrans"
+    },
+    {
+      "name": "trans_niutrans_apikey",
+      "value": "Ключ API"
+    },
+    {
+      "name": "action_edit",
+      "value": "Изменить"
+    },
+    {
+      "name": "action_add_anyway",
+      "value": "Всё равно добавить"
+    },
+    {
+      "name": "information_empty_category_dialog",
+      "value": "У вас пока нет категорий."
+    },
+    {
+      "name": "possible_duplicates_title",
+      "value": "Возможные дубликаты"
+    },
+    {
+      "name": "possible_duplicates_summary",
+      "value": "В библиотеке есть произведения с похожим названием.\n\nВыберите произведение для переноса или всё равно добавьте."
+    },
+    {
+      "name": "manga_num_chapters",
+      "value": "%d глав"
+    },
+    {
+      "name": "snack_add_to_library",
+      "value": "Добавить в библиотеку?"
+    },
+    {
+      "name": "delete_downloads_for_manga",
+      "value": "Удалить скачанные главы?"
+    },
+    {
+      "name": "delete_downloads_for_manga_msg",
+      "value": "Скачанные главы этого произведения будут удалены."
+    },
+    {
+      "name": "default_category",
+      "value": "Категория по умолчанию"
+    },
+    {
+      "name": "default_category_summary",
+      "value": "Всегда спрашивать"
+    },
+    {
+      "name": "default_category_auto",
+      "value": "Автоматически (по типу содержимого)"
+    },
+    {
+      "name": "reader_set_appearance_group",
+      "value": "Оформление"
+    },
+    {
+      "name": "reader_set_nav_group",
+      "value": "Навигация"
+    },
+    {
+      "name": "reader_set_general_group",
+      "value": "Основные"
+    },
+    {
+      "name": "reader_set_eink_group",
+      "value": "Вспышка обновления E-ink"
+    },
+    {
+      "name": "reader_set_skip_read",
+      "value": "Пропускать прочитанные главы"
+    },
+    {
+      "name": "reader_set_skip_filtered",
+      "value": "Пропускать отфильтрованные главы"
+    },
+    {
+      "name": "reader_set_skip_duplicate",
+      "value": "Пропускать повторяющиеся главы"
+    },
+    {
+      "name": "reader_set_chapter_transition",
+      "value": "Страница перехода между главами"
+    },
+    {
+      "name": "reader_set_flash_enable",
+      "value": "Вспышка при смене страницы"
+    },
+    {
+      "name": "reader_set_flash_color",
+      "value": "Цвет вспышки"
+    },
+    {
+      "name": "reader_flash_color_white",
+      "value": "Белый"
+    },
+    {
+      "name": "reader_flash_color_black",
+      "value": "Чёрный"
+    },
+    {
+      "name": "reader_flash_color_both",
+      "value": "Белый, затем чёрный"
+    },
+    {
+      "name": "reader_set_flash_duration",
+      "value": "Длительность вспышки (мс)"
+    },
+    {
+      "name": "reader_set_flash_every",
+      "value": "Вспышка каждые N страниц"
+    },
+    {
+      "name": "reader_set_crop_paged",
+      "value": "Обрезать края (постраничные режимы)"
+    },
+    {
+      "name": "reader_set_crop_webtoon",
+      "value": "Обрезать края (вебтун)"
+    },
+    {
+      "name": "reader_set_color_blend",
+      "value": "Режим наложения цветового фильтра"
+    },
+    {
+      "name": "reader_blend_none",
+      "value": "Нет"
+    },
+    {
+      "name": "reader_blend_multiply",
+      "value": "Умножение"
+    },
+    {
+      "name": "reader_blend_screen",
+      "value": "Осветление (экран)"
+    },
+    {
+      "name": "reader_blend_overlay",
+      "value": "Перекрытие"
+    },
+    {
+      "name": "reader_blend_darken",
+      "value": "Затемнение"
+    },
+    {
+      "name": "reader_blend_lighten",
+      "value": "Замена светлым"
+    },
+    {
+      "name": "reader_set_webtoon_no_zoom_out",
+      "value": "Запретить уменьшение (вебтун)"
+    },
+    {
+      "name": "reader_set_zoom_start",
+      "value": "Начальная позиция масштаба"
+    },
+    {
+      "name": "reader_zoom_automatic",
+      "value": "Автоматически"
+    },
+    {
+      "name": "reader_zoom_left",
+      "value": "Слева"
+    },
+    {
+      "name": "reader_zoom_right",
+      "value": "Справа"
+    },
+    {
+      "name": "reader_zoom_center",
+      "value": "По центру"
+    },
+    {
+      "name": "reader_nav_lshape",
+      "value": "L-образная"
+    },
+    {
+      "name": "reader_nav_kindle",
+      "value": "Как в Kindle"
+    },
+    {
+      "name": "novel_anim_cube",
+      "value": "3D-куб"
+    },
+    {
+      "name": "novel_anim_stack",
+      "value": "Стопка"
+    },
+    {
+      "name": "novel_anim_fade",
+      "value": "Затухание"
+    },
+    {
+      "name": "novel_anim_flip",
+      "value": "3D-переворот"
+    },
+    {
+      "name": "novel_anim_sphere",
+      "value": "Сфера"
+    },
+    {
+      "name": "transition_tap_continue",
+      "value": "Нажмите, чтобы продолжить"
+    },
+    {
+      "name": "missing_chapters_warning",
+      "value": "Пропускается %d глав: в источнике их нет или они отфильтрованы"
+    },
+    {
+      "name": "player_set_skip_oped_sub",
+      "value": "Задайте точки пропуска на панели настроек плеера"
+    },
+    {
+      "name": "player_set_subtitle",
+      "value": "Субтитры"
+    },
+    {
+      "name": "player_set_subtitle_enable_sub",
+      "value": "Загружать внешние файлы субтитров .srt"
+    },
+    {
+      "name": "player_set_subtitle_font",
+      "value": "Размер текста субтитров"
+    },
+    {
+      "name": "player_set_danmaku_filter",
+      "value": "Фильтры данмаку"
+    },
+    {
+      "name": "player_set_danmaku_filter_sub",
+      "value": "Комментарии, совпавшие с любым из этих регулярных выражений, будут скрыты"
+    },
+    {
+      "name": "player_set_danmaku_filter_add",
+      "value": "Добавить"
+    },
+    {
+      "name": "player_set_danmaku_filter_hint",
+      "value": "Введите регулярное выражение, например \\d+"
+    },
+    {
+      "name": "player_set_danmaku_filter_invalid",
+      "value": "Недопустимое или повторяющееся правило"
+    },
+    {
+      "name": "player_set_danmaku_filter_empty",
+      "value": "Правил фильтра пока нет"
+    },
+    {
+      "name": "player_set_danmaku_filter_applied",
+      "value": "Фильтры применены"
+    },
+    {
+      "name": "video_skip_saved",
+      "value": "Точки пропуска сохранены"
+    },
+    {
+      "name": "video_skip_invalid",
+      "value": "Неверный формат времени"
+    },
+    {
+      "name": "video_subtitle_loaded",
+      "value": "Субтитры загружены"
+    },
+    {
+      "name": "video_subtitle_invalid",
+      "value": "Недопустимый файл субтитров"
+    },
+    {
+      "name": "video_subtitle_pick_failed",
+      "value": "Не удалось прочитать файл"
+    },
+    {
+      "name": "video_danmaku_login_failed",
+      "value": "Не удалось войти: %s"
+    },
+    {
+      "name": "video_danmaku_not_matched",
+      "value": "В библиотеке данмаку нет подходящей серии"
+    },
+    {
+      "name": "video_danmaku_login_required",
+      "value": "Сначала войдите"
+    },
+    {
+      "name": "video_danmaku_send_no_episode",
+      "value": "Для этой главы нет подходящей серии"
+    },
+    {
+      "name": "video_danmaku_sent",
+      "value": "Отправлено"
+    },
+    {
+      "name": "video_danmaku_send_failed",
+      "value": "Не удалось отправить: %s"
+    },
+    {
+      "name": "subject_label_related",
+      "value": "Связанные"
+    },
+    {
+      "name": "subject_relation_prequel",
+      "value": "Приквел"
+    },
+    {
+      "name": "subject_relation_sequel",
+      "value": "Сиквел"
+    },
+    {
+      "name": "subject_relation_derived",
+      "value": "Спин-офф"
+    },
+    {
+      "name": "subject_relation_special",
+      "value": "Спецвыпуск"
+    },
+    {
+      "name": "subject_relation_main_story",
+      "value": "Основной сюжет"
+    },
+    {
+      "name": "subject_relation_compilation",
+      "value": "Сборник"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Изменить интервал обновления"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Как в общих настройках"
+    },
+    {
+      "name": "interval_never",
+      "value": "Никогда"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Каждый час"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Каждые 6 часов"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Каждые 12 часов"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Каждый день"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Каждые 2 дня"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Каждые 3 дня"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Каждую неделю"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Каждые 2 недели"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Каждый месяц"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Каждые %d часов"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Глобальное обновление"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Обновлять только по Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Не обновлять библиотеку вне сетей Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Обновлять только при зарядке"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Не обновлять библиотеку без зарядки"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Действия смахивания"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Действие в начале"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "Действие в конце"
+    },
+    {
+      "name": "action_none",
+      "value": "Нет"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Интервал обновления"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Заметки"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Добавить заметку"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Изменить заметку"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Не хватает %d глав"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Просмотр в режиме инкогнито"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "При просмотре источников этого расширения история и статистика не записываются"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Режим инкогнито · История чтения и статистика не записываются"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Обновления расширений"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Проверять обновления расширений"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "При обновлении репозиториев плагинов проверять обновления расширений и уведомлять"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d расширений можно обновить"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Эл. почта / имя пользователя"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (создаётся в настройках сервера Kavita)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Имя пользователя (необязательно, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Пароль (необязательно, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Заметки об этом произведении…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Обновления расширений"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "У %d расширений есть новые версии; обновите их на странице плагинов"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Включено обновление только по Wi-Fi, текущая сеть не подходит, обновление пропущено"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Включено обновление только при зарядке, подключите зарядку, чтобы обновить"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "Истории чтения пока нет"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "Нет главы для чтения"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Продолжить чтение: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Прослушивание продолжается"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "Нет новеллы для прослушивания"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Не удалось начать воспроизведение"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Продолжить прослушивание: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "«%s» нет в библиотеке, открыт глобальный поиск"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "В библиотеке найдено «%1$s», но нет главы, совпадающей с «%2$s»; открыты сведения о произведении"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Открыто: «%1$s» %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Открыто: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Добавлено в библиотеку: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Обновление библиотеки пропущено: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Обновление библиотеки запущено"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Не удалось понять команду перемотки: «%s»"
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Готово: %s"
+    },
+    {
+      "name": "theme_name_tako",
+      "value": "Тако"
+    },
+    {
+      "name": "theme_name_yotsuba",
+      "value": "Ёцуба"
+    },
+    {
+      "name": "badge_type_text",
+      "value": "T"
+    },
+    {
+      "name": "badge_type_video",
+      "value": "V"
+    },
+    {
+      "name": "badge_type_manga",
+      "value": "M"
+    },
+    {
+      "name": "pref_dns_over_https",
+      "value": "DNS поверх HTTPS"
     }
   ]
 }

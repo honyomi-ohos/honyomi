@@ -27,6 +27,8 @@ export struct CoverViewer {
   @Prop sourceKey: string = '';
   @Prop isCustom: boolean = false;
   @Prop title: string = '';
+  // 是否展示“编辑封面”入口（条目详情等只读场景传 false，仅查看/保存/分享）
+  @Prop allowEdit: boolean = true;
   @StorageProp('navBarH') navBarH: number = 0;
   // 图片展示：先解析本地路径并读取原始宽高，再按容器适配出实际显示宽高
   // localPath 为裸沙箱路径（save/share 用），displayPath 为渲染地址：
@@ -152,24 +154,26 @@ export struct CoverViewer {
         this.actionIcon('download', () => {
           this.saveCover();
         })
-        if (this.isCustom) {
-          Stack() {
-            AppIcon({ name: 'edit', iconSize: 22, tint: '#FFFFFF' })
+        if (this.allowEdit) {
+          if (this.isCustom) {
+            Stack() {
+              AppIcon({ name: 'edit', iconSize: 22, tint: '#FFFFFF' })
+            }
+            .width(40)
+            .height(40)
+            .borderRadius(20)
+            .bindMenu(this.editMenuBuilder)
+          } else {
+            Stack() {
+              AppIcon({ name: 'edit', iconSize: 22, tint: '#FFFFFF' })
+            }
+            .width(40)
+            .height(40)
+            .borderRadius(20)
+            .onClick(() => {
+              this.onEdit();
+            })
           }
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .bindMenu(this.editMenuBuilder)
-        } else {
-          Stack() {
-            AppIcon({ name: 'edit', iconSize: 22, tint: '#FFFFFF' })
-          }
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .onClick(() => {
-            this.onEdit();
-          })
         }
       }
       .padding(4)

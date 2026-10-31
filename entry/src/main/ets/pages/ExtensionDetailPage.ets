@@ -306,10 +306,10 @@ export struct ExtensionDetailPage {
                   .margin({ top: 16 })
                 Row() {
                   Column() {
-                    Text('隐身浏览')
+                    Text($r('app.string.ext_incognito_browse'))
                       .fontSize(15)
                       .fontColor(this.pal.text)
-                    Text('浏览此插件的源时不记录阅读历史与统计')
+                    Text($r('app.string.ext_incognito_browse_sub'))
                       .fontSize(11)
                       .fontColor(this.pal.sub)
                       .margin({ top: 2 })

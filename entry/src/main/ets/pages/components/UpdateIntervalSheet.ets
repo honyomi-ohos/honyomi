@@ -3,10 +3,10 @@
 import { ThemePalette } from '../../common/Theme';
 import { AppIcon } from './AppIcon';
 
-// 更新间隔候选项：hours 为小时数，label 为展示文案
+// 更新间隔候选项：hours 为小时数，label 为展示文案（资源）
 export interface IntervalOption {
   hours: number;
-  label: string;
+  label: Resource;
 }
 
 // 更新间隔值 ↔ 文案映射（0=跟随全局 -1=永不 >0=间隔小时数）
@@ -19,36 +19,19 @@ export class UpdateIntervals {
   // 候选列表（对齐 Mihon UpdateStrategy/SetIntervalDialog 档位）
   static options(): IntervalOption[] {
     const list: IntervalOption[] = [
-      { hours: UpdateIntervals.GLOBAL, label: '跟随全局' },
-      { hours: UpdateIntervals.NEVER, label: '永不' },
-      { hours: 1, label: '每小时' },
-      { hours: 6, label: '每 6 小时' },
-      { hours: 12, label: '每 12 小时' },
-      { hours: 24, label: '每天' },
-      { hours: 48, label: '每 2 天' },
-      { hours: 72, label: '每 3 天' },
-      { hours: 168, label: '每周' },
-      { hours: 336, label: '每 2 周' },
-      { hours: 720, label: '每月' },
+      { hours: UpdateIntervals.GLOBAL, label: $r('app.string.interval_follow_global') },
+      { hours: UpdateIntervals.NEVER, label: $r('app.string.interval_never') },
+      { hours: 1, label: $r('app.string.interval_every_hour') },
+      { hours: 6, label: $r('app.string.interval_every_6_hours') },
+      { hours: 12, label: $r('app.string.interval_every_12_hours') },
+      { hours: 24, label: $r('app.string.interval_every_day') },
+      { hours: 48, label: $r('app.string.interval_every_2_days') },
+      { hours: 72, label: $r('app.string.interval_every_3_days') },
+      { hours: 168, label: $r('app.string.interval_every_week') },
+      { hours: 336, label: $r('app.string.interval_every_2_weeks') },
+      { hours: 720, label: $r('app.string.interval_every_month') },
     ];
     return list;
-  }
-
-  // 间隔值 → 展示文案；非预设值按小时数回退描述
-  static label(hours: number): string {
-    const opts = UpdateIntervals.options();
-    for (const opt of opts) {
-      if (opt.hours === hours) {
-        return opt.label;
-      }
-    }
-    if (hours === UpdateIntervals.GLOBAL) {
-      return '跟随全局';
-    }
-    if (hours === UpdateIntervals.NEVER) {
-      return '永不';
-    }
-    return `每 ${hours} 小时`;
   }
 }
 
@@ -70,7 +53,7 @@ export struct UpdateIntervalSheet {
 
   build() {
     Column() {
-      Text('更改更新间隔')
+      Text($r('app.string.interval_change_title'))
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
@@ -103,12 +86,10 @@ export struct UpdateIntervalSheet {
         }
         .width('100%')
       }
-      .layoutWeight(1)
       .scrollBar(BarState.Auto)
       .edgeEffect(EdgeEffect.Spring)
     }
     .width('100%')
-    .height('100%')
     .padding({ left: 12, right: 12, top: 8, bottom: 16 })
     .backgroundColor(this.pal.bg)
   }

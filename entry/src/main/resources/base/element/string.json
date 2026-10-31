@@ -1549,10 +1549,6 @@
       "value": "Removed from library"
     },
     {
-      "name": "detail_all_marked_read",
-      "value": "All chapters marked as read"
-    },
-    {
       "name": "detail_download_queued",
       "value": "Download queued"
     },
@@ -1599,10 +1595,6 @@
     {
       "name": "detail_chapters_count",
       "value": "Chapters (%d)"
-    },
-    {
-      "name": "detail_mark_all_read",
-      "value": "Mark all read"
     },
     {
       "name": "detail_download",
@@ -2131,6 +2123,46 @@
     {
       "name": "advanced_import_failed",
       "value": "Import failed"
+    },
+    {
+      "name": "backup_scope_full",
+      "value": "Full backup"
+    },
+    {
+      "name": "backup_scope_minimal",
+      "value": "Library and extension repos only"
+    },
+    {
+      "name": "backup_include_secure",
+      "value": "Include sensitive data"
+    },
+    {
+      "name": "backup_password",
+      "value": "Password"
+    },
+    {
+      "name": "backup_password_confirm",
+      "value": "Confirm password"
+    },
+    {
+      "name": "backup_password_hint",
+      "value": "Password must be at least 6 characters"
+    },
+    {
+      "name": "backup_password_mismatch",
+      "value": "Passwords do not match"
+    },
+    {
+      "name": "backup_password_required",
+      "value": "A password is required to include sensitive data"
+    },
+    {
+      "name": "backup_need_password_hint",
+      "value": "This backup contains encrypted sensitive data. Enter the backup password to restore it."
+    },
+    {
+      "name": "backup_wrong_password",
+      "value": "Incorrect password"
     },
     {
       "name": "about_title",
@@ -4097,36 +4129,28 @@
       "value": "Custom User-Agent"
     },
     {
-      "name": "pref_bangumi_api_mirror",
-      "value": "Bangumi API mirror"
+      "name": "pref_bangumi_mirror",
+      "value": "Bangumi mirror"
+    },
+    {
+      "name": "pref_bangumi_mirror_saved",
+      "value": "Bangumi mirror saved"
     },
     {
       "name": "pref_bangumi_api_mirror_hint",
-      "value": "https://your-proxy.example.com, empty = default api.bgm.tv"
+      "value": "API mirror, https://your-proxy.example.com, empty = default api.bgm.tv"
     },
     {
       "name": "pref_bangumi_api_mirror_invalid",
       "value": "Address must start with https://"
     },
     {
-      "name": "pref_bangumi_api_mirror_saved",
-      "value": "Bangumi API mirror saved"
-    },
-    {
-      "name": "pref_bangumi_img_mirror",
-      "value": "Bangumi image mirror"
-    },
-    {
       "name": "pref_bangumi_img_mirror_hint",
-      "value": "https://your-proxy.example.com, empty = default lain.bgm.tv"
+      "value": "Image mirror, https://your-proxy.example.com, empty = default lain.bgm.tv"
     },
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Address must start with https://"
-    },
-    {
-      "name": "pref_bangumi_img_mirror_saved",
-      "value": "Bangumi image mirror saved"
     },
     {
       "name": "pref_user_agent_hint",
@@ -4927,6 +4951,242 @@
     {
       "name": "browse_folder_empty",
       "value": "This folder is empty"
+    },
+    {
+      "name": "interval_change_title",
+      "value": "Change update interval"
+    },
+    {
+      "name": "interval_follow_global",
+      "value": "Follow global"
+    },
+    {
+      "name": "interval_never",
+      "value": "Never"
+    },
+    {
+      "name": "interval_every_hour",
+      "value": "Every hour"
+    },
+    {
+      "name": "interval_every_6_hours",
+      "value": "Every 6 hours"
+    },
+    {
+      "name": "interval_every_12_hours",
+      "value": "Every 12 hours"
+    },
+    {
+      "name": "interval_every_day",
+      "value": "Every day"
+    },
+    {
+      "name": "interval_every_2_days",
+      "value": "Every 2 days"
+    },
+    {
+      "name": "interval_every_3_days",
+      "value": "Every 3 days"
+    },
+    {
+      "name": "interval_every_week",
+      "value": "Every week"
+    },
+    {
+      "name": "interval_every_2_weeks",
+      "value": "Every 2 weeks"
+    },
+    {
+      "name": "interval_every_month",
+      "value": "Every month"
+    },
+    {
+      "name": "interval_every_n_hours",
+      "value": "Every %d hours"
+    },
+    {
+      "name": "lib_set_update_group",
+      "value": "Global update"
+    },
+    {
+      "name": "lib_set_update_wifi_only",
+      "value": "Update only on Wi-Fi"
+    },
+    {
+      "name": "lib_set_update_wifi_only_sub",
+      "value": "Skip library updates on non-Wi-Fi networks"
+    },
+    {
+      "name": "lib_set_update_charging_only",
+      "value": "Update only while charging"
+    },
+    {
+      "name": "lib_set_update_charging_only_sub",
+      "value": "Skip library updates when not charging"
+    },
+    {
+      "name": "lib_set_swipe_group",
+      "value": "Swipe actions"
+    },
+    {
+      "name": "lib_set_swipe_start",
+      "value": "Start action"
+    },
+    {
+      "name": "lib_set_swipe_end",
+      "value": "End action"
+    },
+    {
+      "name": "action_none",
+      "value": "None"
+    },
+    {
+      "name": "detail_update_interval",
+      "value": "Update interval"
+    },
+    {
+      "name": "detail_notes",
+      "value": "Notes"
+    },
+    {
+      "name": "detail_add_note",
+      "value": "Add note"
+    },
+    {
+      "name": "detail_edit_note",
+      "value": "Edit note"
+    },
+    {
+      "name": "detail_missing_chapters",
+      "value": "Missing %d chapters"
+    },
+    {
+      "name": "ext_incognito_browse",
+      "value": "Incognito browsing"
+    },
+    {
+      "name": "ext_incognito_browse_sub",
+      "value": "History and stats are not recorded while browsing this extension's sources"
+    },
+    {
+      "name": "incognito_source_banner",
+      "value": "Browsing incognito · Reading history and stats are not recorded"
+    },
+    {
+      "name": "browse_set_ext_update_group",
+      "value": "Extension updates"
+    },
+    {
+      "name": "browse_set_check_ext_updates",
+      "value": "Check for extension updates"
+    },
+    {
+      "name": "browse_set_check_ext_updates_sub",
+      "value": "Check for updates when refreshing plugin repositories and notify"
+    },
+    {
+      "name": "browse_set_ext_updates_available",
+      "value": "%d extensions can be updated"
+    },
+    {
+      "name": "track_hint_email_username",
+      "value": "Email / username"
+    },
+    {
+      "name": "track_hint_kavita_apikey",
+      "value": "API Key (generated in Kavita server settings)"
+    },
+    {
+      "name": "track_hint_basic_username",
+      "value": "Username (optional, Basic Auth)"
+    },
+    {
+      "name": "track_hint_basic_password",
+      "value": "Password (optional, Basic Auth)"
+    },
+    {
+      "name": "notes_placeholder",
+      "value": "Write notes about this entry…"
+    },
+    {
+      "name": "ext_update_notif_title",
+      "value": "Extension updates"
+    },
+    {
+      "name": "ext_update_notif_text",
+      "value": "%d extensions have new versions; update them on the plugins page"
+    },
+    {
+      "name": "update_restriction_wifi",
+      "value": "Wi-Fi-only updates is on and the current network doesn't qualify, update skipped"
+    },
+    {
+      "name": "update_restriction_charging",
+      "value": "Charging-only updates is on, connect a charger to update"
+    },
+    {
+      "name": "intent_continue_reading_no_history",
+      "value": "No reading history yet"
+    },
+    {
+      "name": "intent_continue_reading_no_chapter",
+      "value": "No readable chapter"
+    },
+    {
+      "name": "intent_continue_reading_opened",
+      "value": "Continue reading: %s"
+    },
+    {
+      "name": "intent_continue_listening_resumed",
+      "value": "Continuing the audiobook"
+    },
+    {
+      "name": "intent_continue_listening_no_novel",
+      "value": "No novel available to listen to"
+    },
+    {
+      "name": "intent_continue_listening_failed",
+      "value": "Failed to start playback"
+    },
+    {
+      "name": "intent_continue_listening_opened",
+      "value": "Continue listening: %s"
+    },
+    {
+      "name": "intent_open_not_in_library",
+      "value": "\"%s\" not found in your library, opened global search"
+    },
+    {
+      "name": "intent_open_chapter_no_match",
+      "value": "Found \"%1$s\" in your library but no chapter matches \"%2$s\", opened the entry's details"
+    },
+    {
+      "name": "intent_open_chapter_opened",
+      "value": "Opened: \"%1$s\" %2$s"
+    },
+    {
+      "name": "intent_open_manga_opened",
+      "value": "Opened: %s"
+    },
+    {
+      "name": "intent_added_to_library",
+      "value": "Added to library: %s"
+    },
+    {
+      "name": "intent_refresh_skipped",
+      "value": "Skipped library refresh: %s"
+    },
+    {
+      "name": "intent_refresh_started",
+      "value": "Library refresh started"
+    },
+    {
+      "name": "intent_seek_unrecognized",
+      "value": "Couldn't understand the seek command: \"%s\""
+    },
+    {
+      "name": "intent_seek_done",
+      "value": "Done: %s"
     }
   ]
 }

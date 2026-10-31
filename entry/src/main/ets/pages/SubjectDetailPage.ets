@@ -9,9 +9,12 @@ import { GlobalSearchParams, SubjectDetailParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
 import { Bp } from '../common/Breakpoint';
 import { Util } from '../common/Util';
+import { BgmCoverCache } from '../common/BgmCoverCache';
+import { ImageCache } from '../common/ImageCache';
 import { NavGlassPage } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
 import { SmartImage } from './components/SmartImage';
+import { CoverViewer } from './components/CoverViewer';
 import { ErrorState } from './components/ErrorState';
 import { SubjectDetailSkeleton } from './components/SubjectDetailSkeleton';
 
@@ -44,6 +47,10 @@ export struct SubjectDetailPage {
   @State scoreText: string = '-';
   @State ratingSubText: string = '';
   @State statTexts: string[] = [];
+  // 图片全屏查看（封面/角色立绘，仅查看不支持替换）
+  @State showViewer: boolean = false;
+  @State viewerUrl: string = '';
+  @State viewerTitle: string = '';
   private subjectId: number = 0;
   private scroller: Scroller = new Scroller();
 
@@ -92,6 +99,10 @@ export struct SubjectDetailPage {
           }
           .width('100%')
           .alignItems(HorizontalAlign.Center)
+          .bindContentCover($$this.showViewer, this.imageViewerBuilder(), {
+            modalTransition: ModalTransition.ALPHA,
+            backgroundColor: '#B3000000',
+          })
         }
         .scrollBar(BarState.Auto)
         .width('100%')
@@ -139,6 +150,9 @@ export struct SubjectDetailPage {
         .borderRadius(8)
         .clip(true)
         .backgroundColor(this.pal.chip)
+        .onClick(() => {
+          this.openViewer(d.cover, d.nameCn !== '' ? d.nameCn : d.name, this.subjectId);
+        })
 
         if (this.statTexts.length > 0) {
           this.statsCard()
@@ -168,7 +182,7 @@ export struct SubjectDetailPage {
     .alignItems(VerticalAlign.Top)
   }
 
-  // 封面 + 标题行（紧凑单列头部）
+  // 封面 + 标题行（紧凑单列头部，小屏纵向排布：搜索按钮随文本列底部）
   @Builder
   headerBlock(d: BgmSubjectDetail) {
     Row({ space: 16 }) {
@@ -183,6 +197,9 @@ export struct SubjectDetailPage {
       .borderRadius(8)
       .clip(true)
       .backgroundColor(this.pal.chip)
+      .onClick(() => {
+        this.openViewer(d.cover, d.nameCn !== '' ? d.nameCn : d.name, this.subjectId);
+      })
 
       Column({ space: 6 }) {
         Text(d.nameCn !== '' ? d.nameCn : d.name)
@@ -215,33 +232,38 @@ export struct SubjectDetailPage {
     .alignItems(VerticalAlign.Top)
   }
 
-  // 标题块（宽屏右主栏顶部）
+  // 标题块（宽屏右主栏顶部）：名称/时间居左，“在应用内搜索”同排靠右
   @Builder
   titleBlock(d: BgmSubjectDetail) {
-    Column({ space: 6 }) {
-      Text(d.nameCn !== '' ? d.nameCn : d.name)
-        .fontSize(22)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.pal.text)
-        .maxLines(3)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-      if (d.name !== '' && d.nameCn !== '' && d.name !== d.nameCn) {
-        Text(d.name)
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .maxLines(2)
+    Row({ space: 16 }) {
+      Column({ space: 6 }) {
+        Text(d.nameCn !== '' ? d.nameCn : d.name)
+          .fontSize(22)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+          .maxLines(3)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
+        if (d.name !== '' && d.nameCn !== '' && d.name !== d.nameCn) {
+          Text(d.name)
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .maxLines(2)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+        }
+        if (d.date !== '') {
+          Text(d.date)
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .maxLines(1)
+        }
       }
-      if (d.date !== '') {
-        Text(d.date)
-          .fontSize(13)
-          .fontColor(this.pal.sub)
-          .maxLines(1)
-      }
+      .layoutWeight(1)
+      .alignItems(HorizontalAlign.Start)
+
       this.searchButton()
     }
     .width('100%')
-    .alignItems(HorizontalAlign.Start)
+    .alignItems(VerticalAlign.Center)
   }
 
   // “在应用内搜索”胶囊按钮
@@ -512,6 +534,19 @@ export struct SubjectDetailPage {
     }
   }
 
+  // 图片全屏查看（对齐作品详情封面查看器；仅查看/保存/分享，不支持替换封面）
+  @Builder
+  imageViewerBuilder() {
+    CoverViewer({
+      coverUrl: this.viewerUrl,
+      title: this.viewerTitle,
+      allowEdit: false,
+      onClose: (): void => {
+        this.showViewer = false;
+      }
+    })
+  }
+
   // 角色块（横滑卡片：头像 + 角色名 + 定位 + 声优）
   @Builder
   charactersBlock() {
@@ -525,16 +560,36 @@ export struct SubjectDetailPage {
           ForEach(this.characters, (item: BgmCharacter) => {
             ListItem() {
               Column({ space: 6 }) {
-                SmartImage({
-                  url: item.cover,
-                  fit: ImageFit.Cover,
-                  placeholderIconSize: 18
-                })
+                // 立绘完整显示（Contain）；比例不匹配的留白区域用同图 Cover 虚化背景填充，避免生硬纯色
+                Stack() {
+                  SmartImage({
+                    url: item.cover,
+                    fit: ImageFit.Cover,
+                    placeholderIconSize: 18
+                  })
+                    .width('100%')
+                    .height('100%')
+                    .blur(10)
+                  Column()
+                    .width('100%')
+                    .height('100%')
+                    .backgroundColor('#26000000')
+                  SmartImage({
+                    url: item.cover,
+                    fit: ImageFit.Contain,
+                    placeholderIconSize: 18
+                  })
+                    .width('100%')
+                    .height('100%')
+                }
                 .width(84)
                 .aspectRatio(2 / 3)
                 .borderRadius(8)
                 .clip(true)
                 .backgroundColor(this.pal.chip)
+                .onClick(() => {
+                  this.openViewer(item.cover, item.name, 0);
+                })
 
                 Text(item.name)
                   .fontSize(13)
@@ -850,6 +905,26 @@ export struct SubjectDetailPage {
   // lg+ 双列布局
   private isWideLayout(): boolean {
     return this.windowW >= Bp.LG_MIN;
+  }
+
+  // 点击图片（封面/角色立绘）：先解析出已缓存的本地 file:// 路径再打开，
+  // 查看器直接读本地文件，不再重复下载（页面已展示过，缓存必然命中）
+  private async openViewer(url: string, title: string, bgmId: number): Promise<void> {
+    if (url === '') {
+      return;
+    }
+    let resolved: string = url;
+    try {
+      resolved = bgmId > 0 ? await BgmCoverCache.resolve(bgmId, url) : await ImageCache.resolve(url, '');
+    } catch (_e) {
+      resolved = url;
+    }
+    if (resolved === '') {
+      resolved = url;
+    }
+    this.viewerUrl = resolved;
+    this.viewerTitle = title;
+    this.showViewer = true;
   }
 
   // 点击关联卡片：进入该条目自己的详情页

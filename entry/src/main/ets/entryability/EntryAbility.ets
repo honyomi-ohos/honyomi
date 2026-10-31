@@ -99,6 +99,7 @@ const err = e as Error;
     AppStorage.setOrCreate(AppKeys.IS_DARK_SYSTEM, false);
     AppStorage.setOrCreate(AppKeys.LIB_DIRTY, 0);
     AppStorage.setOrCreate(AppKeys.PLUGINS_DIRTY, 0);
+    AppStorage.setOrCreate(AppKeys.PLUGINS_LOADED, false);
     AppStorage.setOrCreate(AppKeys.CF_CHALLENGE_URL, '');
     Settings.init(this.context);
     // 「详细日志」开关接入 hilog 全局最低级别（关闭时全进程 debug 零输出）

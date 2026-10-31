@@ -44,18 +44,29 @@ export struct ChapterSettingsSheet {
     this.fBookmarked = this.initBookmarked;
   }
 
+  // Tab 项（选中高亮 + 底部指示条，点击切换）：
+  // 不用 Tabs 组件——其在 FIT_CONTENT 半模态内会撑满剩余高度，导致弹层无法贴内容收起
   @Builder
-  tabBarLabel(index: number, label: Resource) {
+  tabLabelItem(index: number, label: Resource) {
     Column() {
       Text(label)
         .fontSize(14)
         .fontWeight(this.sheetTab === index ? FontWeight.Bold : FontWeight.Normal)
         .fontColor(this.sheetTab === index ? this.pal.primary : this.pal.text)
         .maxLines(1)
+      Divider()
+        .width(24)
+        .height(2)
+        .borderRadius(1)
+        .margin({ top: 5 })
+        .color(this.sheetTab === index ? this.pal.primary : Color.Transparent)
     }
-    .height(48)
-    .width('100%')
     .justifyContent(FlexAlign.Center)
+    .layoutWeight(1)
+    .height(48)
+    .onClick(() => {
+      this.sheetTab = index;
+    })
   }
 
   @Builder
@@ -141,26 +152,20 @@ export struct ChapterSettingsSheet {
 
   build() {
     Column() {
-      Tabs({ barPosition: BarPosition.Start, index: this.sheetTab }) {
-        TabContent() {
-          this.sortTabContent()
-        }
-        .tabBar(this.tabBarLabel(0, $r('app.string.detail_sort_tab')))
-
-        TabContent() {
-          this.filterTabContent()
-        }
-        .tabBar(this.tabBarLabel(1, $r('app.string.detail_filter_tab')))
+      Row() {
+        this.tabLabelItem(0, $r('app.string.detail_sort_tab'))
+        this.tabLabelItem(1, $r('app.string.detail_filter_tab'))
       }
-      .barHeight(48)
-      .barWidth('100%')
-      .barMode(BarMode.Fixed)
-      .scrollable(false)
-      .vertical(false)
-      .divider({ strokeWidth: 1, color: this.pal.divider })
-      .onChange((index: number) => {
-        this.sheetTab = index;
-      })
+      .height(48)
+      .width('100%')
+
+      Divider().color(this.pal.divider)
+
+      if (this.sheetTab === 0) {
+        this.sortTabContent()
+      } else {
+        this.filterTabContent()
+      }
     }
     .width('100%')
     .backgroundColor(this.pal.bg)

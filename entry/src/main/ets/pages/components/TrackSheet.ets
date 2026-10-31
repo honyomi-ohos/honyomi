@@ -846,15 +846,15 @@ export struct TrackSheet {
     let userHint = '';
     let secretHint = '';
     if (t.syncId === TrackerManager.komga.syncId) {
-      userHint = '邮箱 / 用户名';
+      userHint = Util.resStr(this.getUIContext(), $r('app.string.track_hint_email_username'));
       secretHint = Util.resStr(this.getUIContext(), $r('app.string.track_password'));
     } else if (t.syncId === TrackerManager.kavita.syncId) {
       serverHint = 'http://192.168.1.1:5000';
-      secretHint = 'API Key（Kavita 服务器设置生成）';
+      secretHint = Util.resStr(this.getUIContext(), $r('app.string.track_hint_kavita_apikey'));
     } else {
       serverHint = 'http://192.168.1.1:4567';
-      userHint = '用户名（可选，Basic Auth）';
-      secretHint = '密码（可选，Basic Auth）';
+      userHint = Util.resStr(this.getUIContext(), $r('app.string.track_hint_basic_username'));
+      secretHint = Util.resStr(this.getUIContext(), $r('app.string.track_hint_basic_password'));
     }
     const dialog = new CustomDialogController({
       builder: ServerLoginDialog({

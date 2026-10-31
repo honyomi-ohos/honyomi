@@ -557,13 +557,17 @@ const err = e as Error;
     if (now - Settings.getLastExtUpdateNotifiedAt() < PluginService.EXT_UPDATE_NOTIFY_INTERVAL) {
       return;
     }
+    const ctx = PluginService.context;
+    if (ctx === undefined) {
+      return;
+    }
     const request: notificationManager.NotificationRequest = {
       id: PluginService.EXT_UPDATE_NOTIF_ID,
       content: {
         notificationContentType: notificationManager.ContentType.NOTIFICATION_CONTENT_BASIC_TEXT,
         normal: {
-          title: '扩展更新',
-          text: `${count} 个扩展有新版本，可在插件页更新`,
+          title: ctx.resourceManager.getStringSync($r('app.string.ext_update_notif_title').id),
+          text: ctx.resourceManager.getStringSync($r('app.string.ext_update_notif_text').id, count),
         },
       },
       notificationSlotType: notificationManager.SlotType.SERVICE_INFORMATION,
@@ -1247,28 +1251,12 @@ const err = e as Error;
       records = await PluginRepo.list();
     } catch (e) {
       hilog.error(DOMAIN, TAG, 'read plugin index failed: %{public}s', (e as Error).message);
+      AppStorage.setOrCreate(AppKeys.PLUGINS_LOADED, true);
       return;
     }
     if (records.length === 0) {
+      AppStorage.setOrCreate(AppKeys.PLUGINS_LOADED, true);
       return;
-    }
-    // 信任门禁首次启用：既有已安装插件一次性登记为受信任（grandfather 迁移，
-    // 对齐 Mihon TrustExtensionRepositoryMigration），避免升级后全部失效
-    if (!Settings.hasTrustedPlugins()) {
-      for (const record of records) {
-        try {
-          const contentHash = await PluginService.contentHashOf(record.key);
-          Settings.trustPlugin(record.key, record.versionCode, contentHash);
-        } catch (e) {
-          hilog.warn(DOMAIN, TAG, 'grandfather trust %{public}s failed: %{public}s',
-            record.key, (e as Error).message);
-        }
-      }
-      if (Settings.getTrustedPlugins().length === 0) {
-        // 全部登记失败也要写入标记，避免每次启动重复尝试
-        Settings.setTrustedPlugins([]);
-      }
-      hilog.info(DOMAIN, TAG, 'trust gate migrated for %{public}d existing plugins', records.length);
     }
     // 只注册受信任插件的占位源：nsfw/methods/supportsLatest 等来自持久化元数据，
     // 未受信任插件不注册源、不拉引擎（不执行任何插件代码），由插件列表引导用户确认信任
@@ -1283,6 +1271,8 @@ const err = e as Error;
     }
     hilog.info(DOMAIN, TAG, 'registered %{public}d/%{public}d plugin packages from db index',
       trustedCount, records.length);
+    // 占位源注册完毕即视为插件加载完成：此后仍未注册的源 = 插件未安装（如备份恢复后待装）
+    AppStorage.setOrCreate(AppKeys.PLUGINS_LOADED, true);
     // 预热：仅为"在库漫画且导出 getHeaders"的插件包拉引擎（封面需要 Referer/Cookie）
     await PluginService.prewarmLibrary();
   }
