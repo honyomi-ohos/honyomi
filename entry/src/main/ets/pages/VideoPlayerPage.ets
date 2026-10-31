@@ -400,13 +400,13 @@ export struct VideoPlayerPage {
         Button({ type: ButtonType.Normal, stateEffect: true }) {
           AppIcon({
             name: 'pip',
-            iconSize: 20,
+            iconSize: 22,
             tint: this.pipActive ? this.pal.primary : Color.White
           })
         }
-        .width(38)
-        .height(38)
-        .borderRadius(19)
+        .width(40)
+        .height(40)
+        .borderRadius(20)
         .padding(0)
         .backgroundColor(VIDEO_BTN_BG)
         .systemMaterial(VIDEO_GLASS)
@@ -419,13 +419,13 @@ export struct VideoPlayerPage {
       Button({ type: ButtonType.Normal, stateEffect: true }) {
         AppIcon({
           name: 'cast',
-          iconSize: 20,
+          iconSize: 22,
           tint: this.casting ? this.pal.primary : Color.White
         })
       }
-      .width(38)
-      .height(38)
-      .borderRadius(19)
+      .width(40)
+      .height(40)
+      .borderRadius(20)
       .padding(0)
       .backgroundColor(VIDEO_BTN_BG)
       .systemMaterial(VIDEO_GLASS)
@@ -435,11 +435,11 @@ export struct VideoPlayerPage {
       })
 
       Button({ type: ButtonType.Normal, stateEffect: true }) {
-        AppIcon({ name: 'lock', iconSize: 20, tint: Color.White })
+        AppIcon({ name: 'lock', iconSize: 22, tint: Color.White })
       }
-      .width(38)
-      .height(38)
-      .borderRadius(19)
+      .width(40)
+      .height(40)
+      .borderRadius(20)
       .padding(0)
       .backgroundColor(VIDEO_BTN_BG)
       .systemMaterial(VIDEO_GLASS)
@@ -455,10 +455,10 @@ export struct VideoPlayerPage {
     }
     .width('100%')
     .padding({
-      left: 10,
-      right: 12,
-      top: this.fullscreen ? 10 : 4,
-      bottom: 12
+      left: 12,
+      right: 14,
+      top: this.fullscreen ? 12 : 6,
+      bottom: 14
     })
     .linearGradient({ angle: 180, colors: [['rgba(0,0,0,0.65)', 0], [Color.Transparent, 1]] })
     .position({ x: 0, y: 0 })
@@ -467,7 +467,7 @@ export struct VideoPlayerPage {
 
   @Builder
   centerBar() {
-    Row({ space: 26 }) {
+    Row({ space: 30 }) {
       AppIcon({ name: 'skip_previous', iconSize: 32, tint: this.prevId > 0 ? Color.White : 'rgba(255,255,255,0.3)' })
         .onClick(() => {
           this.openChapter(this.prevId);
@@ -478,14 +478,14 @@ export struct VideoPlayerPage {
         })
       Button({ type: ButtonType.Normal, stateEffect: true }) {
         if (this.loading || this.buffering) {
-          LoadingProgress().width(40).height(40).color(Color.White)
+          LoadingProgress().width(44).height(44).color(Color.White)
         } else {
-          AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 40, tint: Color.White })
+          AppIcon({ name: this.playing ? 'pause' : 'play_arrow', iconSize: 44, tint: Color.White })
         }
       }
-      .width(68)
-      .height(68)
-      .borderRadius(34)
+      .width(76)
+      .height(76)
+      .borderRadius(38)
       .padding(0)
       .backgroundColor(VIDEO_BTN_BG)
       .systemMaterial(VIDEO_GLASS)
@@ -503,20 +503,19 @@ export struct VideoPlayerPage {
         })
     }
     .alignItems(VerticalAlign.Center)
-    .offset({ y: 20 })
     .transition(TransitionEffect.OPACITY.animation({ duration: 180 }))
   }
 
   // 液态玻璃圆形按钮（华为视频对齐）：Button + systemMaterial 官方沉浸光感材质，
   // 毛玻璃/流光/按压点光源均由系统材质绘制，非手写模糊
   @Builder
-  ctrlBtn(icon: string, onTap: () => void) {
+  ctrlBtn(icon: string, onTap: () => void, tint: ResourceColor) {
     Button({ type: ButtonType.Normal, stateEffect: true }) {
-      AppIcon({ name: icon, iconSize: 20, tint: Color.White })
+      AppIcon({ name: icon, iconSize: 22, tint: tint })
     }
-    .width(38)
-    .height(38)
-    .borderRadius(19)
+    .width(40)
+    .height(40)
+    .borderRadius(20)
     .padding(0)
     .backgroundColor(VIDEO_BTN_BG)
     .systemMaterial(VIDEO_GLASS)
@@ -552,6 +551,8 @@ export struct VideoPlayerPage {
             step: 1000
           })
             .width('100%')
+            .trackThickness(4)
+            .blockSize({ width: 12, height: 12 })
             .selectedColor(this.pal.primary)
             .trackColor('rgba(255,255,255,0.3)')
             .blockColor(Color.White)
@@ -578,52 +579,43 @@ export struct VideoPlayerPage {
       }
       .width('100%')
 
-      Row({ space: 8 }) {
+      Row({ space: 10 }) {
         this.ctrlBtn('playlist_play', (): void => {
           this.openSheet(1);
-        })
+        }, Color.White)
         if (this.videos.length > 1) {
           this.ctrlBtn('high_quality', (): void => {
             this.openSheet(2);
-          })
+          }, Color.White)
         }
         this.ctrlBtn('speed', (): void => {
           this.openSheet(3);
-        })
-        Button({ type: ButtonType.Normal, stateEffect: true }) {
-          AppIcon({ name: 'forum', iconSize: 20, tint: this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)' })
-        }
-        .width(38)
-        .height(38)
-        .borderRadius(19)
-        .padding(0)
-        .backgroundColor(VIDEO_BTN_BG)
-        .systemMaterial(VIDEO_GLASS)
-        .onClick(() => {
+        }, Color.White)
+        this.ctrlBtn('forum', (): void => {
           this.toggleDanmaku();
-        })
+        }, this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)')
 
         this.ctrlBtn('edit', (): void => {
           this.openSheet(6);
-        })
+        }, Color.White)
 
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
-        })
+        }, Color.White)
         this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
           this.toggleFullscreen();
-        })
+        }, Color.White)
       }
       .justifyContent(FlexAlign.Center)
       .width('100%')
-      .margin({ top: 4 })
+      .margin({ top: 6 })
     }
     .width('100%')
     .padding({
-      left: 14,
-      right: 14,
-      top: 10,
-      bottom: this.fullscreen ? 14 : 10
+      left: 16,
+      right: 16,
+      top: 12,
+      bottom: this.fullscreen ? 16 : 12
     })
     .linearGradient({ angle: 180, colors: [[Color.Transparent, 0], ['rgba(0,0,0,0.65)', 1]] })
     .position({ x: 0, y: '100%' })
@@ -634,11 +626,11 @@ export struct VideoPlayerPage {
   @Builder
   unlockBtn() {
     Button({ type: ButtonType.Normal, stateEffect: true }) {
-      AppIcon({ name: 'lock_open', iconSize: 22, tint: Color.White })
+      AppIcon({ name: 'lock_open', iconSize: 24, tint: Color.White })
     }
-    .width(46)
-    .height(46)
-    .borderRadius(23)
+    .width(48)
+    .height(48)
+    .borderRadius(24)
     .padding(0)
     .backgroundColor(VIDEO_BTN_BG)
     .systemMaterial(VIDEO_GLASS)

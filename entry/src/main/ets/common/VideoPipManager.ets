@@ -246,7 +246,9 @@ export class VideoPipManager {
       const config: PiPWindow.PiPConfiguration = {
         context: hostCtx,
         componentController: this.nodeCtrl,
-        templateType: PiPWindow.PiPTemplateType.VIDEO_PLAY
+        templateType: PiPWindow.PiPTemplateType.VIDEO_PLAY,
+        // 快进/快退组件组（与上一集/下一集组互斥）；事件走 controlPanelActionEvent
+        controlGroups: [PiPWindow.VideoPlayControlGroup.FAST_FORWARD_BACKWARD]
       };
       this.creating = PiPWindow.create(config, node);
       // 首个创建者负责注册回调；并发调用者等待同一 Promise
@@ -275,6 +277,9 @@ export class VideoPipManager {
     });
     ctrl.on('controlEvent', (param: PiPWindow.ControlEventParam): void => {
       this.onControlEvent(param);
+    });
+    ctrl.on('controlPanelActionEvent', (event: PiPWindow.PiPActionEventType, _status?: number): void => {
+      this.onPanelAction(event);
     });
   }
 
@@ -343,6 +348,41 @@ export class VideoPipManager {
       }
     } catch (e) {
       hilog.warn(0xDEAD, 'PiPMgr', 'controlEvent failed: %{public}s', `${e}`);
+    }
+  }
+
+  // PiP 面板快进/快退按钮：±15s（播放器仅在 prepared/playing/paused/completed 状态可 seek）
+  private static readonly PIP_SEEK_STEP_MS: number = 15000;
+
+  private onPanelAction(event: PiPWindow.PiPActionEventType): void {
+    if (event !== 'fastForward' && event !== 'fastBackward') {
+      return;
+    }
+    const player = this.currentPlayer();
+    if (player === undefined) {
+      return;
+    }
+    const st = player.state;
+    if (st !== 'prepared' && st !== 'playing' && st !== 'paused' && st !== 'completed') {
+      return;
+    }
+    const cur: number = player.currentTime;
+    if (cur < 0) {
+      return;
+    }
+    const duration: number = player.duration > 0 ? player.duration : 0;
+    let target: number = event === 'fastForward' ? cur + VideoPipManager.PIP_SEEK_STEP_MS
+      : cur - VideoPipManager.PIP_SEEK_STEP_MS;
+    if (target < 0) {
+      target = 0;
+    }
+    if (duration > 0 && target > duration - 500) {
+      target = Math.max(0, duration - 500);
+    }
+    try {
+      player.seek(target);
+    } catch (e) {
+      hilog.warn(0xDEAD, 'PiPMgr', 'panel seek failed: %{public}s', `${e}`);
     }
   }
 
