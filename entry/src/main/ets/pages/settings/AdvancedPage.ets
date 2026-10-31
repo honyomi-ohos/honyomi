@@ -316,24 +316,34 @@ export struct AdvancedContent {
     Util.toastRes(this.getUIContext(), $r('app.string.pref_user_agent_saved'));
   }
 
-  // 图片镜像行显示：与 API 镜像主机相同时省略第二段（避免重复展示）
+  // 图片镜像行显示：与 API 镜像主机相同时省略第二段（避免重复展示）；
+  // next 镜像自定义时附加第三段
   private bgmImgHostDisplay(): string {
     const apiHost: string = Settings.urlHostOf(this.bgmApiBase);
     const imgHost: string = Settings.urlHostOf(this.bgmImgBase);
-    return apiHost === imgHost ? '' : imgHost;
+    const parts: string[] = [];
+    if (apiHost !== imgHost) {
+      parts.push(imgHost);
+    }
+    if (Settings.getBangumiNextBaseInput() !== '') {
+      parts.push(Settings.urlHostOf(Settings.bangumiNextBase()));
+    }
+    return parts.join(' · ');
   }
 
-  // Bangumi 镜像统一编辑：一个弹窗内分别输入 API / 图片镜像，
-  // 任一输入留空即恢复对应默认地址（api.bgm.tv / lain.bgm.tv）
+  // Bangumi 镜像统一编辑：一个弹窗内分别输入 API / 图片 / next 镜像，
+  // 任一输入留空即恢复对应默认地址（api.bgm.tv / lain.bgm.tv / next.bgm.tv）
   private editBangumiMirrors(): void {
     const dialog = new CustomDialogController({
       builder: DualInputDialog({
         title: $r('app.string.pref_bangumi_mirror'),
         firstPlaceholder: $r('app.string.pref_bangumi_api_mirror_hint'),
         secondPlaceholder: $r('app.string.pref_bangumi_img_mirror_hint'),
+        thirdPlaceholder: $r('app.string.pref_bangumi_next_mirror_hint'),
         initialFirst: Settings.getBangumiApiBaseInput(),
         initialSecond: Settings.getBangumiImgBaseInput(),
-        onConfirm: (api: string, img: string): void => {
+        initialThird: Settings.getBangumiNextBaseInput(),
+        onConfirm: (api: string, img: string, next: string): void => {
           if (api !== '' && !/^https:\/\//.test(api)) {
             Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_api_mirror_invalid'));
             return;
@@ -342,8 +352,13 @@ export struct AdvancedContent {
             Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_img_mirror_invalid'));
             return;
           }
+          if (next !== '' && !/^https:\/\//.test(next)) {
+            Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_api_mirror_invalid'));
+            return;
+          }
           Settings.setBangumiApiBase(api);
           Settings.setBangumiImgBase(img);
+          Settings.setBangumiNextBase(next);
           this.bgmApiBase = Settings.bangumiApiBase();
           this.bgmImgBase = Settings.bangumiImgBase();
           Util.toastRes(this.getUIContext(), $r('app.string.pref_bangumi_mirror_saved'));

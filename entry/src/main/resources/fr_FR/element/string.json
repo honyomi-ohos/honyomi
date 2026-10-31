@@ -2413,6 +2413,34 @@
       "value": "Impossible de charger les danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Commentaires"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Chargement des commentaires…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Aucun commentaire pour le moment"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Échec du chargement des commentaires"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Aucun épisode Bangumi correspondant"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d réponses"
+    },
+    {
       "name": "video_locked",
       "value": "Commandes verrouillées"
     },
@@ -4335,6 +4363,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "L'adresse doit commencer par https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Miroir API Next (commentaires), https://your-proxy.example.com, vide = défaut next.bgm.tv"
     },
     {
       "name": "trans_title",

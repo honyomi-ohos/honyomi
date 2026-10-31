@@ -171,26 +171,32 @@ export struct CredentialsDialog {
   }
 }
 
-// 双输入弹窗（Bangumi 镜像：API 地址 + 图片地址一次编辑，留空恢复默认）
+// 双/三输入弹窗（Bangumi 镜像：API / 图片 / next 地址一次编辑，留空恢复默认）
 @CustomDialog
 export struct DualInputDialog {
   controller?: CustomDialogController;
   title: Resource | string = '';
   firstPlaceholder: Resource | string = '';
   secondPlaceholder: Resource | string = '';
+  // 第三个输入（可选）：留空串不渲染该输入框
+  thirdPlaceholder: Resource | string = '';
   initialFirst: string = '';
   initialSecond: string = '';
+  initialThird: string = '';
   @State first: string = '';
   @State second: string = '';
+  @State third: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  onConfirm: (first: string, second: string) => void = (_f: string, _s: string) => {
-  };
+  onConfirm: (first: string, second: string, third: string) => void =
+    (_f: string, _s: string, _t: string) => {
+    };
   onClose: () => void = () => {
   };
 
   aboutToAppear(): void {
     this.first = this.initialFirst;
     this.second = this.initialSecond;
+    this.third = this.initialThird;
   }
 
   build() {
@@ -220,14 +226,35 @@ export struct DualInputDialog {
         text: this.second,
       })
         .id('dualSecondKey')
-        .enterKeyType(EnterKeyType.Done)
+        .enterKeyType(this.thirdPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
         .onChange((value: string) => {
           this.second = value;
         })
         .onSubmit(() => {
-          this.dismiss();
-          this.onConfirm(this.first.trim(), this.second.trim());
+          if (this.thirdPlaceholder !== '') {
+            // 第二个输入框回车跳第三个
+            try {
+              this.getUIContext().getFocusController().requestFocus('dualThirdKey');
+            } catch (e) {
+            }
+          } else {
+            this.confirm();
+          }
         })
+      if (this.thirdPlaceholder !== '') {
+        TextInput({
+          placeholder: this.thirdPlaceholder,
+          text: this.third,
+        })
+          .id('dualThirdKey')
+          .enterKeyType(EnterKeyType.Done)
+          .onChange((value: string) => {
+            this.third = value;
+          })
+          .onSubmit(() => {
+            this.confirm();
+          })
+      }
       Row({ space: 12 }) {
         Button($r('app.string.common_cancel'))
           .layoutWeight(1)
@@ -241,8 +268,7 @@ export struct DualInputDialog {
           .backgroundColor(this.pal.primary)
           .fontColor(this.pal.onPrimary)
           .onClick(() => {
-            this.dismiss();
-            this.onConfirm(this.first.trim(), this.second.trim());
+            this.confirm();
           })
       }
       .width('100%')
@@ -254,6 +280,11 @@ export struct DualInputDialog {
         this.dismiss();
       }
     })
+  }
+
+  private confirm(): void {
+    this.dismiss();
+    this.onConfirm(this.first.trim(), this.second.trim(), this.third.trim());
   }
 
   private dismiss(): void {

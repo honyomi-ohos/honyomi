@@ -2489,6 +2489,34 @@
       "value": "Nie udało się wczytać danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Komentarze"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Ładowanie komentarzy…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Brak komentarzy"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Nie udało się załadować komentarzy"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Brak pasującego odcinka Bangumi"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "Odpowiedzi: %d"
+    },
+    {
       "name": "video_locked",
       "value": "Sterowanie zablokowane"
     },
@@ -4431,6 +4459,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Adres musi zaczynać się od https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror Next API (komentarze), https://your-proxy.example.com, puste = domyślnie next.bgm.tv"
     },
     {
       "name": "trans_title",

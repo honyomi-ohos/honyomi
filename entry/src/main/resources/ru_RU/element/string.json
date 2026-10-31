@@ -2529,6 +2529,34 @@
       "value": "Не удалось загрузить данмаку"
     },
     {
+      "name": "video_comments_title",
+      "value": "Комментарии"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Загрузка комментариев…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Пока нет комментариев"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Не удалось загрузить комментарии"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Нет подходящей серии Bangumi"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Спойлер]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "Ответов: %d"
+    },
+    {
       "name": "video_locked",
       "value": "Управление заблокировано"
     },
@@ -4479,6 +4507,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Адрес должен начинаться с https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Зеркало Next API (комментарии), https://your-proxy.example.com, пусто = по умолчанию next.bgm.tv"
     },
     {
       "name": "trans_title",

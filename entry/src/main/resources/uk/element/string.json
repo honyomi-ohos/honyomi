@@ -2529,6 +2529,34 @@
       "value": "Не вдалося завантажити данмаку"
     },
     {
+      "name": "video_comments_title",
+      "value": "Коментарі"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Завантаження коментарів…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Коментарів ще немає"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Не вдалося завантажити коментарі"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Немає відповідної серії Bangumi"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Спойлер]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "Відповідей: %d"
+    },
+    {
       "name": "video_locked",
       "value": "Керування заблоковано"
     },
@@ -4479,6 +4507,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Адреса має починатися з https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Дзеркало Next API (коментарі), https://your-proxy.example.com, порожньо = типово next.bgm.tv"
     },
     {
       "name": "trans_title",

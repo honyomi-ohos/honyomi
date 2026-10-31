@@ -3069,6 +3069,34 @@
       "value": "Failed to load danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Comments"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Loading comments…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "No comments yet"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Failed to load comments"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "No matching Bangumi episode"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d replies"
+    },
+    {
       "name": "video_locked",
       "value": "Controls locked"
     },
@@ -4151,6 +4179,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Address must start with https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Next API mirror (comments), https://your-proxy.example.com, empty = default next.bgm.tv"
     },
     {
       "name": "pref_user_agent_hint",

@@ -3041,6 +3041,34 @@
       "value": "弹幕加载失败"
     },
     {
+      "name": "video_comments_title",
+      "value": "评论"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "评论加载中…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "暂无评论"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "评论加载失败"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "未匹配到 Bangumi 剧集"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[剧透]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d 条回复"
+    },
+    {
       "name": "video_locked",
       "value": "已锁定"
     },
@@ -4123,6 +4151,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "地址需以 https:// 开头"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Next 接口镜像（评论），https://your-proxy.example.com，留空 = 默认 next.bgm.tv"
     },
     {
       "name": "pref_user_agent_hint",

@@ -3,6 +3,7 @@
 // + 角色（横滑）+ 制作人员 + 相关条目（横滑）+“在应用内搜索”入口（跳全局搜索）
 // lg+ 双列布局：左栏（封面/收藏统计/作品信息/标签）+ 右主栏（标题/评分/简介/角色/制作人员/相关条目）
 // 统一边距：内容列 constraintSize 限宽 + 父容器居中，区块不再叠加 16 + contentInset
+import { curves } from '@kit.ArkUI';
 import { BangumiApi, BgmCharacter, BgmInfoboxEntry, BgmPerson, BgmRelatedSubject, BgmSubjectDetail, BgmTag } from '../data/BangumiApi';
 import { AppDb } from '../data/AppDb';
 import { GlobalSearchParams, SubjectDetailParams } from '../model/RouteParams';
@@ -42,6 +43,9 @@ export struct SubjectDetailPage {
   @State staff: BgmPerson[] = [];
   // 简介展开 / 标签展开 / 作品信息展开
   @State summaryExpanded: boolean = false;
+  // 简介全文/收起 6 行实测高度：经 onAreaChange 测量，驱动简介容器高度动画
+  @State summaryFullH: number = 0;
+  @State summaryCollapsedH: number = 0;
   @State tagsExpanded: boolean = false;
   @State infoExpanded: boolean = false;
   // 预格式化文案（资源含 %d 占位，渲染前经 Util.resStr 一次性格式化）
@@ -401,6 +405,15 @@ export struct SubjectDetailPage {
     .alignItems(HorizontalAlign.Start)
   }
 
+  // 简介容器高度：无需展开（未超折叠字数）或未溢出时保持自然高度，否则在收起/全文间切换
+  private summaryBoxHeight(d: BgmSubjectDetail): number {
+    if (d.summary.length <= SUBJECT_SUMMARY_COLLAPSED_CHARS || this.summaryExpanded ||
+      this.summaryFullH <= this.summaryCollapsedH) {
+      return this.summaryFullH;
+    }
+    return this.summaryCollapsedH;
+  }
+
   // 简介块（长文折叠，展开/收起）
   @Builder
   summaryBlock(d: BgmSubjectDetail) {
@@ -409,19 +422,47 @@ export struct SubjectDetailPage {
         .fontSize(15)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
-      Text(d.summary !== '' ? d.summary : $r('app.string.subject_summary_empty'))
+      // 简介高度动画（对齐 Mihon MangaSummary：正文完整渲染于不约束高度的测量容器中，
+      // 外层高度在「收起 6 行 / 全文」间以 spring 过渡并裁剪，收起时渐进遮蔽而非瞬间截断）
+      Scroll() {
+        Text(d.summary !== '' ? d.summary : $r('app.string.subject_summary_empty'))
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .lineHeight(22)
+          .width('100%')
+          .onAreaChange((oldArea: Area, newArea: Area) => {
+            if (typeof newArea.height === 'number') {
+              this.summaryFullH = newArea.height;
+            }
+          })
+      }
+      .width('100%')
+      .height(this.summaryBoxHeight(d))
+      .clip(true)
+      .enabled(false)
+      .scrollBar(BarState.Off)
+      .edgeEffect(EdgeEffect.None)
+      // 隐藏测量行：与简介同行高，量取收起 6 行基准高度（对齐 Mihon shrunk 测量子布局）
+      Text('\n\n\n\n\n\n')
         .fontSize(14)
-        .fontColor(this.pal.sub)
         .lineHeight(22)
-        .maxLines(this.summaryExpanded ? 999 : 6)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .opacity(0)
+        .position({ x: 0, y: 0 })
+        .onAreaChange((oldArea: Area, newArea: Area) => {
+          if (typeof newArea.height === 'number') {
+            this.summaryCollapsedH = newArea.height;
+          }
+        })
       if (d.summary.length > SUBJECT_SUMMARY_COLLAPSED_CHARS) {
         ExpandToggle({
           expanded: this.summaryExpanded,
           tint: this.pal.primary,
           label: this.summaryExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
           onToggle: (): void => {
-            this.summaryExpanded = !this.summaryExpanded;
+            // 展开/收起内容动画：spring 临界阻尼（等价 Compose animateFloatAsState 默认 spring）
+            this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+              this.summaryExpanded = !this.summaryExpanded;
+            });
           }
         })
           .padding({ top: 4, bottom: 4 })
@@ -452,13 +493,18 @@ export struct SubjectDetailPage {
           }, (tag: BgmTag) => `tag-${tag.name}-${tag.count}`)
         }
         .width('100%')
+        // 展开时新增胶囊在高度动画内渐进揭示，须裁剪防止溢出到下移中的区块
+        .clip(true)
         if (d.tags.length > SUBJECT_TAGS_COLLAPSED) {
           ExpandToggle({
             expanded: this.tagsExpanded,
             tint: this.pal.primary,
             label: this.tagsExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
             onToggle: (): void => {
-              this.tagsExpanded = !this.tagsExpanded;
+              // 展开/收起内容动画：spring 临界阻尼（等价 Compose animateFloatAsState 默认 spring）
+              this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+                this.tagsExpanded = !this.tagsExpanded;
+              });
             }
           })
             .padding({ top: 4, bottom: 4 })
@@ -480,33 +526,42 @@ export struct SubjectDetailPage {
           .fontWeight(FontWeight.Bold)
           .fontColor(this.pal.text)
           .padding({ top: 12, left: 16, right: 16 })
-        ForEach(this.displayInfobox(d), (entry: BgmInfoboxEntry, index: number) => {
-          Row({ space: 12 }) {
-            Text(this.infoboxLabel(entry.key))
-              .fontSize(13)
-              .fontColor(this.pal.sub)
-              .constraintSize({ maxWidth: '38%' })
-            Blank()
-            Text(entry.text)
-              .fontSize(13)
-              .fontWeight(FontWeight.Medium)
-              .fontColor(this.pal.text)
-              .maxLines(3)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-              .textAlign(TextAlign.End)
-              .constraintSize({ maxWidth: '58%' })
-          }
-          .width('100%')
-          .alignItems(VerticalAlign.Top)
-          .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-        }, (entry: BgmInfoboxEntry, index: number) => `infobox-${index}-${entry.key}`)
+        // 展开时新增信息行在高度动画内渐进揭示，须裁剪防止溢出
+        Column() {
+          ForEach(this.displayInfobox(d), (entry: BgmInfoboxEntry, index: number) => {
+            Row({ space: 12 }) {
+              Text(this.infoboxLabel(entry.key))
+                .fontSize(13)
+                .fontColor(this.pal.sub)
+                .constraintSize({ maxWidth: '38%' })
+              Blank()
+              Text(entry.text)
+                .fontSize(13)
+                .fontWeight(FontWeight.Medium)
+                .fontColor(this.pal.text)
+                .maxLines(3)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
+                .textAlign(TextAlign.End)
+                .constraintSize({ maxWidth: '58%' })
+            }
+            .width('100%')
+            .alignItems(VerticalAlign.Top)
+            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+          }, (entry: BgmInfoboxEntry, index: number) => `infobox-${index}-${entry.key}`)
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+        .clip(true)
         if (d.infobox.length > SUBJECT_INFO_COLLAPSED) {
           ExpandToggle({
             expanded: this.infoExpanded,
             tint: this.pal.primary,
             label: this.infoExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
             onToggle: (): void => {
-              this.infoExpanded = !this.infoExpanded;
+              // 展开/收起内容动画：spring 临界阻尼（等价 Compose animateFloatAsState 默认 spring）
+              this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+                this.infoExpanded = !this.infoExpanded;
+              });
             }
           })
             .padding({ top: 4, bottom: 4 })

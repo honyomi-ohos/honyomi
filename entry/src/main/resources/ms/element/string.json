@@ -2469,6 +2469,34 @@
       "value": "Gagal memuatkan danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Komen"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Memuatkan komen…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Belum ada komen"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Gagal memuatkan komen"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Tiada episod Bangumi yang sepadan"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d balasan"
+    },
+    {
       "name": "video_locked",
       "value": "Kawalan dikunci"
     },
@@ -4403,6 +4431,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Alamat mesti bermula dengan https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror Next API (komen), https://your-proxy.example.com, kosong = lalai next.bgm.tv"
     },
     {
       "name": "trans_title",

@@ -2517,6 +2517,34 @@
       "value": "Danmaku yüklenemedi"
     },
     {
+      "name": "video_comments_title",
+      "value": "Yorumlar"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Yorumlar yükleniyor…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Henüz yorum yok"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Yorumlar yüklenemedi"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Eşleşen Bangumi bölümü yok"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d yanıt"
+    },
+    {
       "name": "video_locked",
       "value": "Denetimler kilitli"
     },
@@ -4455,6 +4483,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Adres https:// ile başlamalı"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Next API aynası (yorumlar), https://your-proxy.example.com, boş = varsayılan next.bgm.tv"
     },
     {
       "name": "trans_title",

@@ -2509,6 +2509,34 @@
       "value": "Tải danmaku thất bại"
     },
     {
+      "name": "video_comments_title",
+      "value": "Bình luận"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Đang tải bình luận…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Chưa có bình luận"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Không tải được bình luận"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Không có tập Bangumi phù hợp"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Tiết lộ nội dung]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d trả lời"
+    },
+    {
       "name": "video_locked",
       "value": "Đã khóa điều khiển"
     },
@@ -4455,6 +4483,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Địa chỉ phải bắt đầu bằng https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror Next API (bình luận), https://your-proxy.example.com, để trống = mặc định next.bgm.tv"
     },
     {
       "name": "trans_title",

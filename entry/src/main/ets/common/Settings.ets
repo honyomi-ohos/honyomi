@@ -877,6 +877,25 @@ export class Settings {
     return 'https://lain.bgm.tv';
   }
 
+  // Bangumi next 镜像（高级设置）：吐槽箱/单集评论等新版接口源（next.bgm.tv），
+  // 独立于 v0 API 镜像；存储原始输入，空串 = 未设置
+  static getBangumiNextBaseInput(): string {
+    return Settings.getStr('bangumiNextBase', '').trim();
+  }
+
+  static setBangumiNextBase(v: string): void {
+    Settings.setStr('bangumiNextBase', v.trim());
+  }
+
+  // 生效的 next 基地址：强制 https:// 前缀，未设置/非法回退默认 https://next.bgm.tv
+  static bangumiNextBase(): string {
+    const raw: string = Settings.getBangumiNextBaseInput().replace(/\/+$/, '');
+    if (/^https:\/\//.test(raw)) {
+      return raw;
+    }
+    return 'https://next.bgm.tv';
+  }
+
   // Bangumi 图片 URL 统一出口：协议相对（//lain.bgm.tv/...）补 https；
   // host 为 lain.bgm.tv 时替换为图片镜像基地址（路径原样保留），其余 URL 原样返回
   static rewriteBangumiImageUrl(url: string): string {

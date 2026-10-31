@@ -2541,6 +2541,34 @@
       "value": "탄막을 불러오지 못했습니다"
     },
     {
+      "name": "video_comments_title",
+      "value": "댓글"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "댓글 불러오는 중…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "아직 댓글이 없습니다"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "댓글을 불러오지 못했습니다"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "일치하는 Bangumi 에피소드가 없습니다"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[스포일러]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "답글 %d개"
+    },
+    {
       "name": "video_locked",
       "value": "컨트롤을 잠갔습니다"
     },
@@ -4503,6 +4531,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "주소는 https://로 시작해야 합니다"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Next API 미러(댓글), https://your-proxy.example.com, 비워두면 기본 next.bgm.tv"
     },
     {
       "name": "trans_title",

@@ -2533,6 +2533,34 @@
       "value": "โหลดดานมากุไม่สำเร็จ"
     },
     {
+      "name": "video_comments_title",
+      "value": "ความคิดเห็น"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "กำลังโหลดความคิดเห็น…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "ยังไม่มีความคิดเห็น"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "โหลดความคิดเห็นไม่สำเร็จ"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "ไม่พบตอนใน Bangumi ที่ตรงกัน"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[สปอยล์]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "ตอบกลับ %d รายการ"
+    },
+    {
       "name": "video_locked",
       "value": "ล็อกตัวควบคุมแล้ว"
     },
@@ -4495,6 +4523,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "ที่อยู่ต้องขึ้นต้นด้วย https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror ของ Next API (ความคิดเห็น), https://your-proxy.example.com, ว่าง = ค่าเริ่มต้น next.bgm.tv"
     },
     {
       "name": "trans_title",

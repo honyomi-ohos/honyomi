@@ -1,4 +1,5 @@
 import { Want } from '@kit.AbilityKit';
+import { curves } from '@kit.ArkUI';
 import { SheetPreset } from './components/SheetPreset';
 import { BusinessError, pasteboard } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -315,6 +316,9 @@ export struct MangaDetailPage {
   @State chapters: ChapterRecord[] = [];
   @State loading: boolean = true;
   @State descExpanded: boolean = false;
+  // 简介全文/收起 3 行实测高度：经 onAreaChange 测量，驱动简介容器高度动画
+  @State descFullH: number = 0;
+  @State descCollapsedH: number = 0;
   @State syncing: boolean = false;
   @State refreshing: boolean = false;
   // 两列布局下左/右列各自的刷新状态，避免两个 Refresh 指示器同时转
@@ -1133,6 +1137,14 @@ export struct MangaDetailPage {
     })
   }
 
+  // 简介容器高度：未溢出（全文 ≤ 收起行高）时保持自然高度，溢出时在收起/全文间切换
+  private descBoxHeight(): number {
+    if (this.descExpanded || this.descFullH <= this.descCollapsedH) {
+      return this.descFullH;
+    }
+    return this.descCollapsedH;
+  }
+
   // 简介 + 标签（对齐 Mihon ExpandableMangaDescription）
   @Builder
   descContent() {
@@ -1149,6 +1161,7 @@ export struct MangaDetailPage {
                 .fontColor(this.pal.primary)
             }
             .padding({ top: 6, bottom: 2 })
+            .transition(TransitionEffect.asymmetric(TransitionEffect.OPACITY, TransitionEffect.IDENTITY))
             .onClick(() => {
               this.showNotesSheet = true;
             })
@@ -1161,12 +1174,35 @@ export struct MangaDetailPage {
         .alignItems(HorizontalAlign.Start)
       }
       if (this.manga.description !== '') {
-        Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
+        // 简介高度动画（对齐 Mihon MangaSummary：正文完整渲染于不约束高度的测量容器中，
+        // 外层高度在「收起 3 行 / 全文」间以 spring 过渡并裁剪，收起时渐进遮蔽而非瞬间截断）
+        Scroll() {
+          Text(Util.localDescriptionLabel(this.getUIContext(), this.manga.description))
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .width('100%')
+            .onAreaChange((oldArea: Area, newArea: Area) => {
+              if (typeof newArea.height === 'number') {
+                this.descFullH = newArea.height;
+              }
+            })
+        }
+        .width('100%')
+        .height(this.descBoxHeight())
+        .clip(true)
+        .enabled(false)
+        .scrollBar(BarState.Off)
+        .edgeEffect(EdgeEffect.None)
+        // 隐藏测量行：与简介同字号，量取收起 3 行基准高度（对齐 Mihon shrunk 测量子布局）
+        Text('\n\n\n')
           .fontSize(13)
-          .fontColor(this.pal.sub)
-          .maxLines(this.descExpanded ? 999 : 3)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .width('100%')
+          .opacity(0)
+          .position({ x: 0, y: 0 })
+          .onAreaChange((oldArea: Area, newArea: Area) => {
+            if (typeof newArea.height === 'number') {
+              this.descCollapsedH = newArea.height;
+            }
+          })
         ExpandToggle({
           expanded: this.descExpanded,
           iconSize: 16,
@@ -1174,7 +1210,11 @@ export struct MangaDetailPage {
           tint: this.pal.primary,
           label: this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
           onToggle: (): void => {
-            this.descExpanded = !this.descExpanded;
+            // 展开/收起内容动画：spring 临界阻尼（等价 Compose animateFloatAsState 默认 spring），
+            // 简介 maxLines 高度、下方区块位移均在动画作用域内过渡
+            this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+              this.descExpanded = !this.descExpanded;
+            });
           }
         })
           .margin({ top: 4 })
@@ -1187,6 +1227,7 @@ export struct MangaDetailPage {
               this.TagChip(tag)
             }, (tag: string, idx: number) => `tag-${idx}-${tag}`)
           }
+          .transition(TransitionEffect.asymmetric(TransitionEffect.OPACITY, TransitionEffect.IDENTITY))
         } else {
           Scroll() {
             Row() {
@@ -1198,6 +1239,7 @@ export struct MangaDetailPage {
           .scrollable(ScrollDirection.Horizontal)
           .scrollBar(BarState.Off)
           .edgeEffect(EdgeEffect.None)
+          .transition(TransitionEffect.asymmetric(TransitionEffect.OPACITY, TransitionEffect.IDENTITY))
         }
       }
     }

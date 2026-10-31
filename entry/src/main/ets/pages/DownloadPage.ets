@@ -1,3 +1,4 @@
+import { curves } from '@kit.ArkUI';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadedChapter, DownloadedManga, DownloadTask } from '../model/Models';
 import { ThemePalette } from '../common/Theme';
@@ -187,6 +188,165 @@ struct QueueTaskRow {
   }
 }
 
+// 下载中分组头行组件：折叠集合经 @Link 变量级同步原地刷新
+// （ForEach 同 key 复用头行时不重跑生成器，页面 @Builder 内联表达式无法感知集合替换；
+// 抽成子组件后箭头在头行复用状态下仍能触发翻转动画）
+@Component
+struct QueueGroupHeaderRow {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('windowW') windowW: number = 0;
+  @Link collapsedQueueIds: Set<number>;
+  group: QueueGroup = new QueueGroup();
+  onToggleGroup: (mangaId: number) => void = (mangaId: number) => {};
+
+  // SectionHeader 文本色（对齐 M3 onSurfaceVariant：暗色需保持高对比度，
+  // 深色 sub 值偏暗，改用主文本色 85% 透明近似 M3 暗色层次）
+  private secondaryText(): string {
+    return this.isDark ? this.pal.text + 'D9' : this.pal.sub;
+  }
+
+  build() {
+    Row() {
+      Text(`${this.group.mangaTitle} (${this.group.tasks.length})`)
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.secondaryText())
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+      // 折叠态指示箭头：体现分组头与任务行的父子层级（展开/收起旋转动画）
+      ExpandToggle({
+        expanded: !this.collapsedQueueIds.has(this.group.mangaId),
+        iconSize: 20,
+        tint: this.pal.sub,
+        onToggle: (): void => {
+          this.onToggleGroup(this.group.mangaId);
+        }
+      })
+    }
+    .width('100%')
+    .padding({
+      left: 16 + Bp.contentInset(this.windowW),
+      right: 16 + Bp.contentInset(this.windowW),
+      top: 14,
+      bottom: 8
+    })
+    .backgroundColor(this.pal.bg)
+    .onClick(() => {
+      this.onToggleGroup(this.group.mangaId);
+    })
+  }
+}
+
+// 已下载分组头行组件：多选态/勾选集合/折叠集合均经 @Link 变量级同步原地刷新
+// （头行同 key 复用不重跑生成器，子组件绑定保证勾选圈、箭头随页面状态更新）
+@Component
+struct DownloadedGroupHeaderRow {
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  @StorageProp('isDark') isDark: boolean = false;
+  @StorageProp('windowW') windowW: number = 0;
+  @Link expandedDownloadedIds: Set<number>;
+  @Link selecting: boolean;
+  @Link selectedIds: Set<number>;
+  group: DownloadedManga = new DownloadedManga();
+  onToggleGroup: (mangaId: number) => void = (mangaId: number) => {};
+  onEnterGroupSelection: (group: DownloadedManga) => void = (group: DownloadedManga) => {};
+  onToggleGroupSelection: (group: DownloadedManga) => void = (group: DownloadedManga) => {};
+  onConfirmDeleteSeries: (group: DownloadedManga) => void = (group: DownloadedManga) => {};
+
+  // SectionHeader 文本色（同 QueueGroupHeaderRow：暗色改用主文本色 85% 透明）
+  private secondaryText(): string {
+    return this.isDark ? this.pal.text + 'D9' : this.pal.sub;
+  }
+
+  private isGroupFullySelected(): boolean {
+    if (this.group.chapters.length === 0) {
+      return false;
+    }
+    for (const ch of this.group.chapters) {
+      if (!this.selectedIds.has(ch.chapterId)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // PC 右键菜单「选择」：整组进入多选（与长按一致；移动端仍走长按手势）
+  @Builder
+  groupMenuBuilder() {
+    Menu() {
+      MenuItem({ content: $r('app.string.common_select') })
+        .onClick(() => {
+          this.onEnterGroupSelection(this.group);
+        })
+    }
+  }
+
+  build() {
+    Row({ space: 8 }) {
+      if (this.selecting) {
+        AppIcon({
+          name: this.isGroupFullySelected() ? 'check_circle' : 'check_box_outline_blank',
+          iconSize: 20,
+          tint: this.isGroupFullySelected() ? this.pal.primary : this.pal.sub
+        })
+      }
+      Text(`${this.group.mangaTitle} (${this.group.chapters.length})`)
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(this.secondaryText())
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .layoutWeight(1)
+      if (!this.selecting) {
+        AppIcon({ name: 'delete_sweep', iconSize: 20, tint: this.pal.sub })
+          .padding({ left: 6, right: 2 })
+          .onClick(() => {
+            this.onConfirmDeleteSeries(this.group);
+          })
+      }
+      // 折叠态指示箭头：体现分组头与章节行的父子层级（展开/收起旋转动画）
+      if (!this.selecting) {
+        ExpandToggle({
+          expanded: this.expandedDownloadedIds.has(this.group.mangaId),
+          iconSize: 20,
+          tint: this.pal.sub,
+          onToggle: (): void => {
+            this.onToggleGroup(this.group.mangaId);
+          }
+        })
+      }
+    }
+    .width('100%')
+    .padding({
+      left: 16 + Bp.contentInset(this.windowW),
+      right: 16 + Bp.contentInset(this.windowW),
+      top: 14,
+      bottom: 8
+    })
+    .backgroundColor(this.pal.bg)
+    .onClick((event?: ClickEvent) => {
+      if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
+        this.onEnterGroupSelection(this.group);
+        return;
+      }
+      if (this.selecting) {
+        this.onToggleGroupSelection(this.group);
+      } else {
+        this.onToggleGroup(this.group.mangaId);
+      }
+    })
+    .gesture(LongPressGesture()
+      .onAction(() => {
+        if (!this.selecting) {
+          this.onEnterGroupSelection(this.group);
+        }
+      }))
+    .bindContextMenu(this.groupMenuBuilder, ResponseType.RightClick)
+  }
+}
+
 // 下载管理页：双 Tab 分别管理"下载中"队列与"已下载"章节
 // （风格对齐 Mihon DownloadQueueScreen：SectionHeader 分组头「作品 (N)」、
 // 标题数量 Pill 徽标、M3 TabRow 页签、排序/溢出菜单、组内拖拽排序、
@@ -209,9 +369,10 @@ export struct DownloadPage {
   @State selecting: boolean = false;
   @State selectedIds: Set<number> = new Set<number>();
   private downloaded: DownloadedManga[] = [];
-  private collapsedQueueIds: Set<number> = new Set<number>();
-  // 已下载分组默认折叠：仅记录用户显式展开的作品组
-  private expandedDownloadedIds: Set<number> = new Set<number>();
+  // 折叠集合须为 @State：分组头组件经 @Link 变量级同步感知整体替换（toggle 时重建 Set 赋值）
+  @State collapsedQueueIds: Set<number> = new Set<number>();
+  // 已下载分组默认折叠：仅记录用户显式展开的作品组（同样经 @Link 同步）
+  @State expandedDownloadedIds: Set<number> = new Set<number>();
   private tabsController: TabsController = new TabsController();
   private lastQueueSignature: string = '';
 
@@ -340,109 +501,6 @@ export struct DownloadPage {
     return n;
   }
 
-  // 下载中分组头：SectionHeader 风格「作品名 (N)」（对齐 Mihon download_header.xml
-  // TextAppearance.Tachiyomi.SectionHeader：14sp Medium 次级色），点击整行切换折叠
-  @Builder
-  queueGroupHeader(group: QueueGroup) {
-    Row() {
-      Text(`${group.mangaTitle} (${group.tasks.length})`)
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(this.secondaryText())
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1)
-      // 折叠态指示箭头：体现分组头与任务行的父子层级（展开/收起旋转动画）
-      ExpandToggle({
-        expanded: !this.isQueueGroupCollapsed(group.mangaId),
-        iconSize: 20,
-        tint: this.pal.sub,
-        onToggle: (): void => {
-          this.toggleQueueGroup(group.mangaId);
-        }
-      })
-    }
-    .width('100%')
-    .padding({
-      left: 16 + this.inset(),
-      right: 16 + this.inset(),
-      top: 14,
-      bottom: 8
-    })
-    .backgroundColor(this.pal.bg)
-    .onClick(() => {
-      this.toggleQueueGroup(group.mangaId);
-    })
-  }
-
-  // 已下载分组头：SectionHeader 风格「作品名 (N)」，点击展开/折叠（默认折叠）；
-  // 多选态头部变勾选框，点击整组勾选/取消，尾部图标整作品删除
-  @Builder
-  downloadedGroupHeader(group: DownloadedManga) {
-    Row({ space: 8 }) {
-      if (this.selecting) {
-        AppIcon({
-          name: this.isGroupFullySelected(group) ? 'check_circle' : 'check_box_outline_blank',
-          iconSize: 20,
-          tint: this.isGroupFullySelected(group) ? this.pal.primary : this.pal.sub
-        })
-      }
-      Text(`${group.mangaTitle} (${group.chapters.length})`)
-        .fontSize(14)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(this.secondaryText())
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-        .layoutWeight(1)
-      if (!this.selecting) {
-        AppIcon({ name: 'delete_sweep', iconSize: 20, tint: this.pal.sub })
-          .padding({ left: 6, right: 2 })
-          .onClick(() => {
-            this.confirmDeleteSeries(group);
-          })
-      }
-      // 折叠态指示箭头：体现分组头与章节行的父子层级（展开/收起旋转动画）
-      if (!this.selecting) {
-        ExpandToggle({
-          expanded: !this.isDownloadedGroupCollapsed(group.mangaId),
-          iconSize: 20,
-          tint: this.pal.sub,
-          onToggle: (): void => {
-            this.toggleDownloadedGroup(group.mangaId);
-          }
-        })
-      }
-    }
-    .width('100%')
-    .padding({
-      left: 16 + this.inset(),
-      right: 16 + this.inset(),
-      top: 14,
-      bottom: 8
-    })
-    .backgroundColor(this.pal.bg)
-    .onClick((event?: ClickEvent) => {
-      if (event !== undefined && Util.isCtrlHeld(event) && !this.selecting) {
-        this.enterGroupSelection(group);
-        return;
-      }
-      if (this.selecting) {
-        this.toggleGroupSelection(group);
-      } else {
-        this.toggleDownloadedGroup(group.mangaId);
-      }
-    })
-    .gesture(LongPressGesture()
-      .onAction(() => {
-        if (!this.selecting) {
-          this.enterGroupSelection(group);
-        }
-      }))
-    .bindContextMenu((): void => {
-      this.downloadedGroupMenu(group);
-    }, ResponseType.RightClick)
-  }
-
   // 已下载章节行：单行章节名 + 尾部删除（Mihon 章节列表样式）；
   // 垂直/右侧内边距与下载中行保持一致，普通态尾部单章删除、长按进入多选
   @Builder
@@ -495,6 +553,10 @@ export struct DownloadPage {
     .bindContextMenu((): void => {
       this.downloadedChapterMenu(item);
     }, ResponseType.RightClick)
+    // 展开分组时章节行随布局动画渐进揭示（淡入+自上滑入），收起时瞬时移除
+    .transition(TransitionEffect.asymmetric(
+      TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: -24 })),
+      TransitionEffect.IDENTITY))
   }
 
   // 下载中 Tab：分组队列列表 + 拖拽排序 + 暂停/继续 FAB
@@ -514,9 +576,19 @@ export struct DownloadPage {
           ForEach(this.queueRows, (item: QueueRowItem) => {
             ListItem() {
               if (item.isHeader) {
-                this.queueGroupHeader(item.group)
+                QueueGroupHeaderRow({
+                  collapsedQueueIds: this.collapsedQueueIds,
+                  group: item.group,
+                  onToggleGroup: (mangaId: number): void => {
+                    this.toggleQueueGroup(mangaId);
+                  }
+                })
               } else {
                 QueueTaskRow({ task: item.task })
+                  // 展开分组时任务行随布局动画渐进揭示，收起时瞬时移除
+                  .transition(TransitionEffect.asymmetric(
+                    TransitionEffect.OPACITY.combine(TransitionEffect.translate({ y: -24 })),
+                    TransitionEffect.IDENTITY))
               }
             }
           }, (item: QueueRowItem) => this.queueRowKey(item))
@@ -602,7 +674,24 @@ export struct DownloadPage {
           ForEach(this.downloadedRows, (item: DownloadedRowItem) => {
             ListItem() {
               if (item.isHeader) {
-                this.downloadedGroupHeader(item.group)
+                DownloadedGroupHeaderRow({
+                  expandedDownloadedIds: this.expandedDownloadedIds,
+                  selecting: this.selecting,
+                  selectedIds: this.selectedIds,
+                  group: item.group,
+                  onToggleGroup: (mangaId: number): void => {
+                    this.toggleDownloadedGroup(mangaId);
+                  },
+                  onEnterGroupSelection: (group: DownloadedManga): void => {
+                    this.enterGroupSelection(group);
+                  },
+                  onToggleGroupSelection: (group: DownloadedManga): void => {
+                    this.toggleGroupSelection(group);
+                  },
+                  onConfirmDeleteSeries: (group: DownloadedManga): void => {
+                    this.confirmDeleteSeries(group);
+                  }
+                })
               } else {
                 this.downloadedChapterRow(item.chapter)
               }
@@ -747,17 +836,6 @@ export struct DownloadPage {
     .backgroundColor(this.pal.bg)
   }
 
-  // PC 右键菜单「选择」：整组进入多选（与长按一致；移动端仍走长按手势）
-  @Builder
-  downloadedGroupMenu(group: DownloadedManga) {
-    Menu() {
-      MenuItem({ content: $r('app.string.common_select') })
-        .onClick(() => {
-          this.enterGroupSelection(group);
-        })
-    }
-  }
-
   // ----- 队列分组折叠 -----
 
   // PC 右键菜单「选择」：单章进入多选（与长按一致）
@@ -776,26 +854,24 @@ export struct DownloadPage {
     return Bp.contentInset(this.windowW);
   }
 
-  private isQueueGroupCollapsed(mangaId: number): boolean {
-    return this.collapsedQueueIds.has(mangaId);
-  }
-
+  // 折叠/展开统一走 spring 布局动画（等价 Compose spring(1f, 400f) 临界阻尼）：
+  // 行摊平数组增删驱动任务/章节行过渡，@State 集合整体替换驱动分组头箭头翻转
   private toggleQueueGroup(mangaId: number): void {
-    if (this.collapsedQueueIds.has(mangaId)) {
-      this.collapsedQueueIds.delete(mangaId);
+    const next: Set<number> = new Set<number>(this.collapsedQueueIds);
+    if (next.has(mangaId)) {
+      next.delete(mangaId);
     } else {
-      this.collapsedQueueIds.add(mangaId);
+      next.add(mangaId);
     }
-    this.rebuildQueueRows();
+    this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+      this.collapsedQueueIds = next;
+      this.rebuildQueueRows();
+    });
   }
 
   // ----- 渲染模型重建 -----
 
   // 已下载分组默认折叠（对齐"默认收起"交互），仅显式展开的组显示章节行
-  private isDownloadedGroupCollapsed(mangaId: number): boolean {
-    return !this.expandedDownloadedIds.has(mangaId);
-  }
-
   private toggleDownloadedGroup(mangaId: number): void {
     const next: Set<number> = new Set<number>(this.expandedDownloadedIds);
     if (next.has(mangaId)) {
@@ -803,8 +879,10 @@ export struct DownloadPage {
     } else {
       next.add(mangaId);
     }
-    this.expandedDownloadedIds = next;
-    this.rebuildDownloadedRows();
+    this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+      this.expandedDownloadedIds = next;
+      this.rebuildDownloadedRows();
+    });
   }
 
   // ----- 拖拽排序：任务行组内排序 + 分组头整组迁移 -----
@@ -1006,9 +1084,9 @@ export struct DownloadPage {
     return ids.join(',');
   }
 
-  // ----- 行 key：折叠态编入分组头 key -----
-  // ForEach 对同 key 行复用组件而不重跑生成器，折叠集合又非状态成员，
-  // 箭头图标无法驱动刷新；将折叠态编入 key 使头行在切换时销毁重建
+  // ----- 行 key -----
+  // 分组头 key 编入条目数（数量变化时重建头行以刷新标题计数），不含折叠态：
+  // 折叠集合已提升为 @State，分组头组件经 @Link 原地感知切换，无需销毁重建
 
   private async loadDownloaded(): Promise<void> {
     this.downloaded = await DownloadService.listDownloaded();
@@ -1027,16 +1105,14 @@ export struct DownloadPage {
 
   private queueRowKey(item: QueueRowItem): string {
     if (item.isHeader) {
-      return `h-${item.group.mangaId}-${item.group.tasks.length}-` +
-        `${this.collapsedQueueIds.has(item.group.mangaId) ? 'c' : 'e'}`;
+      return `h-${item.group.mangaId}-${item.group.tasks.length}`;
     }
     return item.key();
   }
 
   private downloadedRowKey(item: DownloadedRowItem): string {
     if (item.isHeader) {
-      return `dh-${item.group.mangaId}-${item.group.chapters.length}-` +
-        `${this.isDownloadedGroupCollapsed(item.group.mangaId) ? 'c' : 'e'}`;
+      return `dh-${item.group.mangaId}-${item.group.chapters.length}`;
     }
     return item.key();
   }
@@ -1124,16 +1200,20 @@ export struct DownloadPage {
     for (const group of this.downloaded) {
       next.add(group.mangaId);
     }
-    this.expandedDownloadedIds = next;
-    this.rebuildDownloadedRows();
+    this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+      this.expandedDownloadedIds = next;
+      this.rebuildDownloadedRows();
+    });
   }
 
   private collapseAllDownloadedGroups(): void {
     if (this.expandedDownloadedIds.size === 0) {
       return;
     }
-    this.expandedDownloadedIds = new Set<number>();
-    this.rebuildDownloadedRows();
+    this.getUIContext().animateTo({ curve: curves.springCurve(0, 1, 400, 40) }, (): void => {
+      this.expandedDownloadedIds = new Set<number>();
+      this.rebuildDownloadedRows();
+    });
   }
 
   // ----- 删除（整作品 / 多选，均先确认） -----

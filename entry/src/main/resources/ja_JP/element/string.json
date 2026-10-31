@@ -2881,6 +2881,34 @@
       "value": "弾幕の読み込みに失敗しました"
     },
     {
+      "name": "video_comments_title",
+      "value": "コメント"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "コメントを読み込み中…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "まだコメントはありません"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "コメントの読み込みに失敗しました"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "一致するBangumiのエピソードがありません"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[ネタバレ]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "返信 %d 件"
+    },
+    {
       "name": "video_locked",
       "value": "操作をロックしました"
     },
@@ -4499,6 +4527,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "アドレスは https:// で始めてください"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Next APIミラー（コメント）、https://your-proxy.example.com、空欄 = デフォルト next.bgm.tv"
     },
     {
       "name": "trans_title",

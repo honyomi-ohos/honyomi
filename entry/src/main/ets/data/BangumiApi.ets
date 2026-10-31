@@ -140,6 +140,29 @@ interface BgmPersonRaw {
   images?: BgmImagesRaw;
 }
 
+// v0 /v0/episodes 分页响应
+interface BgmEpisodesRespRaw {
+  data?: BgmEpisodeRaw[];
+  total?: number;
+  limit?: number;
+  offset?: number;
+}
+
+// v0 /v0/episodes 单集项
+interface BgmEpisodeRaw {
+  id?: number;
+  subject_id?: number;
+  // 集类型：0=正片 1=SP 2=OP 3=ED 4=预告/宣传 6=其他
+  type?: number;
+  airdate?: string;
+  name?: string;
+  name_cn?: string;
+  // 集号（正片从 1 起）
+  ep?: number;
+  sort?: number;
+  comment?: number;
+}
+
 // ---- 公开模型 ----
 
 // 每日放送条目（日历卡片）
@@ -233,6 +256,20 @@ export class BgmRelatedSubject {
   cover: string = '';
 }
 
+// 单集（v0 /v0/episodes，id 即 Bangumi ep id，可用于评论/吐槽定位）
+export class BgmEpisode {
+  id: number = 0;
+  // 0=正片 1=SP 2=OP 3=ED 4=预告/宣传 6=其他
+  type: number = 0;
+  airdate: string = '';
+  name: string = '';
+  nameCn: string = '';
+  // 集号（正片从 1 起，0 = 未知）
+  ep: number = 0;
+  sort: number = 0;
+  comment: number = 0;
+}
+
 export class BangumiApi {
   // API 基地址：默认 api.bgm.tv；用户在高级设置配置镜像后经 Settings 动态读取
   private static readonly UA: string = 'Honyomi/1.0 (HarmonyOS)';
@@ -249,6 +286,8 @@ export class BangumiApi {
   private static charactersCache: Map<number, BgmCharacter[]> = new Map<number, BgmCharacter[]>();
   // 制作人员缓存
   private static personsCache: Map<number, BgmPerson[]> = new Map<number, BgmPerson[]>();
+  // 分集列表缓存
+  private static episodesCache: Map<number, BgmEpisode[]> = new Map<number, BgmEpisode[]>();
   // 名称+作者匹配结果缓存（key = type|title|author → 条目 id，0 = 无匹配）
   private static matchCache: Map<string, number> = new Map<string, number>();
 
@@ -533,6 +572,80 @@ export class BangumiApi {
     BangumiApi.personsCache.set(id, items);
     BangumiApi.cachePut(`persons:${id}`, raw);
     return items;
+  }
+
+  // 分集列表（内存缓存 → 本地数据库缓存 7 天 → 网络落库；失败回退旧缓存）：
+  // limit=100 分页拉全（最多 10 页），按 type/ep/sort 排序对齐 bgm.tv 展示顺序
+  static async getEpisodes(id: number): Promise<BgmEpisode[]> {
+    const cached: BgmEpisode[] | undefined = BangumiApi.episodesCache.get(id);
+    if (cached !== undefined) {
+      return cached;
+    }
+    const persisted: string | undefined = await BangumiApi.cacheGet(`episodes:${id}`, BangumiApi.DB_TTL_MS);
+    if (persisted !== undefined) {
+      try {
+        const items: BgmEpisode[] = BangumiApi.parseEpisodes(persisted);
+        if (items.length > 0) {
+          BangumiApi.episodesCache.set(id, items);
+          return items;
+        }
+      } catch (e) {
+        // 缓存行损坏按未命中处理
+      }
+    }
+    const headers: Record<string, string> = Http.defaultHeaders();
+    headers['User-Agent'] = BangumiApi.UA;
+    const all: BgmEpisode[] = [];
+    const pageSize: number = 100;
+    for (let offset = 0; offset < pageSize * 10; offset += pageSize) {
+      let raw: string;
+      try {
+        raw = await Http.get(`${Settings.bangumiApiBase()}/v0/episodes?subject_id=${id}&limit=${pageSize}&offset=${offset}`, headers);
+      } catch (e) {
+        // 首页失败回退本地旧缓存（忽略过期），仍无则原样抛错；
+        // 后续页失败则用已拉到的部分集
+        if (offset === 0) {
+          const stale: string | undefined = await BangumiApi.cacheGetAnyAge(`episodes:${id}`);
+          if (stale !== undefined) {
+            try {
+              const items: BgmEpisode[] = BangumiApi.parseEpisodes(stale);
+              if (items.length > 0) {
+                BangumiApi.episodesCache.set(id, items);
+                return items;
+              }
+            } catch (e2) {
+              // 旧缓存损坏继续走抛错
+            }
+          }
+          const epErr = e as Error;
+          throw epErr;
+        }
+        break;
+      }
+      const page: BgmEpisode[] = BangumiApi.parseEpisodes(raw);
+      for (let i = 0; i < page.length; i++) {
+        all.push(page[i]);
+      }
+      if (page.length < pageSize) {
+        break;
+      }
+    }
+    BangumiApi.episodesCache.set(id, all);
+    const cachedRows: BgmEpisodeRaw[] = all.map((item: BgmEpisode): BgmEpisodeRaw => {
+      const row: BgmEpisodeRaw = {};
+      row.id = item.id;
+      row.type = item.type;
+      row.airdate = item.airdate;
+      row.name = item.name;
+      row.name_cn = item.nameCn;
+      row.ep = item.ep;
+      row.sort = item.sort;
+      row.comment = item.comment;
+      return row;
+    });
+    const cachedPayload: BgmEpisodesRespRaw = { data: cachedRows };
+    BangumiApi.cachePut(`episodes:${id}`, JSON.stringify(cachedPayload));
+    return all;
   }
 
   // ---- 内部实现 ----
@@ -895,6 +1008,49 @@ export class BangumiApi {
       items.push(item);
     }
     return items.length > 40 ? items.slice(0, 40) : items;
+  }
+
+  // 分集原始响应解析（结构非法抛 bgm_episodes_invalid）：
+  // 首选中文名，缺失回退原名；排序 type(正片优先) → sort → ep
+  private static parseEpisodes(raw: string): BgmEpisode[] {
+    let parsed: BgmEpisodesRespRaw;
+    try {
+      parsed = JSON.parse(raw) as BgmEpisodesRespRaw;
+    } catch (e) {
+      throw new Error('bgm_episodes_invalid');
+    }
+    const data: BgmEpisodeRaw[] | undefined = parsed.data;
+    if (data === undefined || data === null || !Array.isArray(data)) {
+      throw new Error('bgm_episodes_invalid');
+    }
+    const items: BgmEpisode[] = [];
+    for (let i = 0; i < data.length; i++) {
+      const entry: BgmEpisodeRaw = data[i];
+      if (typeof entry.id !== 'number' || entry.id <= 0) {
+        continue;
+      }
+      const item: BgmEpisode = new BgmEpisode();
+      item.id = entry.id;
+      item.type = typeof entry.type === 'number' ? entry.type : 0;
+      item.airdate = typeof entry.airdate === 'string' ? entry.airdate : '';
+      item.name = typeof entry.name === 'string' ? entry.name : '';
+      item.nameCn = typeof entry.name_cn === 'string' && entry.name_cn !== '' ? entry.name_cn : item.name;
+      item.ep = typeof entry.ep === 'number' ? entry.ep : 0;
+      item.sort = typeof entry.sort === 'number' ? entry.sort : 0;
+      item.comment = typeof entry.comment === 'number' ? Math.floor(entry.comment) : 0;
+      items.push(item);
+    }
+    items.sort((a: BgmEpisode, b: BgmEpisode): number => {
+      if (a.type !== b.type) {
+        // 正片（0）在前，其余按 type 值排
+        return a.type === 0 ? -1 : (b.type === 0 ? 1 : a.type - b.type);
+      }
+      if (a.sort !== b.sort) {
+        return a.sort - b.sort;
+      }
+      return a.ep - b.ep;
+    });
+    return items;
   }
 
   // 相关条目原始响应解析（结构非法抛 bgm_relations_invalid；排序权重同 animeko）

@@ -2369,6 +2369,34 @@
       "value": "Hindi na-load ang danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Mga Komento"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Naglo-load ng mga komento…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Wala pang mga komento"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Nabigong i-load ang mga komento"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Walang tumugmang yugto ng Bangumi"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d na tugon"
+    },
+    {
       "name": "video_locked",
       "value": "Naka-lock ang mga kontrol"
     },
@@ -4271,6 +4299,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Dapat magsimula sa https:// ang address"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror ng Next API (mga komento), https://your-proxy.example.com, walang laman = default next.bgm.tv"
     },
     {
       "name": "trans_title",

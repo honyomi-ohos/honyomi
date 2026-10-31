@@ -2449,6 +2449,34 @@
       "value": "Gagal memuat danmaku"
     },
     {
+      "name": "video_comments_title",
+      "value": "Komentar"
+    },
+    {
+      "name": "video_comments_loading",
+      "value": "Memuat komentar…"
+    },
+    {
+      "name": "video_comments_empty",
+      "value": "Belum ada komentar"
+    },
+    {
+      "name": "video_comments_failed",
+      "value": "Gagal memuat komentar"
+    },
+    {
+      "name": "video_comments_no_episode",
+      "value": "Tidak ada episode Bangumi yang cocok"
+    },
+    {
+      "name": "video_comments_spoiler",
+      "value": "[Spoiler]"
+    },
+    {
+      "name": "video_comments_reply_count",
+      "value": "%d balasan"
+    },
+    {
       "name": "video_locked",
       "value": "Kontrol terkunci"
     },
@@ -4379,6 +4407,10 @@
     {
       "name": "pref_bangumi_img_mirror_invalid",
       "value": "Alamat harus diawali https://"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_hint",
+      "value": "Mirror Next API (komentar), https://your-proxy.example.com, kosong = bawaan next.bgm.tv"
     },
     {
       "name": "trans_title",

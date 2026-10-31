@@ -11,6 +11,7 @@ import { media } from '@kit.MediaKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { PiPWindow, typeNode } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { ApplicationStateChangeCallback } from '@kit.AbilityKit';
 import { ChapterRepo, HistoryRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { AppKeys } from './AppKeys';
@@ -50,6 +51,16 @@ class PipNodeController extends XComponentController {
   }
 }
 
+// 应用前后台观察者：回前台时收回页面存活的自动小窗（退后台弹出），恢复页面内播放
+class PipAppStateObserver extends ApplicationStateChangeCallback {
+  onApplicationForeground(): void {
+    VideoPipManager.getInstance().onAppForeground();
+  }
+
+  onApplicationBackground(): void {
+  }
+}
+
 export class VideoPipManager {
   private static instance: VideoPipManager | undefined = undefined;
 
@@ -80,6 +91,7 @@ export class VideoPipManager {
   private sessionPos: number = 0;
   private sessionDuration: number = 0;
   private sessionSavedMs: number = -1;
+  private appStateObserver: PipAppStateObserver | undefined = undefined;
 
   private constructor() {
   }
@@ -190,6 +202,15 @@ export class VideoPipManager {
     return this.pipActive;
   }
 
+  // 应用回前台：退后台自动弹出的页面小窗（页面存活、无移交会话）收回小窗，
+  // STOPPED 回调里画面切回页面 surface 恢复页面内播放；手动移交会话的小窗保持
+  onAppForeground(): void {
+    if (this.pipActive && this.session === undefined && this.controller !== undefined) {
+      this.controller.stopPiP().catch((): void => {
+      });
+    }
+  }
+
   // 新视频加载前打断仍在小窗中播放的旧会话（结算进度、释放播放器、关闭小窗）
   interrupt(): void {
     if (this.session !== undefined) {
@@ -227,6 +248,11 @@ export class VideoPipManager {
     const hostCtx = this.uiContext.getHostContext();
     if (hostCtx === undefined) {
       return undefined;
+    }
+    // 注册一次应用前后台监听：回前台时收回退后台自动弹出的页面小窗
+    if (this.appStateObserver === undefined) {
+      this.appStateObserver = new PipAppStateObserver();
+      hostCtx.getApplicationContext().on('applicationStateChange', this.appStateObserver);
     }
     if (this.creating === undefined) {
       let node = this.node;

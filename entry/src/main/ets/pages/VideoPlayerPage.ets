@@ -4,7 +4,7 @@ import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs, picker } from '@kit.CoreFileKit';
 import { util } from '@kit.ArkTS';
-import { window, PiPWindow, uiMaterial } from '@kit.ArkUI';
+import { window, PiPWindow, uiMaterial, display } from '@kit.ArkUI';
 import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
 import { AVCastPicker } from '@kit.AVSessionKit';
 import { CacheListener } from '@ohos/video-cache';
@@ -17,6 +17,8 @@ import { BtModule } from '../data/BtModule';
 import type { TorrentFileJson } from '@honyomi/torrent';
 import { AppKeys } from '../common/AppKeys';
 import { DanmakuItem, DanmakuService, DdpAccount } from '../data/DanmakuService';
+import { CommentSegment, EpisodeComment, EpisodeCommentReply, EpisodeCommentService }
+  from '../data/EpisodeCommentService';
 import { SubCue, SubtitleParser } from '../common/SubtitleParser';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
@@ -32,6 +34,7 @@ import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
 import { Haptics } from '../common/Haptics';
 import { AppIcon } from './components/AppIcon';
+import { CoverViewer } from './components/CoverViewer';
 import { DanmakuController, DanmakuView } from './components/DanmakuView';
 
 const SPEEDS: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
@@ -187,14 +190,30 @@ export struct VideoPlayerPage {
   // 播放器亮度（0=跟随系统，(0,1]=固定亮度，随手势更新并持久化）
   private videoBright: number = 0;
   private win: window.Window | undefined = undefined;
-  // 设备旋转监听（竖屏跟随设备方向；转横屏自动进横屏全屏，离开页面反注册）
-  private rotateListener: ((size: window.Size) => void) | undefined = undefined;
   // PC/2in1：真全屏走窗口最大化沉浸式；进入前是悬浮窗则退出时 recover 还原尺寸位置
   private pcLike: boolean = deviceInfo.deviceType === 'pc' || deviceInfo.deviceType === '2in1';
   private pcWasFloating: boolean = true;
   private dmCtrl: DanmakuController = new DanmakuController();
   private dmLoading: boolean = false;
   private dmChapterId: number = -1;
+  // ---- 剧集评论（Bangumi 吐槽箱）----
+  @State comments: EpisodeComment[] = [];
+  // 评论面板状态：0 加载中 1 已加载 2 失败 3 空闲（未开始/已重置）
+  @State commentsState: number = 3;
+  @State commentsErrNoEp: boolean = false;
+  private commentsGen: number = 0;
+  // ---- 非全屏布局：窗口横竖（rootW > rootH，由根 onAreaChange 维护）----
+  @State isWide: boolean = false;
+  private rootW: number = 0;
+  private rootH: number = 0;
+  // ---- 折叠屏悬停态：全屏时上半屏视频/下半屏常驻控制条；非全屏时视频与评论分界线避让折痕带 ----
+  @State hoverActive: boolean = false;
+  @State hoverBandH: boolean = true; // true 折痕横向（上下分界），false 折痕纵向（左右分界）
+  @State hoverBandStart: number = 0; // 折痕带上沿 vp（相对窗口）
+  @State hoverBandEnd: number = 0; // 折痕带下沿 vp（相对窗口）
+  private foldCb: ((status: display.FoldStatus) => void) | undefined = undefined;
+  // 上次布局生效的全屏悬停分屏态：用于捕捉分屏进入/退出（含横竖/全屏切换触发）
+  private lastSplitApplied: boolean = false;
   // ---- 跳过 OP/ED（区间秒，-1 未设置）----
   @State skipOpS: number = -1;
   @State skipOpE: number = -1;
@@ -280,44 +299,29 @@ export struct VideoPlayerPage {
     this.skipEnabled = Settings.getVideoSkipOpEd();
     this.subFont = Settings.getSubtitleFont();
     this.pipEnabled = PiPWindow.isPiPEnabled();
+    // 折叠屏悬停态监听：全屏时上半屏视频/下半屏常驻控制条；非全屏时视频与评论分界线避让折痕带
+    this.setupFoldListener();
     // 沉浸式：隐藏状态栏与导航栏（页面已销毁则放弃，避免销毁后隐藏系统栏且无法还原）
     window.getLastWindow(Util.hostAbilityContext(this.getUIContext())).then((w: window.Window) => {
       if (this.destroyed) {
         return;
       }
       this.win = w;
+      this.updateHoverLayout();
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         if (this.pcLike) {
           w.setWindowSystemBarEnable([]).catch((): void => {
           });
         } else {
-          // 竖屏：非全屏布局 + 显示状态栏，系统自动避让状态栏/摄像头挖孔区
+          // 非全屏：布局全屏关闭 + 显示状态栏，系统自动避让状态栏/摄像头挖孔区
           w.setWindowLayoutFullScreen(false).catch((): void => {
           });
           w.setWindowSystemBarEnable(['status']).catch((): void => {
           });
-          // 竖屏不锁方向：窗口跟随设备旋转，转横屏时经监听自动切入横屏全屏
+          // 窗口跟随设备旋转：竖屏视频上/评论下，横屏视频左/评论右；
+          // 全屏仅由按钮/快捷键触发锁定横向，设备旋转不再自动进全屏
           w.setPreferredOrientation(window.Orientation.AUTO_ROTATION).catch((): void => {
           });
-          this.rotateListener = (size: window.Size): void => {
-            if (this.destroyed || this.pcLike || this.pipActive) {
-              return;
-            }
-            // 横屏即全屏：双向跟随窗口方向，横屏必为全屏、竖屏必为非全屏，不存在中间态
-            if (size.width > size.height) {
-              if (!this.fullscreen) {
-                this.applyFullscreen(true);
-              }
-            } else if (this.fullscreen) {
-              this.applyFullscreen(false);
-            }
-          };
-          w.on('windowSizeChange', this.rotateListener);
-          // 进入页面时窗口已横向（设备横持）：直接横屏全屏，不等尺寸变化事件
-          const rect: window.Rect = w.getWindowProperties().windowRect;
-          if (rect.width > rect.height) {
-            this.applyFullscreen(true);
-          }
         }
       }
     }).catch((): void => {
@@ -327,6 +331,14 @@ export struct VideoPlayerPage {
   aboutToDisappear(): void {
     this.log('aboutToDisappear');
     this.destroyed = true;
+    if (this.foldCb !== undefined) {
+      try {
+        display.off('foldStatusChange', this.foldCb);
+      } catch (e) {
+        this.log(`fold off catch: ${e}`);
+      }
+      this.foldCb = undefined;
+    }
     this.loadGen += 1;
     this.persist(false);
     ReadingStatsRepo.flush();
@@ -343,11 +355,6 @@ export struct VideoPlayerPage {
     }
     this.castMgr.destroy();
     if (this.win !== undefined) {
-      // 反注册旋转监听（off 传回调避免误删其他来源的 windowSizeChange 监听）
-      if (this.rotateListener !== undefined) {
-        this.win.off('windowSizeChange', this.rotateListener);
-        this.rotateListener = undefined;
-      }
       // 还原系统栏与窗口方向；PC 全屏态先退出沉浸式，避免下一页残留无标题栏窗口
       if (this.pcLike && this.fullscreen) {
         this.exitPcFullscreen();
@@ -369,6 +376,206 @@ export struct VideoPlayerPage {
       }
       Settings.applySystemBar(Util.hostAbilityContext(this.getUIContext()));
     }
+  }
+
+  // ---- 折叠屏悬停态 ----
+  // 注册折叠状态监听：非折叠设备直接跳过（isFoldable 返回 false）
+  private setupFoldListener(): void {
+    try {
+      if (!display.isFoldable()) {
+        return;
+      }
+      this.foldCb = (status: display.FoldStatus): void => {
+        this.updateHoverLayout();
+      };
+      display.on('foldStatusChange', this.foldCb);
+      this.updateHoverLayout();
+    } catch (e) {
+      this.log(`fold on catch: ${e}`);
+    }
+  }
+
+  // 悬停态判定与折痕几何重算：半折叠时读取折痕区（设备物理空间像素，不随窗口旋转），
+  // 先按 display 旋转角点映射到窗口空间，再减去窗口偏移后转 vp，
+  // 得到折痕带在窗口内的上下/左右边界。
+  private updateHoverLayout(): void {
+    if (this.destroyed) {
+      return;
+    }
+    let active: boolean = false;
+    let bandH: boolean = true;
+    let start: number = 0;
+    let end: number = 0;
+    try {
+      if (this.win !== undefined && display.isFoldable() &&
+        display.getFoldStatus() === display.FoldStatus.FOLD_STATUS_HALF_FOLDED) {
+        const crease: display.FoldCreaseRegion = display.getCurrentFoldCreaseRegion();
+        if (crease.creaseRects.length > 0) {
+          const winRect: window.Rect = this.win.getWindowProperties().windowRect;
+          const mapped: display.Rect = this.mapCreaseToWindow(crease.creaseRects[0]);
+          // 折痕带方向：窗口空间矩形宽>高为横向折痕（上下分界），否则纵向折痕（左右分界）
+          bandH = mapped.width > mapped.height;
+          const axisLen: number = bandH ? winRect.height : winRect.width;
+          // 非全屏时窗口矩形仍铺满屏幕，但系统把内容起点压到状态栏之下；
+          // 折痕边界相对内容区须再减去状态栏避让高度，否则视频/评论整体偏下一个状态栏高度
+          let contentOffsetPx: number = 0;
+          if (!this.fullscreen) {
+            const avoid: window.AvoidArea = this.win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
+            const topInset: number = avoid.topRect.top + avoid.topRect.height;
+            const leftInset: number = avoid.leftRect.left + avoid.leftRect.width;
+            contentOffsetPx = bandH ? (topInset > 0 ? topInset : 0) : (leftInset > 0 ? leftInset : 0);
+          }
+          const bandStartPx: number =
+            (bandH ? mapped.top : mapped.left) - (bandH ? winRect.top : winRect.left) - contentOffsetPx;
+          const bandEndPx: number = bandStartPx + (bandH ? mapped.height : mapped.width);
+          // 折痕带从窗口起侧开始且与主轴相交：视频完整落在折痕一侧，边界压折痕带上沿
+          if (bandStartPx > 0 && bandEndPx > bandStartPx && bandStartPx < axisLen) {
+            start = this.getUIContext().px2vp(bandStartPx);
+            end = this.getUIContext().px2vp(bandEndPx < axisLen ? bandEndPx : axisLen);
+            if (end > start) {
+              active = true;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      this.log(`updateHoverLayout catch: ${e}`);
+    }
+    const prevSplit: boolean = this.lastSplitApplied;
+    if (!(active === this.hoverActive && bandH === this.hoverBandH &&
+      start === this.hoverBandStart && end === this.hoverBandEnd)) {
+      // 悬停进入/退出或折痕几何变化：元素位置/尺寸过渡动画
+      this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseInOut }, (): void => {
+        this.hoverActive = active;
+        this.hoverBandH = bandH;
+        this.hoverBandStart = start;
+        this.hoverBandEnd = end;
+      });
+      // 悬停进入/退出改变全屏方向策略（竖屏悬停分屏不锁横屏，悬停退出需补锁横向）
+      this.syncFullscreenOrientation();
+    }
+    // 分屏进入/退出（悬停几何、横竖或全屏状态变化触发）：进入时常驻控制条并停用自动隐藏
+    const split: boolean = this.hoverSplitOn();
+    this.lastSplitApplied = split;
+    if (split && !prevSplit) {
+      if (this.hideTimer >= 0) {
+        clearTimeout(this.hideTimer);
+        this.hideTimer = -1;
+      }
+      this.showControls = true;
+    } else if (!split && prevSplit) {
+      this.pokeControls();
+    }
+  }
+
+  // 折痕矩形从设备物理空间映射到窗口空间：creaseRects 不随窗口旋转，
+  // 按 display 顺时针旋转角点变换后取包围盒；rotation 为 0 时原样返回
+  private mapCreaseToWindow(rect: display.Rect): display.Rect {
+    const d: display.Display = display.getDefaultDisplaySync();
+    const rot: number = d.rotation;
+    if (rot === 0) {
+      return rect;
+    }
+    // 物理自然宽高（竖置基准）：90/270 横置时 display 宽高若已跟随旋转（宽>高）则对调还原
+    let natW: number = d.width;
+    let natH: number = d.height;
+    if ((rot === 1 || rot === 3) && natW > natH) {
+      const tmp: number = natW;
+      natW = natH;
+      natH = tmp;
+    }
+    // 角点变换：rotation 1（顺时针 90°）x_w=y_p、y_w=natW-x_p；
+    // 2（180°）x_w=natW-x_p、y_w=natH-y_p；3（270°）x_w=natH-y_p、y_w=x_p
+    const srcXs: number[] = [rect.left, rect.left + rect.width];
+    const srcYs: number[] = [rect.top, rect.top + rect.height];
+    const xs: number[] = [0, 0];
+    const ys: number[] = [0, 0];
+    for (let i: number = 0; i < 2; i++) {
+      const x: number = srcXs[i];
+      const y: number = srcYs[i];
+      if (rot === 1) {
+        xs[i] = y;
+        ys[i] = natW - x;
+      } else if (rot === 2) {
+        xs[i] = natW - x;
+        ys[i] = natH - y;
+      } else {
+        xs[i] = natH - y;
+        ys[i] = x;
+      }
+    }
+    const minX: number = xs[0] < xs[1] ? xs[0] : xs[1];
+    const maxX: number = xs[0] > xs[1] ? xs[0] : xs[1];
+    const minY: number = ys[0] < ys[1] ? ys[0] : ys[1];
+    const maxY: number = ys[0] > ys[1] ? ys[0] : ys[1];
+    const mapped: display.Rect = {
+      left: minX,
+      top: minY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+    return mapped;
+  }
+
+  // 全屏悬停分屏（仅竖屏）：上半屏（正对用户）视频 + 下半屏常驻控制条，严格避开折痕避让区；
+  // 横屏悬停全屏为整屏视频（不避折痕）
+  private hoverSplitOn(): boolean {
+    return this.hoverActive && this.fullscreen && !this.isWide;
+  }
+
+  // 非全屏悬停折痕避让：保持正常上下/左右布局，仅视频与评论分界线避开折痕带
+  private hoverAvoidBand(): boolean {
+    return this.hoverActive && !this.fullscreen;
+  }
+
+  // 悬停态是否启用折痕避让布局（全屏分屏或非全屏分界线避让）
+  private hoverApply(): boolean {
+    return this.hoverSplitOn() || this.hoverAvoidBand();
+  }
+
+  // 悬停避让布局的主轴方向：避让激活时一律跟随折痕方向（横向折痕=上下布局），否则保持原横竖
+  private hoverDirRow(): boolean {
+    return this.hoverApply() ? !this.hoverBandH : this.isWide;
+  }
+
+  // 悬停态视频区主轴长度（vp）：视频填满折痕一侧，边界压折痕带上沿
+  private hoverVideoLen(): number {
+    return this.hoverBandStart;
+  }
+
+  // 折痕避让带厚度（vp）：折痕带本身（上沿到下沿）
+  private hoverGapLen(): number {
+    const len: number = this.hoverBandEnd - this.hoverBandStart;
+    return len > 0 ? len : 0;
+  }
+
+  // 视频区宽：各状态统一数值尺寸，保证状态切换时宽度可插值动画；
+  // 主轴（Row）时全屏=页宽/悬停避让=压折痕带上沿/横屏非全屏=页宽-评论面板宽，交叉轴铺满
+  private videoAreaW(): Length {
+    if (this.hoverDirRow()) {
+      if (this.hoverApply()) {
+        return this.hoverVideoLen();
+      }
+      if (this.fullscreen) {
+        return this.rootW > 0 ? this.rootW : '100%';
+      }
+      return this.rootW > 0 ? this.rootW - this.commentsPanelW() : '100%';
+    }
+    return '100%';
+  }
+
+  // 视频区高：主轴（Column）时悬停避让=压折痕带上沿/全屏=页高/竖屏非全屏=16:9，交叉轴铺满
+  private videoAreaH(): Length {
+    if (!this.hoverDirRow()) {
+      if (this.hoverApply()) {
+        return this.hoverVideoLen();
+      }
+      if (this.fullscreen) {
+        return this.rootH > 0 ? this.rootH : '100%';
+      }
+      return this.portraitVideoH();
+    }
+    return this.rootH > 0 ? this.rootH : '100%';
   }
 
   // ---- 悬浮控制条 ----
@@ -1371,9 +1578,130 @@ export struct VideoPlayerPage {
       })
   }
 
+  // 竖屏非全屏视频区高度：页面宽度的 9/16（宽度未知时兜底防塌陷）
+  private portraitVideoH(): number {
+    const base: number = this.rootW > 0 ? this.rootW : this.windowW;
+    return base > 0 ? base * 9 / 16 : 220;
+  }
+
+  // 横屏评论面板宽：约 25% 页宽，clamp 340~460
+  private commentsPanelW(): number {
+    const base: number = this.rootW > 0 ? this.rootW : this.windowW;
+    if (base <= 0) {
+      return 360;
+    }
+    const w: number = base * 0.25;
+    if (w < 340) {
+      return 340;
+    }
+    if (w > 460) {
+      return 460;
+    }
+    return w;
+  }
+
+  // 剧集评论面板（Bangumi 吐槽箱）：竖屏在视频下方，横屏在视频右侧
+  @Builder
+  commentsPanel() {
+    Column() {
+      Row({ space: 8 }) {
+        Text($r('app.string.video_comments_title'))
+          .fontSize(15)
+          .fontWeight(FontWeight.Bold)
+          .fontColor(this.pal.text)
+        if (this.commentsState === 1 && this.comments.length > 0) {
+          Text(`${this.comments.length}`)
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+        }
+        Blank()
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 8 })
+
+      if (this.commentsState === 0) {
+        Column({ space: 10 }) {
+          LoadingProgress()
+            .width(28)
+            .height(28)
+            .color(this.pal.primary)
+          Text($r('app.string.video_comments_loading'))
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+        }
+        .width('100%')
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+      } else if (this.commentsState === 2) {
+        Column({ space: 12 }) {
+          Text(this.commentsErrNoEp ? $r('app.string.video_comments_no_episode') :
+          $r('app.string.video_comments_failed'))
+            .fontSize(13)
+            .fontColor(this.pal.sub)
+            .textAlign(TextAlign.Center)
+            .padding({ left: 24, right: 24 })
+          if (!this.commentsErrNoEp) {
+            Button($r('app.string.common_retry'))
+              .fontSize(14)
+              .height(36)
+              .padding({ left: 20, right: 20 })
+              .backgroundColor(this.pal.primary)
+              .fontColor(this.pal.onPrimary)
+              .onClick(() => {
+                this.loadComments();
+              })
+          }
+        }
+        .width('100%')
+        .layoutWeight(1)
+        .justifyContent(FlexAlign.Center)
+      } else if (this.commentsState === 1) {
+        if (this.comments.length === 0) {
+          Column() {
+            Text($r('app.string.video_comments_empty'))
+              .fontSize(13)
+              .fontColor(this.pal.sub)
+          }
+          .width('100%')
+          .layoutWeight(1)
+          .justifyContent(FlexAlign.Center)
+        } else {
+          List({ space: 0 }) {
+            ForEach(this.comments, (c: EpisodeComment) => {
+              ListItem() {
+                VpCommentItem({ comment: c })
+              }
+            }, (c: EpisodeComment) => `cmt-${c.id}`)
+          }
+          .width('100%')
+          .layoutWeight(1)
+          .scrollBar(BarState.Off)
+          .edgeEffect(EdgeEffect.Spring)
+          .cachedCount(4)
+          .padding({ bottom: 16 })
+        }
+      } else {
+        Column()
+          .width('100%')
+          .layoutWeight(1)
+      }
+    }
+    // 竖屏占满视频下方剩余高度（layoutWeight）；横屏固定宽占满右侧；
+    // 悬停折痕避让时改为 layoutWeight 填满折痕带一侧剩余空间
+    .width(this.isWide && !this.hoverAvoidBand() ? this.commentsPanelW() : '100%')
+    .height('100%')
+    .layoutWeight(this.isWide && !this.hoverAvoidBand() ? 0 : 1)
+    .backgroundColor(this.pal.bg)
+    .transition(TransitionEffect.OPACITY)
+  }
+
   build() {
     NavDestination() {
-      Stack() {
+      // 非全屏自适应窗口方向：竖屏视频上/评论下，横屏视频左/评论右；
+      // 用 Flex 方向切换而非 if/else 分支，方向切换不销毁 XComponent 子树。
+      // 全屏悬停分屏时主轴跟随折痕方向（横向折痕=上下分屏）
+      Flex({ direction: this.hoverDirRow() ? FlexDirection.Row : FlexDirection.Column }) {
+        Stack() {
         XComponent({
           id: 'videoSurface',
           type: XComponentType.SURFACE,
@@ -1711,17 +2039,50 @@ export struct VideoPlayerPage {
             .color(Color.White)
         }
 
-        if (this.showControls && !this.locked) {
+        if (!this.hoverSplitOn() && this.showControls && !this.locked) {
           this.topBar()
         }
-        if (this.showControls && !this.locked) {
+        if (!this.hoverSplitOn() && this.showControls && !this.locked) {
           this.centerBar()
         }
-        if (this.showControls && !this.locked) {
+        if (!this.hoverSplitOn() && this.showControls && !this.locked) {
           this.bottomBar()
         }
-        if (this.locked && this.showControls) {
+        if (!this.hoverSplitOn() && this.locked && this.showControls) {
           this.unlockBtn()
+        }
+        }
+        // 视频区：数值尺寸统一（见 videoAreaW/videoAreaH），全屏/横竖/悬停/全屏分屏切换均可动画
+        .width(this.videoAreaW())
+        .height(this.videoAreaH())
+        .backgroundColor('#000000')
+
+        // 折痕避让带：常驻元素、主轴尺寸动画（0 ↔ 折痕带厚度），
+        // 悬停进出时视频与评论/控制区的分界平滑滑动而非跳变
+        Column()
+          .width(this.hoverDirRow() ? (this.hoverApply() ? this.hoverGapLen() : 0) : '100%')
+          .height(this.hoverDirRow() ? '100%' : (this.hoverApply() ? this.hoverGapLen() : 0))
+          .backgroundColor('#000000')
+
+        if (!this.fullscreen) {
+          this.commentsPanel()
+        }
+
+        if (this.hoverSplitOn()) {
+          // 全屏悬停态下半屏（平放侧）：控制条常驻，不随 showControls 自动隐藏
+          Stack() {
+            if (!this.locked) {
+              this.topBar()
+              this.centerBar()
+              this.bottomBar()
+            } else {
+              this.unlockBtn()
+            }
+          }
+          .width('100%')
+          .layoutWeight(1)
+          .backgroundColor('#000000')
+          .transition(TransitionEffect.OPACITY)
         }
       }
       .width('100%')
@@ -1733,6 +2094,33 @@ export struct VideoPlayerPage {
       .focusOnTouch(true)
       .onKeyEvent((event: KeyEvent) => {
         this.handlePlayerKey(event);
+      })
+      // 根区尺寸跟踪（vp）：维护横竖方向与竖屏视频高度
+      .onAreaChange((_old: Area, newArea: Area) => {
+        const w = newArea.width;
+        const h = newArea.height;
+        if (typeof w === 'number' && typeof h === 'number' && w > 0 && h > 0) {
+          if (this.rootW <= 0) {
+            // 首次测量：直接落地不动画
+            this.rootW = w;
+            this.rootH = h;
+            this.isWide = w > h;
+          } else if ((w > h) !== this.isWide) {
+            // 横竖切换：布局方向过渡动画
+            this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseInOut }, (): void => {
+              this.rootW = w;
+              this.rootH = h;
+              this.isWide = w > h;
+            });
+            // 横竖切换改变全屏方向策略（竖屏悬停分屏 ↔ 横屏悬停整屏）
+            this.syncFullscreenOrientation();
+          } else {
+            this.rootW = w;
+            this.rootH = h;
+          }
+        }
+        // 折叠屏悬停判定依赖窗口横竖与窗口偏移，随根区变化重估
+        this.updateHoverLayout();
       })
       .bindSheet($$this.showSheet, this.sheetBuilder(),
         // 高度自适应内容（SheetPreset 默认 FIT_CONTENT）：选项少时贴内容收起，多时内部滚动
@@ -1771,8 +2159,8 @@ export struct VideoPlayerPage {
     if (this.win === undefined) {
       return;
     }
-    this.fullscreen = !this.fullscreen;
     if (this.pcLike) {
+      this.fullscreen = !this.fullscreen;
       if (this.fullscreen) {
         this.pcWasFloating = this.pcWindowFloating();
         this.win.maximize(window.MaximizePresentation.ENTER_IMMERSIVE).catch((): void => {
@@ -1788,34 +2176,39 @@ export struct VideoPlayerPage {
     this.applyFullscreen(!this.fullscreen);
   }
 
-  // 横屏即全屏的唯一落地实现：全屏=锁定横向(含倒置)+沉浸式铺满(隐藏系统栏)；
-  // 退出=强制竖屏落位。竖屏态恢复自由旋转，设备转横屏经监听自动再进全屏
+  // 全屏落地：进入=锁定横向+沉浸式铺满（隐藏系统栏）；退出=恢复自由旋转+非全屏布局（显示状态栏）
   private applyFullscreen(fs: boolean): void {
-    this.fullscreen = fs;
+    // 全屏切换驱动评论面板增删与视频区尺寸：布局过渡动画
+    this.getUIContext().animateTo({ duration: 250, curve: Curve.EaseInOut }, (): void => {
+      this.fullscreen = fs;
+    });
     if (this.win !== undefined && canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
-      if (fs) {
-        // 全屏锁定横向：横持观看不因误晃退出全屏
-        this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION_LANDSCAPE).catch((): void => {
-        });
-      } else {
-        const rect: window.Rect = this.win.getWindowProperties().windowRect;
-        if (rect.width < rect.height) {
-          // 窗口已是竖屏（设备转回竖屏触发）：恢复自由旋转即可
-          this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION).catch((): void => {
-          });
-        } else {
-          // 横屏态退出（按钮/返回键）：强制回竖屏，杜绝停留在"横屏非全屏"
-          this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION_PORTRAIT).catch((): void => {
-          });
-        }
-      }
-      // 布局全屏跟随方向：横屏沉浸式（窗口延伸至系统栏下铺满）；竖屏非全屏（系统自动避让状态栏/摄像头区）
+      // 竖屏悬停进全屏保持自由旋转（上半屏视频+下半屏控制），其余全屏锁定横向
+      this.syncFullscreenOrientation();
+      // 布局全屏跟随：全屏窗口延伸至系统栏下铺满；非全屏系统自动避让状态栏/摄像头区
       this.win.setWindowLayoutFullScreen(fs).catch((): void => {
       });
       this.win.setWindowSystemBarEnable(fs ? [] : ['status']).catch((): void => {
       });
     }
+    // 全屏切换改变悬停分屏/折痕避让的生效条件，立即重估
+    this.updateHoverLayout();
     this.pokeControls();
+  }
+
+  // 全屏方向同步：竖屏悬停分屏保持自由旋转（不强制横屏），其余全屏锁定横向；非全屏自由旋转
+  private syncFullscreenOrientation(): void {
+    if (this.win === undefined || this.pcLike ||
+      !canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
+      return;
+    }
+    if (this.fullscreen && !(this.hoverActive && !this.isWide)) {
+      this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION_LANDSCAPE).catch((): void => {
+      });
+    } else {
+      this.win.setPreferredOrientation(window.Orientation.AUTO_ROTATION).catch((): void => {
+      });
+    }
   }
 
   // PC/2in1 退出沉浸式全屏：进入前是悬浮窗则还原悬浮窗，否则回最大化（带标题栏）
@@ -1898,6 +2291,7 @@ export struct VideoPlayerPage {
     this.dmChapterId = -1;
     this.dmCtrl.reset();
     this.dmItems = [];
+    this.resetComments();
     this.edSkipFired = false;
     try {
       const context = Util.hostAbilityContext(this.getUIContext());
@@ -1966,6 +2360,8 @@ export struct VideoPlayerPage {
       if (this.danmakuOn) {
         this.loadDanmaku();
       }
+      // 剧集评论与弹幕并行加载（面板内展示加载/失败态，不阻塞播放）
+      this.loadComments();
     } catch (e) {
       if (gen !== this.loadGen) {
         return;
@@ -2010,6 +2406,38 @@ export struct VideoPlayerPage {
     }).catch((): void => {
       this.dmLoading = false;
       Util.toastRes(this.getUIContext(), $r('app.string.video_danmaku_failed'));
+    });
+  }
+
+  // ---- 剧集评论（Bangumi 吐槽箱）----
+
+  // 重置评论状态：换章/离开页面时取消在途请求并清空列表
+  private resetComments(): void {
+    this.commentsGen += 1;
+    this.comments = [];
+    this.commentsState = 3;
+    this.commentsErrNoEp = false;
+  }
+
+  // 加载当前章节对应的 Bangumi 单集评论（无匹配剧集/网络失败展示对应占位态）
+  private loadComments(): void {
+    const gen: number = ++this.commentsGen;
+    this.comments = [];
+    this.commentsState = 0;
+    this.commentsErrNoEp = false;
+    EpisodeCommentService.loadForChapter(this.manga, this.chapter).then((items: EpisodeComment[]) => {
+      if (gen !== this.commentsGen || this.destroyed) {
+        return;
+      }
+      this.comments = items;
+      this.commentsState = 1;
+    }).catch((e: Error) => {
+      if (gen !== this.commentsGen || this.destroyed) {
+        return;
+      }
+      this.commentsState = 2;
+      this.commentsErrNoEp = e.message === 'comments_no_episode';
+      this.log(`loadComments failed: ${e.message}`);
     });
   }
 
@@ -2539,8 +2967,8 @@ export struct VideoPlayerPage {
       clearTimeout(this.hideTimer);
       this.hideTimer = -1;
     }
-    // 弹幕输入框聚焦时控制条常驻，失焦后再恢复自动隐藏
-    if (this.playing && !this.dmInputFocused) {
+    // 弹幕输入框聚焦时控制条常驻，失焦后再恢复自动隐藏；全屏悬停分屏时下半屏控制条常驻
+    if (this.playing && !this.dmInputFocused && !this.hoverSplitOn()) {
       this.hideTimer = setTimeout(() => {
         this.hideTimer = -1;
         this.showControls = false;
@@ -3937,4 +4365,269 @@ const err = e as Error;
 @Builder
 export function VideoPlayerBuilder() {
   VideoPlayerPage()
+}
+
+// 单条剧集评论：头像 + 昵称 + 时间 + 表情回应数 + 正文（片段序列渲染）+ 楼中楼回复；
+// 正文内 [mask] 剧透段默认以占位遮罩呈现，点击正文切换揭示
+@Component
+struct VpCommentItem {
+  @Prop comment: EpisodeComment = new EpisodeComment();
+  @StorageProp('palette') pal: ThemePalette = new ThemePalette();
+  // 剧透遮罩揭示状态（本条评论与其楼中楼共用）
+  @State revealed: boolean = false;
+  // 图片查看器（无链接的 [img] 内联图点击进入应用内查看）
+  @State showViewer: boolean = false;
+  @State viewerUrl: string = '';
+
+  // 片段文字颜色：链接用主题色，[color] 指定色优先，否则正文色
+  private segColor(seg: CommentSegment): ResourceColor {
+    if (seg.linkUrl !== '') {
+      return this.pal.primary;
+    }
+    if (seg.color !== '') {
+      return seg.color;
+    }
+    return this.pal.text;
+  }
+
+  // 片段装饰线：[u]/[s] → 下划线/删除线（两者同取时优先删除线）
+  private segDecoration(seg: CommentSegment): DecorationStyleInterface {
+    if (seg.underline || seg.strike) {
+      return {
+        type: seg.strike ? TextDecorationType.LineThrough : TextDecorationType.Underline,
+        color: this.segColor(seg)
+      };
+    }
+    return { type: TextDecorationType.None, color: Color.Black };
+  }
+
+  // 用系统浏览器打开链接
+  private openLink(url: string): void {
+    Util.openUrl(Util.hostAbilityContext(this.getUIContext()), url);
+  }
+
+  // 无链接图片：应用内全屏查看器打开（有链接则仍走浏览器）
+  private openImage(url: string): void {
+    this.viewerUrl = url;
+    this.showViewer = true;
+  }
+
+  @Builder
+  imageViewerBuilder() {
+    CoverViewer({
+      coverUrl: this.viewerUrl,
+      title: '',
+      allowEdit: false,
+      onClose: (): void => {
+        this.showViewer = false;
+      }
+    })
+  }
+
+  build() {
+    Column({ space: 8 }) {
+      Row({ space: 8 }) {
+        if (this.comment.avatar !== '') {
+          Image(this.comment.avatar)
+            .width(28)
+            .height(28)
+            .borderRadius(14)
+            .objectFit(ImageFit.Cover)
+            .backgroundColor(this.pal.chip)
+        } else {
+          Column()
+            .width(28)
+            .height(28)
+            .borderRadius(14)
+            .backgroundColor(this.pal.chip)
+        }
+        Column({ space: 1 }) {
+          Text(this.comment.nickname !== '' ? this.comment.nickname : 'Bangumi')
+            .fontSize(13)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.pal.text)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+          if (this.comment.createdAtMs > 0) {
+            Text(Util.timeAgo(this.comment.createdAtMs))
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+          }
+        }
+        .alignItems(HorizontalAlign.Start)
+        .layoutWeight(1)
+
+        if (this.comment.reactionCount > 0) {
+          Row({ space: 3 }) {
+            AppIcon({ name: 'favorite', iconSize: 12, tint: this.pal.sub })
+            Text(`${this.comment.reactionCount}`)
+              .fontSize(11)
+              .fontColor(this.pal.sub)
+          }
+          .alignItems(VerticalAlign.Center)
+        }
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Top)
+
+      // 正文：扁平片段序列（0 文本 1 表情 2 遮罩占位 3 图片；masked 需揭示后渲染）
+      Text() {
+        ForEach(this.comment.segments, (seg: CommentSegment, si: number) => {
+          if (seg.kind === 2) {
+            if (!this.revealed) {
+              Span($r('app.string.video_comments_spoiler'))
+                .fontSize(12)
+                .fontWeight(FontWeight.Medium)
+                .fontColor(this.pal.primary)
+            }
+          } else {
+            if (!seg.masked || this.revealed) {
+              if (seg.kind === 1) {
+                ImageSpan(seg.emojiUrl)
+                  .size({ width: 20, height: 20 })
+                  .verticalAlign(ImageSpanAlignment.CENTER)
+              } else {
+                if (seg.kind === 3) {
+                  ImageSpan(seg.imageUrl)
+                    .size({ width: 180, height: 130 })
+                    .objectFit(ImageFit.Contain)
+                    .borderRadius(6)
+                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .onClick(() => {
+                      if (seg.linkUrl !== '') {
+                        this.openLink(seg.linkUrl);
+                      } else {
+                        this.openImage(seg.imageUrl);
+                      }
+                    })
+                } else {
+                  Span(seg.text)
+                    .fontSize(seg.fontSize > 0 ? seg.fontSize : 14)
+                    .fontColor(this.segColor(seg))
+                    .fontWeight(seg.bold ? FontWeight.Bold : FontWeight.Normal)
+                    .fontStyle(seg.italic ? FontStyle.Italic : FontStyle.Normal)
+                    .decoration(this.segDecoration(seg))
+                    .onClick(() => {
+                      if (seg.linkUrl !== '') {
+                        this.openLink(seg.linkUrl);
+                      }
+                    })
+                }
+              }
+            }
+          }
+        }, (seg: CommentSegment, si: number) => `${this.comment.id}-s${si}`)
+      }
+      .width('100%')
+      .lineHeight(22)
+      .onClick(() => {
+        if (this.comment.hasMask) {
+          this.revealed = !this.revealed;
+        }
+      })
+
+      // 楼中楼回复
+      if (this.comment.replies.length > 0) {
+        Column({ space: 8 }) {
+          ForEach(this.comment.replies, (r: EpisodeCommentReply, ri: number) => {
+            Column({ space: 4 }) {
+              Row({ space: 6 }) {
+                if (r.avatar !== '') {
+                  Image(r.avatar)
+                    .width(18)
+                    .height(18)
+                    .borderRadius(9)
+                    .objectFit(ImageFit.Cover)
+                    .backgroundColor(this.pal.chip)
+                }
+                Text(r.nickname !== '' ? r.nickname : 'Bangumi')
+                  .fontSize(12)
+                  .fontWeight(FontWeight.Medium)
+                  .fontColor(this.pal.sub)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+                  .layoutWeight(1)
+                if (r.createdAtMs > 0) {
+                  Text(Util.timeAgo(r.createdAtMs))
+                    .fontSize(11)
+                    .fontColor(this.pal.sub)
+                }
+              }
+              .width('100%')
+              .alignItems(VerticalAlign.Center)
+
+              Text() {
+                ForEach(r.segments, (rseg: CommentSegment, rsi: number) => {
+                  if (rseg.kind === 2) {
+                    if (!this.revealed) {
+                      Span($r('app.string.video_comments_spoiler'))
+                        .fontSize(11)
+                        .fontWeight(FontWeight.Medium)
+                        .fontColor(this.pal.primary)
+                    }
+                  } else {
+                    if (!rseg.masked || this.revealed) {
+                      if (rseg.kind === 1) {
+                        ImageSpan(rseg.emojiUrl)
+                          .size({ width: 18, height: 18 })
+                          .verticalAlign(ImageSpanAlignment.CENTER)
+                      } else {
+                        if (rseg.kind === 3) {
+                          ImageSpan(rseg.imageUrl)
+                            .size({ width: 150, height: 110 })
+                            .objectFit(ImageFit.Contain)
+                            .borderRadius(6)
+                            .verticalAlign(ImageSpanAlignment.CENTER)
+                            .onClick(() => {
+                              if (rseg.linkUrl !== '') {
+                                this.openLink(rseg.linkUrl);
+                              } else {
+                                this.openImage(rseg.imageUrl);
+                              }
+                            })
+                        } else {
+                          Span(rseg.text)
+                            .fontSize(rseg.fontSize > 0 ? rseg.fontSize : 13)
+                            .fontColor(this.segColor(rseg))
+                            .fontWeight(rseg.bold ? FontWeight.Bold : FontWeight.Normal)
+                            .fontStyle(rseg.italic ? FontStyle.Italic : FontStyle.Normal)
+                            .decoration(this.segDecoration(rseg))
+                            .onClick(() => {
+                              if (rseg.linkUrl !== '') {
+                                this.openLink(rseg.linkUrl);
+                              }
+                            })
+                        }
+                      }
+                    }
+                  }
+                }, (rseg: CommentSegment, rsi: number) => `${r.id}-s${rsi}`)
+              }
+              .width('100%')
+              .lineHeight(20)
+              .onClick(() => {
+                if (r.hasMask) {
+                  this.revealed = !this.revealed;
+                }
+              })
+            }
+            .width('100%')
+            .alignItems(HorizontalAlign.Start)
+            .padding(8)
+            .borderRadius(8)
+            .backgroundColor(this.pal.chip)
+          }, (r: EpisodeCommentReply, ri: number) => `cmt-${this.comment.id}-r-${r.id}`)
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+      }
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+    .padding({ left: 16, right: 16, top: 10, bottom: 12 })
+    .bindContentCover($$this.showViewer, this.imageViewerBuilder(), {
+      modalTransition: ModalTransition.ALPHA,
+      backgroundColor: '#B3000000',
+    })
+  }
 }
