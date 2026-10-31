@@ -120,3 +120,20 @@ target_link_libraries(jsvmengine PUBLIC
     libimage_packer.so
     # CryptoArchitectureKit C API：__nativeRandomBytes 硬件熵随机桥
     libohcrypto.so)
+
+# Size pass: section-per-function/data lets the final --gc-sections drop
+# unreferenced lexbor/avif/aom code; -Oz (appended after the config flags,
+# so it wins over CMake's default -O3/-O2) trades a little speed for size;
+# --icf=all folds byte-identical functions (lld-safe).
+target_compile_options(lexbor PRIVATE
+    -ffunction-sections -fdata-sections
+    $<$<NOT:$<CONFIG:Debug>>:-Oz>)
+target_compile_options(avif PRIVATE
+    -ffunction-sections -fdata-sections
+    $<$<NOT:$<CONFIG:Debug>>:-Oz>)
+target_compile_options(jsvmengine PRIVATE
+    -ffunction-sections -fdata-sections
+    $<$<NOT:$<CONFIG:Debug>>:-Oz>)
+target_link_options(jsvmengine PRIVATE
+    -Wl,--gc-sections
+    -Wl,--icf=all)

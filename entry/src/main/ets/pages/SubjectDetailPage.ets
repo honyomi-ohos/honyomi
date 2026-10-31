@@ -13,6 +13,7 @@ import { BgmCoverCache } from '../common/BgmCoverCache';
 import { ImageCache } from '../common/ImageCache';
 import { NavGlassPage } from '../common/HdsNavHost';
 import { AppIcon } from './components/AppIcon';
+import { ExpandToggle } from './components/ExpandToggle';
 import { SmartImage } from './components/SmartImage';
 import { CoverViewer } from './components/CoverViewer';
 import { ErrorState } from './components/ErrorState';
@@ -415,20 +416,15 @@ export struct SubjectDetailPage {
         .maxLines(this.summaryExpanded ? 999 : 6)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
       if (d.summary.length > SUBJECT_SUMMARY_COLLAPSED_CHARS) {
-        Row({ space: 4 }) {
-          AppIcon({
-            name: this.summaryExpanded ? 'expand_less' : 'expand_more',
-            iconSize: 18,
-            tint: this.pal.primary
-          })
-          Text(this.summaryExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-            .fontSize(13)
-            .fontColor(this.pal.primary)
-        }
-        .padding({ top: 4, bottom: 4 })
-        .onClick(() => {
-          this.summaryExpanded = !this.summaryExpanded;
+        ExpandToggle({
+          expanded: this.summaryExpanded,
+          tint: this.pal.primary,
+          label: this.summaryExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
+          onToggle: (): void => {
+            this.summaryExpanded = !this.summaryExpanded;
+          }
         })
+          .padding({ top: 4, bottom: 4 })
       }
     }
     .width('100%')
@@ -457,20 +453,15 @@ export struct SubjectDetailPage {
         }
         .width('100%')
         if (d.tags.length > SUBJECT_TAGS_COLLAPSED) {
-          Row({ space: 4 }) {
-            AppIcon({
-              name: this.tagsExpanded ? 'expand_less' : 'expand_more',
-              iconSize: 18,
-              tint: this.pal.primary
-            })
-            Text(this.tagsExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-              .fontSize(13)
-              .fontColor(this.pal.primary)
-          }
-          .padding({ top: 4, bottom: 4 })
-          .onClick(() => {
-            this.tagsExpanded = !this.tagsExpanded;
+          ExpandToggle({
+            expanded: this.tagsExpanded,
+            tint: this.pal.primary,
+            label: this.tagsExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
+            onToggle: (): void => {
+              this.tagsExpanded = !this.tagsExpanded;
+            }
           })
+            .padding({ top: 4, bottom: 4 })
         }
       }
       .width('100%')
@@ -510,20 +501,15 @@ export struct SubjectDetailPage {
           .padding({ left: 16, right: 16, top: 8, bottom: 8 })
         }, (entry: BgmInfoboxEntry, index: number) => `infobox-${index}-${entry.key}`)
         if (d.infobox.length > SUBJECT_INFO_COLLAPSED) {
-          Row({ space: 4 }) {
-            AppIcon({
-              name: this.infoExpanded ? 'expand_less' : 'expand_more',
-              iconSize: 18,
-              tint: this.pal.primary
-            })
-            Text(this.infoExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-              .fontSize(13)
-              .fontColor(this.pal.primary)
-          }
-          .padding({ top: 4, bottom: 4 })
-          .onClick(() => {
-            this.infoExpanded = !this.infoExpanded;
+          ExpandToggle({
+            expanded: this.infoExpanded,
+            tint: this.pal.primary,
+            label: this.infoExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
+            onToggle: (): void => {
+              this.infoExpanded = !this.infoExpanded;
+            }
           })
+            .padding({ top: 4, bottom: 4 })
         }
       }
       .width('100%')

@@ -6,6 +6,7 @@ import { Util } from '../common/Util';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { AppIcon } from './components/AppIcon';
+import { ExpandToggle } from './components/ExpandToggle';
 import { ConfirmDialog } from './components/Dialogs';
 
 // 队列分组模型（对齐 Mihon DownloadHeaderItem：按作品分组，组内为章节任务）
@@ -350,11 +351,14 @@ export struct DownloadPage {
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .layoutWeight(1)
-      // 折叠态指示箭头：体现分组头与任务行的父子层级
-      AppIcon({
-        name: this.isQueueGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+      // 折叠态指示箭头：体现分组头与任务行的父子层级（展开/收起旋转动画）
+      ExpandToggle({
+        expanded: !this.isQueueGroupCollapsed(group.mangaId),
         iconSize: 20,
-        tint: this.pal.sub
+        tint: this.pal.sub,
+        onToggle: (): void => {
+          this.toggleQueueGroup(group.mangaId);
+        }
       })
     }
     .width('100%')
@@ -396,12 +400,15 @@ export struct DownloadPage {
             this.confirmDeleteSeries(group);
           })
       }
-      // 折叠态指示箭头：体现分组头与章节行的父子层级
+      // 折叠态指示箭头：体现分组头与章节行的父子层级（展开/收起旋转动画）
       if (!this.selecting) {
-        AppIcon({
-          name: this.isDownloadedGroupCollapsed(group.mangaId) ? 'expand_more' : 'expand_less',
+        ExpandToggle({
+          expanded: !this.isDownloadedGroupCollapsed(group.mangaId),
           iconSize: 20,
-          tint: this.pal.sub
+          tint: this.pal.sub,
+          onToggle: (): void => {
+            this.toggleDownloadedGroup(group.mangaId);
+          }
         })
       }
     }

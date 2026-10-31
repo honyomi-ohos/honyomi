@@ -28,6 +28,8 @@ import { AppIcon } from './components/AppIcon';
 import { CfVerifySheet } from './components/CfVerifySheet';
 import { LockOverlay } from './components/LockOverlay';
 import { BtComponentDialog } from './components/BtComponentDialog';
+import { Http } from '../net/Http';
+import { WebViewFetch } from '../net/WebViewFetch';
 import { TtsMiniBar } from './components/novel/TtsMiniBar';
 import { BROWSE_MORPH, LIBRARY_MORPH, PathMorph, UPDATES_MORPH } from './components/PathMorph';
 import { BrowseSourceParams, DetailParams, GlobalSearchParams, OnboardingParams } from '../model/RouteParams';
@@ -48,6 +50,14 @@ interface CardActionPayload {
   page?: number;
   title?: string;
   chapterName?: string;
+}
+
+// 隐藏通道页的 JS 桥对象：页面内 fetch 的结果 JSON 经 postResult 回传宿主
+// （注册进根 Stack 隐藏 Web 的 javaScriptProxy，结果按 callId 唤醒挂起请求）
+class NetFetchProxy {
+  postResult(json: string): void {
+    WebViewFetch.onResult(json);
+  }
 }
 
 // 底部导航图标：逐 Tab 复刻 Mihon 的 AnimatedImageVector 动画
@@ -419,6 +429,10 @@ struct Index {
   // 如哔咔频道 pin）后去抖重试书架封面回填，把此前因网络不可达失败的封面落盘
   @StorageProp(AppKeys.PLUGIN_NET_TICK) @Watch('onPluginNetTick') pluginNetTick: number = 0;
   @StorageLink('btComponentAsk') btComponentAsk: boolean = false;
+  // CF 盾域名请求通道：隐藏 ArkWeb 页控制器 + JS 桥对象
+  // （受盾插件请求在隐藏页内同源 fetch，与过盾客户端同 TLS 指纹/Cookie 仓）
+  private hiddenWebController: webview.WebviewController = new webview.WebviewController();
+  private netFetchProxy: NetFetchProxy = new NetFetchProxy();
   // 详情页“搜索此处”回退主页时切到书架页签执行文本搜索（对齐 Mihon HomeScreen.search → LibraryTab）
   @StorageLink('libSearchReq') @Watch('onLibSearchReq') libSearchReq: number = 0;
   // 一多响应式：窗口宽度 + 已挂载页签位掩码（宽屏下按需挂载后驻留保状态）
@@ -884,6 +898,37 @@ struct Index {
       if (this.btComponentAsk) {
         BtComponentDialog()
       }
+
+      // CF 盾域名请求通道：1x1 隐藏 ArkWeb 页（透明 + 触摸透传），受盾插件请求
+      // 在其内同源 fetch 执行（详见 net/WebViewFetch.ets；常驻挂载，全局唯一）
+      Web({ src: 'about:blank', controller: this.hiddenWebController })
+        .javaScriptAccess(true)
+        .domStorageAccess(false)
+        .fileAccess(false)
+        .onlineImageAccess(false)
+        .onControllerAttached(() => {
+          WebViewFetch.attach(this.hiddenWebController);
+          try {
+            // 与 CF 验证弹层同款 UA（cf_clearance 与 UA 绑定）
+            this.hiddenWebController.setCustomUserAgent(Http.USER_AGENT);
+            this.hiddenWebController.onActive();
+          } catch (e) {
+            hilog.error(0x0C0F, 'Index', 'hidden web attach failed: %{public}s', (e as Error).message);
+          }
+        })
+        .onPageEnd(() => {
+          WebViewFetch.onPageLoaded();
+        })
+        .javaScriptProxy({
+          object: this.netFetchProxy,
+          name: 'honyomiNet',
+          methodList: ['postResult'],
+          controller: this.hiddenWebController
+        })
+        .width(1)
+        .height(1)
+        .opacity(0)
+        .hitTestBehavior(HitTestMode.None)
     }
     .width('100%')
     .height('100%')

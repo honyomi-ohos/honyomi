@@ -31,6 +31,7 @@ import { SmartImage } from './components/SmartImage';
 import { LoadingState } from './components/LoadingState';
 import { EmptyScreen } from './components/EmptyScreen';
 import { AppIcon } from './components/AppIcon';
+import { ExpandToggle } from './components/ExpandToggle';
 import { CoverViewer } from './components/CoverViewer';
 import { CoverPlaceholder } from './components/CoverPlaceholder';
 import { ChapterSettingsSheet } from './components/ChapterSettingsSheet';
@@ -1166,13 +1167,17 @@ export struct MangaDetailPage {
           .maxLines(this.descExpanded ? 999 : 3)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .width('100%')
-        Text(this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'))
-          .fontSize(12)
-          .fontColor(this.pal.primary)
-          .margin({ top: 4 })
-          .onClick(() => {
+        ExpandToggle({
+          expanded: this.descExpanded,
+          iconSize: 16,
+          labelSize: 12,
+          tint: this.pal.primary,
+          label: this.descExpanded ? $r('app.string.detail_collapse') : $r('app.string.detail_expand'),
+          onToggle: (): void => {
             this.descExpanded = !this.descExpanded;
-          })
+          }
+        })
+          .margin({ top: 4 })
       }
       // 标签：展开时流式换行，收起时单行横向滚动（对齐 Mihon tags chips）
       if (this.tagList().length > 0) {

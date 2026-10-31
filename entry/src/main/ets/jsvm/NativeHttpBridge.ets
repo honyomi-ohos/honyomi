@@ -18,6 +18,7 @@ import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
 import { Doh } from '../net/Doh';
 import { CfChallenge } from '../net/CfChallenge';
+import { WebViewFetch, WebViewFetchResult } from '../net/WebViewFetch';
 import { Util } from '../common/Util';
 import { Log } from '../common/Log';
 import { challengeError } from './EngineGateway';
@@ -217,6 +218,13 @@ export class NativeHttpBridge {
     } catch (e) {
       headers = {};
     }
+    // 已标记的 CF 盾域名：优先走隐藏 ArkWeb 通道（与过盾客户端同 TLS 指纹/Cookie 仓）
+    if (WebViewFetch.shouldRoute(url)) {
+      const viaChannel = await NativeHttpBridge.tryChannel(req, headers);
+      if (viaChannel !== null) {
+        return viaChannel;
+      }
+    }
     // 统一以字节取回，再按 Content-Type charset 解码：修复 GBK/Big5 站点乱码
     const followed = await NativeHttpBridge.follow(url, req.method, headers, req.body, true);
     const resp = followed.resp;
@@ -231,9 +239,16 @@ export class NativeHttpBridge {
     if (req.wantBytes) {
       body = NativeHttpBridge.toBase64(buffer);
     } else {
-      body = NativeHttpBridge.decodeBody(buffer, resp.header);
+      body = NativeHttpBridge.decodeBody(new Uint8Array(buffer), resp.header);
     }
     if (CfChallenge.isCfChallenge(resp.responseCode, req.wantBytes ? '' : body, resp.header)) {
+      // 标记盾域名并立即经通道重试一次：弹层验证过的 clearance 存于 ArkWeb
+      // Cookie 仓，通道请求直接复用，多数场景无需再弹验证层
+      WebViewFetch.markCfHost(finalUrl);
+      const viaChannel = await NativeHttpBridge.tryChannel(req, headers);
+      if (viaChannel !== null) {
+        return viaChannel;
+      }
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -250,6 +265,37 @@ export class NativeHttpBridge {
       body: body,
       error: null,
       url: finalUrl,
+    };
+  }
+
+  // 经隐藏 ArkWeb 通道执行文本/整包 base64 请求（CF 盾域名专用）：
+  // - null：通道技术性不可用（未挂载/页面超时/注入失败），调用方回落原生栈
+  // - 质询：返回 challenge 信封（弹验证层后经通道重试）
+  private static async tryChannel(
+    req: JsvmBridgeRequest,
+    headers: Record<string, string>
+  ): Promise<JsvmHttpResult | null> {
+    let raw: WebViewFetchResult;
+    try {
+      raw = await WebViewFetch.fetch(req.url, req.method, headers, req.body, req.wantBytes);
+    } catch (e) {
+      return null;
+    }
+    if (NativeHttpBridge.channelChallenged(raw)) {
+      return NativeHttpBridge.challengeEnvelope(raw.status, raw.url);
+    }
+    const bytes = NativeHttpBridge.decodeBase64(raw.bodyBase64);
+    if (req.wantBytes && bytes.byteLength > NativeHttpBridge.MAX_WANT_BYTES) {
+      return NativeHttpBridge.error(0, `响应体超过 32MB 上限: ${raw.url}`, raw.url);
+    }
+    const body = req.wantBytes ? raw.bodyBase64 : NativeHttpBridge.decodeBody(bytes, raw.headers);
+    return {
+      status: raw.status,
+      statusText: raw.statusText !== '' ? raw.statusText : NativeHttpBridge.statusTextOf(raw.status),
+      headersJson: JSON.stringify(raw.headers),
+      body: body,
+      error: null,
+      url: raw.url,
     };
   }
 
@@ -276,11 +322,24 @@ export class NativeHttpBridge {
     } catch (e) {
       headers = {};
     }
+    // 已标记的 CF 盾域名：优先走隐藏 ArkWeb 通道（与过盾客户端同 TLS 指纹/Cookie 仓）
+    if (WebViewFetch.shouldRoute(url)) {
+      const viaChannel = await NativeHttpBridge.tryChannelShared(req, headers);
+      if (viaChannel !== null) {
+        return viaChannel;
+      }
+    }
     const followed = await NativeHttpBridge.follow(url, req.method, headers, req.body, true);
     const resp = followed.resp;
     const finalUrl = followed.url;
     const headersJson = JSON.stringify(NativeHttpBridge.flattenHeaders(resp.header));
     if (CfChallenge.isCfChallenge(resp.responseCode, '', resp.header)) {
+      // 标记盾域名并立即经通道重试一次（同 execute 策略）
+      WebViewFetch.markCfHost(finalUrl);
+      const viaChannel = await NativeHttpBridge.tryChannelShared(req, headers);
+      if (viaChannel !== null) {
+        return viaChannel;
+      }
       return {
         status: resp.responseCode,
         statusText: NativeHttpBridge.statusTextOf(resp.responseCode),
@@ -299,6 +358,53 @@ export class NativeHttpBridge {
       error: null,
       url: finalUrl,
       bytes: resp.result as ArrayBuffer,
+    };
+  }
+
+  // 经隐藏 ArkWeb 通道执行零拷贝字节请求（CF 盾域名专用）：语义同 tryChannel
+  private static async tryChannelShared(
+    req: JsvmBridgeRequest,
+    headers: Record<string, string>
+  ): Promise<JsvmSharedResult | null> {
+    let raw: WebViewFetchResult;
+    try {
+      raw = await WebViewFetch.fetch(req.url, req.method, headers, req.body, true);
+    } catch (e) {
+      return null;
+    }
+    if (NativeHttpBridge.channelChallenged(raw)) {
+      const envelope = NativeHttpBridge.challengeEnvelope(raw.status, raw.url);
+      return {
+        status: envelope.status,
+        statusText: envelope.statusText,
+        headersJson: envelope.headersJson,
+        body: envelope.body,
+        error: envelope.error,
+        url: envelope.url,
+        bytes: null,
+      };
+    }
+    const bytes = NativeHttpBridge.decodeBase64(raw.bodyBase64);
+    if (bytes.byteLength > NativeHttpBridge.MAX_WANT_BYTES) {
+      const e = NativeHttpBridge.error(0, `响应体超过 32MB 上限: ${raw.url}`, raw.url);
+      return {
+        status: e.status,
+        statusText: e.statusText,
+        headersJson: e.headersJson,
+        body: e.body,
+        error: e.error,
+        url: e.url,
+        bytes: null,
+      };
+    }
+    return {
+      status: raw.status,
+      statusText: raw.statusText !== '' ? raw.statusText : NativeHttpBridge.statusTextOf(raw.status),
+      headersJson: JSON.stringify(raw.headers),
+      body: '',
+      error: null,
+      url: raw.url,
+      bytes: NativeHttpBridge.toArrayBuffer(bytes),
     };
   }
 
@@ -382,7 +488,9 @@ export class NativeHttpBridge {
         expectDataType: wantBytes ? http.HttpDataType.ARRAY_BUFFER : http.HttpDataType.STRING,
         connectTimeout: 15000,
         readTimeout: wantBytes ? 60000 : 20000,
-        usingProtocol: http.HttpProtocol.HTTP1_1,
+        // HTTP/2（ALPN 协商，服务端不支持自动回落 1.1）：对齐过盾 WebView 的浏览器行为。
+        // 强制 HTTP/1.1 时携带 cf_clearance 请求 CF 盾站会被判定非浏览器客户端而重新质询
+        usingProtocol: http.HttpProtocol.HTTP2,
       };
       if (customMethod !== '') {
         options.customMethod = customMethod;
@@ -628,6 +736,43 @@ export class NativeHttpBridge {
     return helper.encodeToStringSync(new Uint8Array(buffer));
   }
 
+  // 通道结果 base64 解码：空串/畸形输入返回空字节组（decodeBody 对空体返回 ''）
+  private static decodeBase64(b64: string): Uint8Array {
+    if (b64 === '') {
+      return new Uint8Array(0);
+    }
+    try {
+      return new util.Base64Helper().decodeSync(b64);
+    } catch (e) {
+      return new Uint8Array(0);
+    }
+  }
+
+  // 通道结果质询检测：cf-mitigated 头 + 前 8KB 解码文本（盾页标记特征在页首）
+  private static channelChallenged(raw: WebViewFetchResult): boolean {
+    let probe = '';
+    if (raw.bodyBase64 !== '') {
+      const bytes = NativeHttpBridge.decodeBase64(raw.bodyBase64);
+      const probeLen = Math.min(bytes.length, 8192);
+      if (probeLen > 0) {
+        probe = Util.decodeBytes(bytes.slice(0, probeLen));
+      }
+    }
+    return CfChallenge.isCfChallenge(raw.status, probe, raw.headers);
+  }
+
+  // 通道质询信封：与原生路径同构（error 携带 challenge 标记触发验证弹层）
+  private static challengeEnvelope(status: number, url: string): JsvmHttpResult {
+    return {
+      status: status,
+      statusText: NativeHttpBridge.statusTextOf(status),
+      headersJson: '{}',
+      body: '',
+      error: challengeError(url),
+      url: url,
+    };
+  }
+
   /** 用系统 TextEncoder('gbk') 将文本编码为 GBK 字节的 URL 百分号编码。 */
   private static encodeGbkUrl(text: string): string {
     const encoder = util.TextEncoder.create('gbk');
@@ -712,8 +857,7 @@ export class NativeHttpBridge {
 
   // 按响应 Content-Type 声明的 charset 解码响应体；未声明或不受支持时
   // 退回自动探测（BOM / UTF-8 / GB18030 / GBK / Big5），默认 UTF-8。
-  private static decodeBody(buffer: ArrayBuffer, header: Object): string {
-    const bytes = new Uint8Array(buffer);
+  private static decodeBody(bytes: Uint8Array, header: Object): string {
     if (bytes.length === 0) {
       return '';
     }
@@ -727,6 +871,14 @@ export class NativeHttpBridge {
       }
     }
     return Util.decodeBytes(bytes);
+  }
+
+  // Uint8Array → 独立 ArrayBuffer：TS lib 把 .buffer 标为 ArrayBufferLike 联合类型，
+  // 直接取用触发 arkts-no-structural-typing；拷贝转换（通道路径专用，≤32MB）
+  private static toArrayBuffer(bytes: Uint8Array): ArrayBuffer {
+    const out = new ArrayBuffer(bytes.byteLength);
+    new Uint8Array(out).set(bytes);
+    return out;
   }
 
   // 解析 Content-Type 中的 charset 并归一化为系统 TextDecoder 支持的名称；

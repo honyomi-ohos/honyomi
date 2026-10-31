@@ -2,6 +2,7 @@ import { http } from '@kit.NetworkKit';
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { request } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
+import { webview } from '@kit.ArkWeb';
 import { CookieJar } from './CookieJar';
 import { CfChallenge } from './CfChallenge';
 import { Util } from '../common/Util';
@@ -45,18 +46,40 @@ interface HttpFollowed {
 //   （Authorization/Referer/Referrer/Cookie），https 起始禁止降级 http
 // - 幂等 GET：网络类错误（非 CF 挑战）退避 500ms 后重试一次
 export class Http {
-  // 默认 UA（对齐桌面 Chrome；cf_clearance 与 UA 绑定，http 层与验证 Web 必须一致）
-  static readonly DEFAULT_USER_AGENT: string =
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-      '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
-  // 运行时生效 UA：高级设置可自定义覆盖，各请求层与 CF 验证 WebView
-  // 均在请求时实时读取本字段，无需重启即生效
-  static USER_AGENT: string = Http.DEFAULT_USER_AGENT;
+  // 兜底 UA：ArkWeb 真实默认 UA 结构（引擎不可用时使用，如预览器）。
+  // 旧版伪装桌面 Chrome（Windows NT 10.0）是 Turnstile 判定伪造客户端的主因：
+  // 移动端 ArkWeb 引擎声称 Windows 桌面 Chrome，UA 与实际指纹矛盾，质询必拒
+  static readonly FALLBACK_USER_AGENT: string =
+    'Mozilla/5.0 (Phone; OpenHarmony 5.0) AppleWebKit/537.36 ' +
+      '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 ArkWeb/4.1.6.1 Mobile';
+  // 运行时生效 UA：优先 ArkWeb 真实默认 UA（getDefaultUserAgent），
+  // 高级设置可自定义覆盖；各请求层与 CF 验证 WebView 均在请求时实时读取本字段
+  static USER_AGENT: string = Http.FALLBACK_USER_AGENT;
+  // initializeWebEngine 全生命周期仅一次（引擎预热的 DLL 加载与站点预连接）
+  private static webEngineInited: boolean = false;
+
+  // 解析 ArkWeb 真实默认 UA：cf_clearance 与 UA 绑定，统一 UA 必须与
+  // 过盾 WebView 实际 UA 完全一致；自定义 UA 优先（用户显式覆盖）
+  static defaultUserAgent(): string {
+    try {
+      if (!Http.webEngineInited) {
+        webview.WebviewController.initializeWebEngine();
+        Http.webEngineInited = true;
+      }
+      const ua = webview.WebviewController.getDefaultUserAgent().trim();
+      if (ua !== '') {
+        return ua;
+      }
+    } catch (e) {
+      // 引擎不可用（预览器等）：保持兜底 UA
+    }
+    return Http.FALLBACK_USER_AGENT;
+  }
 
   // 从持久化偏好同步自定义 UA（应用启动与用户修改后调用）
   static syncUserAgent(): void {
     const custom: string = Settings.getUserAgent();
-    Http.USER_AGENT = custom !== '' ? custom : Http.DEFAULT_USER_AGENT;
+    Http.USER_AGENT = custom !== '' ? custom : Http.defaultUserAgent();
   }
 
   static async get(url: string, headers: Record<string, string> | undefined): Promise<string> {
