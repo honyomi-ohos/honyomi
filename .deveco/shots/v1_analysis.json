@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "status": "ok",
+  "producer": {
+    "tool": "recognize_ui_components",
+    "model": "Qwen3_VL_235B_A22B_Instruct",
+    "invocationId": "1e65ba37-8d8d-42b3-ae44-81afdadc97dd",
+    "createdAt": "2026-11-01T11:46:08.554Z"
+  },
+  "inputs": {
+    "image": {
+      "path": ".deveco/shots/v1.jpeg",
+      "sha256": "cc0cde36029737a5a66a103732896282e9549d06e93f9015ea249e6291047b02"
+    },
+    "requirements": {
+      "text": "判断当前应用处于哪个页面（书架/首页/详情页/图片查看器），页面上有哪些可点击的主要元素及其大致位置",
+      "sha256": "7c9af95f532261b5e63e16723f0782178fc8f1cc84b6fdfc74967ef000428a8c"
+    }
+  },
+  "analysis": {
+    "canvas": {
+      "width": 2584,
+      "height": 1828
+    },
+    "visible_components": [
+      {
+        "id": "component-1",
+        "name": "书架标题",
+        "visual_evidence": "页面顶部中央显示“书架”文字",
+        "component_candidates": [
+          {
+            "name": "Text",
+            "confidence": 0.95,
+            "reason": "用于显示静态标题文本"
+          }
+        ]
+      },
+      {
+        "id": "component-2",
+        "name": "左侧导航栏",
+        "visual_evidence": "左侧深色背景栏包含“书架”、“更新”、“历史”、“浏览”、“更多”等带图标菜单项",
+        "component_candidates": [
+          {
+            "name": "Navigation",
+            "confidence": 0.9,
+            "reason": "用于构建侧边导航菜单结构"
+          },
+          {
+            "name": "Button",
+            "confidence": 0.85,
+            "reason": "每个菜单项可视为可点击按钮"
+          }
+        ]
+      },
+      {
+        "id": "component-3",
+        "name": "分类标签栏",
+        "visual_evidence": "标题下方有“全部”、“漫画”、“小说”、“动画”四个圆角标签",
+        "component_candidates": [
+          {
+            "name": "Tabs",
+            "confidence": 0.9,
+            "reason": "用于实现分类切换的标签页组件"
+          },
+          {
+            "name": "Button",
+            "confidence": 0.8,
+            "reason": "每个标签可视为独立按钮"
+          }
+        ]
+      },
+      {
+        "id": "component-4",
+        "name": "内容卡片网格",
+        "visual_evidence": "主区域以网格形式展示多个漫画封面卡片，每张卡片含封面图、标题、数字角标",
+        "component_candidates": [
+          {
+            "name": "Grid",
+            "confidence": 0.9,
+            "reason": "用于布局多列网格内容"
+          },
+          {
+            "name": "Image",
+            "confidence": 0.85,
+            "reason": "用于显示封面图片"
+          },
+          {
+            "name": "Text",
+            "confidence": 0.8,
+            "reason": "用于显示标题和角标数字"
+          }
+        ]
+      },
+      {
+        "id": "component-5",
+        "name": "顶部状态栏",
+        "visual_evidence": "屏幕顶部显示时间“07:45”和电池、信号图标",
+        "component_candidates": [
+          {
+            "name": "StatusBar",
+            "confidence": 0.95,
+            "reason": "系统状态栏，通常由系统提供或模拟"
+          }
+        ]
+      },
+      {
+        "id": "component-6",
+        "name": "顶部操作图标",
+        "visual_evidence": "右上角有搜索、筛选、更多选项三个图标",
+        "component_candidates": [
+          {
+            "name": "Button",
+            "confidence": 0.85,
+            "reason": "每个图标为可点击操作按钮"
+          },
+          {
+            "name": "Icon",
+            "confidence": 0.8,
+            "reason": "用于显示操作图标"
+          }
+        ]
+      }
+    ],
+    "global_observations": [
+      "当前页面为书架页，展示用户收藏的漫画/小说/动画内容",
+      "页面布局为左侧导航+顶部标题+分类标签+网格内容区",
+      "内容卡片包含封面、标题、阅读进度或章节角标"
+    ],
+    "uncertainties": []
+  }
+}

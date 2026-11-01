@@ -29,7 +29,8 @@ export struct CoverViewer {
   @Prop title: string = '';
   // 是否展示“编辑封面”入口（条目详情等只读场景传 false，仅查看/保存/分享）
   @Prop allowEdit: boolean = true;
-  @StorageProp('navBarH') navBarH: number = 0;
+  // 全模态铺满整个窗口矩形（含状态栏区域）：图片区需按 statusBarH 下移避开状态栏
+  @StorageProp('statusBarH') statusBarH: number = 0;
   // 图片展示：先解析本地路径并读取原始宽高，再按容器适配出实际显示宽高
   // localPath 为裸沙箱路径（save/share 用），displayPath 为渲染地址：
   // Image 组件不能直接传入应用沙箱路径，须转为 file:// 沙箱 URI（faqs-arkui-154）
@@ -181,7 +182,9 @@ export struct CoverViewer {
       .backgroundColor('#99000000')
     }
     .width('100%')
-    .padding({ left: 16, right: 16, bottom: this.navBarH + 16 })
+    // 手势指示条贴近屏幕底边（约 10vp），底栏固定 16vp 即可让开；
+    // 旧 navBarH+16 会把按钮抬高手势避让区上沿，视觉上形成大段空隙
+    .padding({ left: 16, right: 16, bottom: 16 })
     .justifyContent(FlexAlign.SpaceBetween)
   }
 
@@ -265,6 +268,8 @@ export struct CoverViewer {
     }
     .width('100%')
     .height('100%')
+    // 全模态从 y=0 起绘会压住状态栏：顶部按 statusBarH 避让，图片区整体下移
+    .padding({ top: this.statusBarH })
   }
 
   // 解析本地路径并读取原始宽高（参考 PicturePreview initCurrentImageInfo）
