@@ -2301,8 +2301,8 @@ export struct ReaderPage {
       }
     }
     // 阅读正序（对齐 Mihon getChapterSort(manga, sortDescending=false)）：
-    // 源顺序模式 = sortOrder 升序（sortOrder 即源声明的"旧→新"自然顺序）；
-    // 章节号/日期/字母模式 = 对应键升序。prev/next 不再受详情页展示方向影响
+    // 源顺序模式在线源 = sortOrder 降序（源约定"新→旧"返回，sortOrder 0=最新），本地源 = 升序；
+    // 章节号/日期/字母模式 = 对应键升序。prev/next 不再受源列表原始顺序反转影响
     list = ReaderChapterNav.readingOrder(list, this.manga.chapterFlags, this.manga.sourceKey);
     if (this.skipDuplicate) {
       list = this.removeDuplicateChapters(list);

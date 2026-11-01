@@ -1,8 +1,9 @@
 import { insightIntent, InsightIntentEntry, InsightIntentEntryExecutor } from '@kit.AbilityKit';
 import { AppDb } from '../data/AppDb';
-import { ChapterRepo, HistoryRepo } from '../data/Repos';
-import { HistoryItem } from '../model/Models';
+import { HistoryRepo } from '../data/Repos';
+import { ChapterRecord, HistoryItem } from '../model/Models';
 import { AppKeys } from '../common/AppKeys';
+import { ReaderChapterNav } from '../common/ReaderChapterNav';
 import EntryAbility from './EntryAbility';
 
 // 自定义意图：继续阅读（"用 Honyomi 继续看漫画"）。
@@ -44,9 +45,9 @@ export default class ContinueReadingImpl extends InsightIntentEntryExecutor<stri
         context.resourceManager.getStringSync($r('app.string.intent_continue_reading_no_history').id));
     }
     const last: HistoryItem = recent[0];
-    const nextId: number = await ChapterRepo.firstUnread(last.mangaId);
+    const next: ChapterRecord | undefined = await ReaderChapterNav.nextUnreadChapter(last.mangaId);
     // 全部已读时回看最近章节
-    const chapterId: number = nextId > 0 ? nextId : last.chapterId;
+    const chapterId: number = next !== undefined ? next.id : last.chapterId;
     if (chapterId <= 0) {
       this.openHistory();
       return ContinueReadingImpl.result(1,

@@ -253,6 +253,18 @@ export struct VideoPlayerPage {
   // 非全屏内容区避让（全局维护，随旋转经 avoidAreaChange 同步），用于首帧几何推定
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  // 全屏沉浸布局下窗口铺满至摄像头挖孔/手势指示条之下，四角悬浮控件（顶栏返回与
+  // 多功能键、底栏进度与全屏键）按 TYPE_CUTOUT/手势条避让区手动让位；非全屏由系统自动避让
+  @State cutoutTop: number = 0;
+  @State cutoutBottom: number = 0;
+  // 左/右侧挖孔条带按纵向区间归入上/下半屏：摄像头可能出现在任意一角（含左下/右下角），
+  // 上半屏条带由顶栏避让、下半屏条带由底栏避让，跨中线的全高条带两侧同时生效
+  @State cutoutLeftUpper: number = 0;
+  @State cutoutLeftLower: number = 0;
+  @State cutoutRightUpper: number = 0;
+  @State cutoutRightLower: number = 0;
+  @State gestureBottom: number = 0;
+  private avoidCb: ((data: window.AvoidAreaOptions) => void) | undefined = undefined;
   // ---- 折叠屏悬停态：全屏时上半屏视频/下半屏常驻控制条；非全屏时视频与评论分界线避让折痕带 ----
   @State hoverActive: boolean = false;
   @State hoverBandH: boolean = true; // true 折痕横向（上下分界），false 折痕纵向（左右分界）
@@ -362,6 +374,18 @@ export struct VideoPlayerPage {
       // 拿到窗口后按真实窗口矩形+避让区精化根区（display 推定对旋转时序/悬浮窗有偏差）
       this.refineRootGeometry();
       this.updateHoverLayout();
+      // 摄像头挖孔/手势条避让区快照 + 动态订阅：旋转后挖孔落点在四角间迁移，需同步重算
+      this.syncFullscreenInsets();
+      if (this.avoidCb === undefined) {
+        this.avoidCb = (_data: window.AvoidAreaOptions): void => {
+          this.syncFullscreenInsets();
+        };
+        try {
+          w.on('avoidAreaChange', this.avoidCb);
+        } catch (e) {
+          this.log(`avoid on catch: ${e}`);
+        }
+      }
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         if (this.pcLike) {
           w.setWindowSystemBarEnable([]).catch((): void => {
@@ -392,6 +416,14 @@ export struct VideoPlayerPage {
         this.log(`fold off catch: ${e}`);
       }
       this.foldCb = undefined;
+    }
+    if (this.win !== undefined && this.avoidCb !== undefined) {
+      try {
+        this.win.off('avoidAreaChange', this.avoidCb);
+      } catch (e) {
+        this.log(`avoid off catch: ${e}`);
+      }
+      this.avoidCb = undefined;
     }
     this.loadGen += 1;
     this.persist(false);
@@ -493,6 +525,72 @@ export struct VideoPlayerPage {
     } catch (e) {
       this.log(`refineRootGeometry catch: ${e}`);
     }
+  }
+
+  // 全屏避让区同步：读取摄像头挖孔（TYPE_CUTOUT）与手势指示条避让区，
+  // 换算 vp 后驱动四角悬浮控件让位；随旋转/折叠经 avoidAreaChange 自动刷新
+  private syncFullscreenInsets(): void {
+    if (this.win === undefined) {
+      return;
+    }
+    try {
+      const cut: window.AvoidArea = this.win.getWindowAvoidArea(window.AvoidAreaType.TYPE_CUTOUT);
+      const nav: window.AvoidArea = this.win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR);
+      const ui: UIContext = this.getUIContext();
+      this.cutoutTop = ui.px2vp(cut.topRect.height);
+      this.cutoutBottom = ui.px2vp(cut.bottomRect.height);
+      // 侧边挖孔条带含纵向区间（top/height）：与窗口上半/下半相交即归入对应侧，
+      // 摄像头落在左下/右下角时由底栏的侧向让位兜底（左下角时间、右下角全屏键）
+      const winHpx: number = this.win.getWindowProperties().windowRect.height;
+      const halfPx: number = winHpx / 2;
+      this.cutoutLeftUpper =
+        cut.leftRect.width > 0 && cut.leftRect.top < halfPx ? ui.px2vp(cut.leftRect.width) : 0;
+      this.cutoutLeftLower =
+        cut.leftRect.width > 0 && cut.leftRect.top + cut.leftRect.height > halfPx ? ui.px2vp(cut.leftRect.width) : 0;
+      this.cutoutRightUpper =
+        cut.rightRect.width > 0 && cut.rightRect.top < halfPx ? ui.px2vp(cut.rightRect.width) : 0;
+      this.cutoutRightLower =
+        cut.rightRect.width > 0 && cut.rightRect.top + cut.rightRect.height > halfPx ? ui.px2vp(cut.rightRect.width) : 0;
+      this.gestureBottom = ui.px2vp(nav.bottomRect.height);
+    } catch (e) {
+      this.log(`syncFullscreenInsets catch: ${e}`);
+    }
+  }
+
+  // 顶栏顶部让位：全屏整屏时贴窗口顶边，需下压到挖孔区之下避开摄像头；
+  // 悬停分屏时顶栏位于下半屏不贴顶，维持原间距
+  private topBarTopInset(): number {
+    if (!this.fullscreen || this.hoverSplitOn()) {
+      return this.fullscreen ? 12 : 6;
+    }
+    const inset: number = this.cutoutTop + 8;
+    return inset > 12 ? inset : 12;
+  }
+
+  // 顶栏左/右让位：仅让位纵向落点在上半屏的侧边挖孔（左上/右上角摄像头），
+  // 下半屏落点（左下/右下角）由底栏侧向让位处理，避免误推无遮挡一侧
+  private topBarSideInset(isLeft: boolean): number {
+    if (!this.fullscreen || this.hoverSplitOn()) {
+      return 0;
+    }
+    return isLeft ? this.cutoutLeftUpper : this.cutoutRightUpper;
+  }
+
+  // 底栏左/右让位：让位纵向落点在下半屏的侧边挖孔（左下/右下角摄像头，含左下角时间文本）
+  private bottomBarSideInset(isLeft: boolean): number {
+    if (!this.fullscreen) {
+      return 0;
+    }
+    return isLeft ? this.cutoutLeftLower : this.cutoutRightLower;
+  }
+
+  // 底栏底部让位：全屏时贴窗口底边，需让位手势指示条与底部挖孔；非全屏由系统避让手势条
+  private bottomBarBottomInset(): number {
+    if (!this.fullscreen) {
+      return 12;
+    }
+    const inset: number = Math.max(this.cutoutBottom + 8, this.gestureBottom + 8);
+    return inset > 16 ? inset : 16;
   }
 
   // 悬停态判定与折痕几何重算：半折叠时读取折痕区（设备物理空间像素，不随窗口旋转），
@@ -776,9 +874,9 @@ export struct VideoPlayerPage {
     }
     .width('100%')
     .padding({
-      left: 12,
-      right: 14,
-      top: this.fullscreen ? 12 : 6,
+      left: 12 + this.topBarSideInset(true),
+      right: 14 + this.topBarSideInset(false),
+      top: this.topBarTopInset(),
       bottom: 14
     })
     .linearGradient({ angle: 180, colors: [['rgba(0,0,0,0.65)', 0], [Color.Transparent, 1]] })
@@ -1040,10 +1138,10 @@ export struct VideoPlayerPage {
     }
     .width('100%')
     .padding({
-      left: 16,
-      right: 16,
+      left: 16 + this.bottomBarSideInset(true),
+      right: 16 + this.bottomBarSideInset(false),
       top: 12,
-      bottom: this.fullscreen ? 16 : 12
+      bottom: this.bottomBarBottomInset()
     })
     .linearGradient({ angle: 180, colors: [[Color.Transparent, 0], ['rgba(0,0,0,0.65)', 1]] })
     .position({ x: 0, y: '100%' })
@@ -2492,6 +2590,8 @@ export struct VideoPlayerPage {
     }
     // 全屏切换改变悬停分屏/折痕避让的生效条件，立即重估
     this.updateHoverLayout();
+    // 布局全屏开关可能触发/错过 avoidAreaChange，主动重读避让区保证四角控件让位值最新
+    this.syncFullscreenInsets();
     this.pokeControls();
   }
 

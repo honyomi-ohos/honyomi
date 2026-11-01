@@ -1,6 +1,6 @@
 import { AppDb } from '../data/AppDb';
-import { CategoryRepo, ChapterRepo, HistoryRepo, MangaRepo } from '../data/Repos';
-import { DuplicateManga, HistoryItem, MangaRecord } from '../model/Models';
+import { CategoryRepo, HistoryRepo, MangaRepo } from '../data/Repos';
+import { ChapterRecord, DuplicateManga, HistoryItem, MangaRecord } from '../model/Models';
 import { DetailParams, MigrateSearchParams } from '../model/RouteParams';
 import { ContentOpen } from './ContentOpen';
 import { ThemePalette } from '../common/Theme';
@@ -9,6 +9,7 @@ import { Util } from '../common/Util';
 import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
+import { ReaderChapterNav } from '../common/ReaderChapterNav';
 import { EmptyScreen } from './components/EmptyScreen';
 import { LoadingState } from './components/LoadingState';
 import { SmartImage } from './components/SmartImage';
@@ -440,9 +441,9 @@ export struct HistoryPage {
       return;
     }
     const last: HistoryItem = this.items[0];
-    const nextId = await ChapterRepo.firstUnread(last.mangaId);
-    if (nextId > 0) {
-      ContentOpen.open(this.pathStack, last.mangaId, nextId);
+    const next: ChapterRecord | undefined = await ReaderChapterNav.nextUnreadChapter(last.mangaId);
+    if (next !== undefined) {
+      ContentOpen.open(this.pathStack, last.mangaId, next.id);
     } else {
       Util.toastRes(this.getUIContext(), $r('app.string.history_no_next_chapter'));
     }

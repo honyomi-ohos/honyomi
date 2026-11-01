@@ -4,11 +4,12 @@ import { formBindingData, formProvider } from '@kit.FormKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppDb } from '../data/AppDb';
-import { ChapterRepo, HistoryRepo, MangaRepo, UpcomingRepo, UpdatesRepo } from '../data/Repos';
+import { HistoryRepo, MangaRepo, UpcomingRepo, UpdatesRepo } from '../data/Repos';
 import { ReadingStatsRepo } from '../data/ReadingStats';
 import { HistoryItem, MangaRecord, UpcomingManga } from '../model/Models';
 import { ImageCache } from '../common/ImageCache';
 import { Util } from '../common/Util';
+import { ReaderChapterNav } from '../common/ReaderChapterNav';
 
 const DOMAIN = 0x0001;
 const TAG = 'WidgetUpdater';
@@ -252,7 +253,7 @@ export class WidgetUpdater {
       chapterId = last.chapterId;
       chapterName = last.chapterName;
     } else {
-      const firstUnread = await ChapterRepo.firstUnreadChapter(manga.id);
+      const firstUnread = await ReaderChapterNav.nextUnreadChapter(manga.id);
       if (firstUnread !== undefined) {
         chapterId = firstUnread.id;
         chapterName = firstUnread.name;

@@ -774,20 +774,6 @@ export class ChapterRepo {
 
   // 用源返回的章节列表全量刷新本地记录：保留仍在源中的章节已读状态、
 
-  // 第一条未读章节完整记录（漫画卡片续读回退；id 版本见 firstUnread）
-  static async firstUnreadChapter(mangaId: number): Promise<ChapterRecord | undefined> {
-    const store = await AppDb.get();
-    const pred = new relationalStore.RdbPredicates('chapter');
-    pred.equalTo('mangaId', mangaId)
-      .and()
-      .equalTo('read', 0)
-      .orderByAsc('sortOrder')
-      .orderByAsc('id');
-    pred.limitAs(1);
-    return queryFirst<ChapterRecord>(safeQuery(store, pred, ChapterRepo.COLUMNS),
-      (rs: relationalStore.ResultSet): ChapterRecord => ChapterRepo.rowToChapter(rs), 'first unread chapter failed');
-  }
-
   // 删除源已移除的章节（含历史，章节可能在源端被删除）；返回新增章节数
   static async syncFromSource(mangaId: number, chapters: SChapter[]): Promise<number> {
     const store = await AppDb.get();
@@ -992,15 +978,6 @@ export class ChapterRepo {
     } catch (e) {
       throw new Error(`set pages failed: ${e}`);
     }
-  }
-
-  // 第一个未读章节 id（无未读返回 -1），供"继续阅读"按钮
-  static async firstUnread(mangaId: number): Promise<number> {
-    const store = await AppDb.get();
-    return await queryFirst<number>(safeQuerySql(store, 
-      `SELECT id FROM chapter WHERE mangaId = ? AND read = 0 ORDER BY sortOrder ASC, id ASC LIMIT 1`, [mangaId]),
-      (rs: relationalStore.ResultSet): number => rs.getLong(rs.getColumnIndex('id')),
-      'first unread failed') ?? -1;
   }
 
   static async countRead(mangaId: number): Promise<number> {
