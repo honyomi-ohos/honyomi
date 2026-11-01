@@ -1252,7 +1252,7 @@ export class HistoryRepo {
               m.sourceKey AS sourceKey,
               m.thumbnailUrl AS coverUrl, m.localCover AS localCover,
               m.origThumbnail AS origThumbnail, c.name AS chapterName,
-              m.inLibrary AS inLibrary
+              m.inLibrary AS inLibrary, m.author AS author, m.genre AS genre
        FROM history h
        JOIN manga m ON m.id = h.mangaId
        JOIN chapter c ON c.id = h.chapterId
@@ -1354,6 +1354,15 @@ export class HistoryRepo {
       const inLibraryIdx: number = rs.getColumnIndex('inLibrary');
       if (inLibraryIdx >= 0) {
         item.inLibrary = rs.getLong(inLibraryIdx) === 1;
+      }
+      // 作者/标签列仅 recent 查询携带（历史页搜索匹配扩展字段），其余查询走列存在性探测
+      const authorIdx: number = rs.getColumnIndex('author');
+      if (authorIdx >= 0) {
+        item.author = rs.getString(authorIdx);
+      }
+      const genreIdx: number = rs.getColumnIndex('genre');
+      if (genreIdx >= 0) {
+        item.genre = rs.getString(genreIdx);
       }
       // 与书架一致优先持久化封面：自定义封面（origThumbnail 非空）时 thumbnailUrl 已是 file:// 本地路径；
       // 否则 localCover 文件存在时直接本地秒开，免去缓存未命中时的插件等待与网络下载

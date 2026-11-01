@@ -1,6 +1,7 @@
 import { AppDb } from '../data/AppDb';
 import { MangaRepo } from '../data/Repos';
 import { Source, SourceRegistry } from '../source/Source';
+import { JsvmSource, RawFilter } from '../source/JsvmSource';
 import { ContentType, MangaRecord, SManga, WorksPage } from '../model/Models';
 import { MigrateSearchParams } from '../model/RouteParams';
 import { ThemePalette } from '../common/Theme';
@@ -10,14 +11,18 @@ import { LoadingState } from './components/LoadingState';
 import { MangaRow } from './components/MangaRow';
 import { ConfirmDialog } from './components/Dialogs';
 import { AppIcon } from './components/AppIcon';
+import { SheetPreset } from './components/SheetPreset';
+import { SourceFilterSheet } from './components/SourceFilterSheet';
 
 // 迁移搜索页：依次处理待迁移漫画——选目标源 → 搜索 → 选取匹配项完成迁移
+// 目标源支持插件过滤器（getFilterList + applyFilterState）时提供过滤入口（对齐单源浏览页）
 @Component
 export struct MigrateSearchPage {
   pathStack: NavPathStack = new NavPathStack();
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
   @StorageProp('statusBarH') statusBarH: number = 0;
   @StorageProp('navBarH') navBarH: number = 0;
+  @StorageProp('windowW') windowW: number = 0;
   @State queue: MangaRecord[] = [];
   @State idx: number = 0;
   @State targetKey: string = '';
@@ -26,6 +31,11 @@ export struct MigrateSearchPage {
   @State searching: boolean = false;
   @State busy: boolean = false;
   @State loading: boolean = true;
+  // 目标源插件自定义过滤器（select/checkbox/tristate/text/sort/group）
+  @State filters: RawFilter[] = [];
+  @State showFilterSheet: boolean = false;
+  // 过滤器已应用（插件侧生效，随搜索请求起效）
+  @State filterSearch: boolean = false;
 
   originKey(): string {
     return this.queue.length > 0 ? this.queue[0].sourceKey : '';
@@ -213,6 +223,21 @@ export struct MigrateSearchPage {
               .onSubmit(() => {
                 this.searchNow();
               })
+            // 目标源插件过滤器入口（过滤已应用时高亮；Mihon leadingIcon: FilterList）
+            if (this.targetSupportsFilters()) {
+              AppIcon({
+                name: 'filter_list',
+                iconSize: 20,
+                tint: this.filterSearch ? this.pal.primary : this.pal.sub,
+              })
+                .width(38)
+                .height(38)
+                .borderRadius(19)
+                .backgroundColor(this.filterSearch ? this.pal.chip : Color.Transparent)
+                .onClick(() => {
+                  this.openFilterSheet();
+                })
+            }
             Button($r('app.string.common_search'))
               .fontSize(14)
               .height(38)
@@ -265,6 +290,13 @@ export struct MigrateSearchPage {
       .width('100%')
       .height('100%')
       .backgroundColor(this.pal.bg)
+      // 插件自定义过滤器半模态（与单源浏览页共用共享面板）：
+      // 高度自适应内容（SheetPreset 默认 FIT_CONTENT），筛选项少时弹层收起，多时滚动
+      .bindSheet($$this.showFilterSheet, this.filterSheetBuilder(),
+        SheetPreset.fit(this.windowW, {
+          title: $r('app.string.action_filter'),
+          showClose: true
+        }))
     }
     .hideTitleBar(true)
     .backgroundColor(this.pal.bg)
@@ -304,11 +336,80 @@ export struct MigrateSearchPage {
     }
     this.targetKey = key;
     this.results = [];
+    // 切换目标源：清空本地过滤面板状态（过滤器在插件侧按源各自生效）
+    this.filters = [];
+    this.filterSearch = false;
     const cur = this.current();
     if (cur !== undefined && this.query.trim() === '') {
       this.query = cur.title;
     }
     this.searchNow();
+  }
+
+  // 插件自定义过滤器半模态（与单源浏览页共用 SourceFilterSheet）
+  @Builder
+  filterSheetBuilder() {
+    SourceFilterSheet({
+      filters: this.filters,
+      onApply: (): void => {
+        this.applyFilters();
+      },
+      onReset: (): void => {
+        this.resetFilterSheet();
+      },
+    })
+  }
+
+  // 目标源是否支持自定义过滤器（插件导出 getFilterList + applyFilterState）
+  private targetSupportsFilters(): boolean {
+    const source = SourceRegistry.get(this.targetKey);
+    return source instanceof JsvmSource &&
+      source.hasMethod('getFilterList') && source.hasMethod('applyFilterState');
+  }
+
+  // 打开过滤器面板：拉取目标源插件当前过滤器（state 反映插件侧偏好持久值）
+  private async openFilterSheet(): Promise<void> {
+    const source = SourceRegistry.get(this.targetKey);
+    if (!(source instanceof JsvmSource)) {
+      return;
+    }
+    try {
+      this.filters = await source.getFilterList();
+    } catch (_e) {
+      this.filters = [];
+    }
+    this.showFilterSheet = true;
+  }
+
+  // 应用过滤器并重新搜索（过滤器在插件侧生效，与关键词叠加）
+  private async applyFilters(): Promise<void> {
+    const source = SourceRegistry.get(this.targetKey);
+    if (!(source instanceof JsvmSource)) {
+      return;
+    }
+    // applyFilterState 契约：顶层序号由宿主回传前写入
+    for (let i = 0; i < this.filters.length; i++) {
+      this.filters[i].index = i;
+    }
+    this.showFilterSheet = false;
+    await source.applyFilterState(this.filters).catch((_e: Error): void => {
+    });
+    this.filterSearch = true;
+    await this.searchNow();
+  }
+
+  // 重置目标源插件过滤器并刷新面板
+  private async resetFilterSheet(): Promise<void> {
+    const source = SourceRegistry.get(this.targetKey);
+    if (!(source instanceof JsvmSource)) {
+      return;
+    }
+    try {
+      await source.resetFilters();
+      this.filters = await source.getFilterList();
+    } catch (_e) {
+      // 重置失败：保留当前面板内容
+    }
   }
 
   private showConfirm(record: MangaRecord): void {

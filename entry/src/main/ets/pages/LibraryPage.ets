@@ -945,7 +945,9 @@ export struct LibraryPage {
     }
     const q = this.searchQuery.trim().toLowerCase();
     if (q !== '') {
-      list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q));
+      // 搜索匹配标题/作者/标签（对齐 Mihon 书架搜索字段扩展）
+      list = list.filter((m: MangaRecord): boolean => m.title.toLowerCase().includes(q) ||
+        m.author.toLowerCase().includes(q) || m.genre.toLowerCase().includes(q));
     }
     return list.filter((m: MangaRecord): boolean => {
       const s: MangaStats | undefined = this.statsMap[`${m.id}`];

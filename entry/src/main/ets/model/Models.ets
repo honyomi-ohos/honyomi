@@ -236,6 +236,9 @@ export class HistoryItem {
   sourceKey: string = '';
   // 是否已在书架：历史页非在库条目显示心形入库按钮
   inLibrary: boolean = false;
+  // 作者/标签（recent 联表查询携带）：历史页搜索匹配扩展字段
+  author: string = '';
+  genre: string = '';
 
   static of(mangaId: number, chapterId: number, mangaTitle: string, coverUrl: string,
     chapterName: string, seenAt: number, lastPageRead: number, sourceKey: string = ''): HistoryItem {

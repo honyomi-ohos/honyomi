@@ -22,6 +22,7 @@ import { AppKeys } from '../common/AppKeys';
 import { Settings } from '../common/Settings';
 import { LibraryAddFlow } from '../common/LibraryAddFlow';
 import { IncognitoSourceBanner } from './components/IncognitoSourceBanner';
+import { SourceFilterSheet } from './components/SourceFilterSheet';
 
 // 布局切换菜单选项（对齐 Mihon BrowseSourceToolbar 显示模式下拉）
 class BrowseDisplayOption {
@@ -60,10 +61,8 @@ export struct BrowseSourcePage {
   // 本地源文件夹模式（对齐 Mihon LocalSource In-folder）：folderPath 为当前相对目录（''=根）
   @State folderMode: boolean = false;
   @State folderPath: string = '';
-  // 插件自定义过滤器（getFilterList 拉取，select/checkbox/tristate/text/group）
+  // 插件自定义过滤器（getFilterList 拉取，select/checkbox/tristate/text/sort/group）
   @State filters: RawFilter[] = [];
-  // 过滤器面板刷新计数：嵌套 state 变更后递增触发 ForEach 重建
-  @State filterRev: number = 0;
   @State showFilterSheet: boolean = false;
   // Index 根节点 Esc 广播：关闭文件夹/过滤弹层（计数器递增触发）
   @StorageLink('sheetEsc') @Watch('onSheetEsc') sheetEsc: number = 0;
@@ -175,81 +174,6 @@ export struct BrowseSourcePage {
     await this.search();
   }
 
-  // select 过滤器：标签 + 下拉框（点击展开选项列表）
-  @Builder
-  filterSelectBuilder(filter: RawFilter) {
-    Column() {
-      Text(filter.name ?? '')
-        .fontSize(14)
-        .fontColor(this.pal.sub)
-        .margin({ top: 12, bottom: 8 })
-      Select(this.selectOptions(filter))
-        .selected(this.selectIndex(filter))
-        .value(this.selectValueText(filter))
-        .width('100%')
-        .height(40)
-        .font({ size: 16 })
-        .fontColor(this.pal.text)
-        .backgroundColor(this.pal.chip)
-        .borderRadius(8)
-        .onSelect((index: number, _text?: string) => {
-          this.setFilterSelect(filter, index);
-        })
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  // checkbox 过滤器：图标 + 名称整行，点击勾选/取消（对齐 Mihon CheckboxItem）
-  @Builder
-  filterCheckboxBuilder(filter: RawFilter) {
-    Row() {
-      AppIcon({
-        name: filter.state === true ? 'check_box' : 'check_box_outline_blank',
-        iconSize: 24,
-        tint: filter.state === true ? this.pal.primary : this.pal.sub,
-      })
-        .margin({ right: 16 })
-      Text(filter.name ?? '')
-        .fontSize(16)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-    }
-    .width('100%')
-    .constraintSize({ minHeight: 48 })
-    .alignItems(VerticalAlign.Center)
-    .onClick(() => {
-      this.toggleFilterCheckbox(filter);
-    })
-  }
-
-  // tri-state 过滤器：图标 + 名称整行，点击循环 忽略→包含→排除（对齐 Mihon TriStateItem）
-  @Builder
-  filterTristateBuilder(filter: RawFilter) {
-    Row() {
-      AppIcon({
-        name: this.filterTriIcon(this.filterNumberState(filter, 0)),
-        iconSize: 24,
-        tint: this.filterNumberState(filter, 0) === 0 ? this.pal.sub : this.pal.primary,
-      })
-        .margin({ right: 16 })
-      Text(filter.name ?? '')
-        .fontSize(16)
-        .fontColor(this.pal.text)
-        .layoutWeight(1)
-        .maxLines(1)
-        .textOverflow({ overflow: TextOverflow.Ellipsis })
-    }
-    .width('100%')
-    .constraintSize({ minHeight: 48 })
-    .alignItems(VerticalAlign.Center)
-    .onClick(() => {
-      this.cycleFilterTristate(filter);
-    })
-  }
-
   // 按标签过滤/搜索（对齐 Mihon BrowseSourceViewModel.searchGenre）：
   // 插件源先在过滤器列表中按名匹配标签（tri-state→INCLUDE / checkbox→勾选 / select→选中同值项），
 
@@ -356,7 +280,21 @@ export struct BrowseSourcePage {
     this.showQuickAddCategoryDialog(record, categories);
   }
 
-  // ---- 过滤器面板 Builder（对齐 Mihon SourceFilterDialog：下拉/整行切换，不用胶囊） ----
+  // ---- 过滤器面板（对齐 Mihon SourceFilterDialog：下拉/整行切换，不用胶囊） ----
+
+  // 插件自定义过滤器半模态：全类型渲染（select/checkbox/tristate/text/sort/group）由共享组件承担
+  @Builder
+  filterSheetBuilder() {
+    SourceFilterSheet({
+      filters: this.filters,
+      onApply: (): void => {
+        this.applyFilters();
+      },
+      onReset: (): void => {
+        this.resetFilterSheet();
+      },
+    })
+  }
 
   toSManga(record: MangaRecord): SManga {
     const m: SManga = {
@@ -370,128 +308,6 @@ export struct BrowseSourcePage {
       contentType: record.contentType,
     };
     return m;
-  }
-
-  // text 过滤器：标签 + 输入框
-  @Builder
-  filterTextBuilder(filter: RawFilter) {
-    Column() {
-      Text(filter.name ?? '')
-        .fontSize(14)
-        .fontColor(this.pal.sub)
-        .margin({ top: 12, bottom: 8 })
-      TextInput({ text: typeof filter.state === 'string' ? filter.state as string : '' })
-        .height(40)
-        .fontSize(16)
-        .backgroundColor(this.pal.chip)
-        .onChange((value: string) => {
-          filter.state = value;
-        })
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  // 单个过滤器分发（未知类型不渲染）
-  @Builder
-  filterLeafBuilder(filter: RawFilter) {
-    Column() {
-      if (filter.type === 'select') {
-        this.filterSelectBuilder(filter)
-      } else if (filter.type === 'checkbox') {
-        this.filterCheckboxBuilder(filter)
-      } else if (filter.type === 'tristate' || filter.type === 'tri-state') {
-        this.filterTristateBuilder(filter)
-      } else if (filter.type === 'text') {
-        this.filterTextBuilder(filter)
-      }
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  // group 过滤器：组名标题 + 子项逐行展示（对齐 Mihon Filter.Group）
-  @Builder
-  filterGroupBuilder(group: RawFilter, idPrefix: string) {
-    Column() {
-      if ((group.name ?? '') !== '') {
-        Text(group.name)
-          .fontSize(14)
-          .fontWeight(FontWeight.Medium)
-          .fontColor(this.pal.sub)
-          .margin({ top: 16, bottom: 8 })
-      }
-      ForEach(group.filters ?? [], (sub: RawFilter, subIndex: number) => {
-        this.filterLeafBuilder(sub)
-      }, (sub: RawFilter, subIndex: number): string => `${idPrefix}-g${subIndex}-${this.filterRev}`)
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  // 过滤器面板（HDS 半模态规范，高度自适应内容）：选项区在上、底部固定操作区（重置 | 过滤）在下，
-  // 单个筛选项时弹层贴内容收起；选项行 48vp 触控高度、16fp 正文、24vp 侧边距，
-  // 列表超出系统限高时在 Scroll 内滚动，底部按钮始终可见
-  @Builder
-  filterSheetBuilder() {
-    Column() {
-      if (this.filters.length === 0) {
-        Text($r('app.string.browse_filter_empty'))
-          .fontSize(14)
-          .fontColor(this.pal.sub)
-          .padding({ top: 32, bottom: 32 })
-      } else {
-        Scroll() {
-          Column() {
-            ForEach(this.filters, (filter: RawFilter, index: number) => {
-              if (filter.type === 'group') {
-                this.filterGroupBuilder(filter, `f${index}`)
-              } else {
-                this.filterLeafBuilder(filter)
-              }
-            }, (filter: RawFilter, index: number): string => `flt-${index}-${this.filterRev}`)
-          }
-          .width('100%')
-          .padding({
-            left: 24,
-            right: 24,
-            top: 4,
-            bottom: 8
-          })
-        }
-        .width('100%')
-        .scrollBar(BarState.Off)
-      }
-
-      Divider()
-        .color(this.pal.divider)
-        .margin({ left: 24, right: 24 })
-
-      // 底部操作区：重置（次要）+ 过滤（主操作）等宽双按钮
-      Row({ space: 12 }) {
-        Button($r('app.string.browse_filter_reset'))
-          .layoutWeight(1)
-          .height(40)
-          .fontSize(16)
-          .backgroundColor(this.pal.chip)
-          .fontColor(this.pal.text)
-          .onClick(() => {
-            this.resetFilterSheet();
-          })
-        Button($r('app.string.action_filter'))
-          .layoutWeight(1)
-          .height(40)
-          .fontSize(16)
-          .backgroundColor(this.pal.primary)
-          .fontColor(this.pal.onPrimary)
-          .onClick(() => {
-            this.applyFilters();
-          })
-      }
-      .width('100%')
-      .padding({ left: 24, right: 24, top: 16, bottom: 24 })
-    }
-    .width('100%')
   }
 
   @Builder
@@ -1294,7 +1110,6 @@ export struct BrowseSourcePage {
     } catch (_e) {
       this.filters = [];
     }
-    this.filterRev++;
     this.showFilterSheet = true;
   }
 
@@ -1329,75 +1144,11 @@ export struct BrowseSourcePage {
     } catch (_e) {
       // 重置失败：保留当前面板内容
     }
-    this.filterRev++;
   }
 
   // 长按卡片快速加入书架（对齐详情页入库逻辑）：
 
-  private setFilterSelect(filter: RawFilter, index: number): void {
-    filter.state = index;
-    this.filterRev++;
-  }
-
-  private toggleFilterCheckbox(filter: RawFilter): void {
-    filter.state = filter.state !== true;
-    this.filterRev++;
-  }
-
-  // tri-state 点击循环：0 忽略 → 1 包含 → 2 排除 → 0（对齐 Mihon TriStateItem）
-  private cycleFilterTristate(filter: RawFilter): void {
-    const cur = this.filterNumberState(filter, 0);
-    filter.state = cur === 0 ? 1 : (cur === 1 ? 2 : 0);
-    this.filterRev++;
-  }
-
-  // tri-state 图标：0 空心 / 1 勾选 / 2 禁用（对齐 Mihon TriState 图标）
-  private filterTriIcon(state: number): string {
-    if (state === 1) {
-      return 'check_box';
-    }
-    if (state === 2) {
-      return 'disabled_by_default';
-    }
-    return 'check_box_outline_blank';
-  }
-
   // 详情页回传的搜索请求（对齐 Mihon BrowseSourceController.search/searchGenre）：
-
-  private filterNumberState(filter: RawFilter, fallback: number): number {
-    return typeof filter.state === 'number' ? filter.state as number : fallback;
-  }
-
-  // select 过滤器选中下标（越界钳制到有效范围）
-  private selectIndex(filter: RawFilter): number {
-    const len = (filter.values ?? []).length;
-    if (len === 0) {
-      return 0;
-    }
-    const idx = this.filterNumberState(filter, 0);
-    return Math.min(Math.max(idx, 0), len - 1);
-  }
-
-  // select 过滤器下拉选项（对齐 Mihon SelectItem 的 ExposedDropdownMenu）
-  private selectOptions(filter: RawFilter): SelectOption[] {
-    const options: SelectOption[] = [];
-    const values = filter.values ?? [];
-    for (let i = 0; i < values.length; i++) {
-      const opt: SelectOption = { value: String(values[i]) };
-      options.push(opt);
-    }
-    return options;
-  }
-
-  // select 过滤器当前选中值文本
-  private selectValueText(filter: RawFilter): string {
-    const values = filter.values ?? [];
-    const idx = this.selectIndex(filter);
-    if (idx < values.length) {
-      return String(values[idx]);
-    }
-    return '';
-  }
 
   // 快速入库分类多选弹窗（默认分类为「每次都询问」时）
   private showQuickAddCategoryDialog(record: MangaRecord, categories: CategoryRecord[]): void {

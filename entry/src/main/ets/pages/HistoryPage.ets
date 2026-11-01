@@ -411,14 +411,15 @@ export struct HistoryPage {
     this.clearHistory();
   }
 
-  // 按标题/章节名过滤（对齐 Mihon HistoryViewModel searchQuery 过滤）
+  // 按标题/章节名/作者/标签过滤（对齐 Mihon HistoryViewModel searchQuery 过滤 + 扩展字段）
   private visibleItems(): HistoryItem[] {
     const q: string = this.searchQuery.trim().toLowerCase();
     if (q === '') {
       return this.items;
     }
     return this.items.filter((it: HistoryItem): boolean =>
-    it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0);
+    it.mangaTitle.toLowerCase().indexOf(q) >= 0 || it.chapterName.toLowerCase().indexOf(q) >= 0 ||
+    it.author.toLowerCase().indexOf(q) >= 0 || it.genre.toLowerCase().indexOf(q) >= 0);
   }
 
   // 移除单条历史记录并刷新
