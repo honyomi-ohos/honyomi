@@ -8,13 +8,8 @@ import { Http } from '../net/Http';
 import { SourceRegistry } from '../source/Source';
 import { PluginService } from '../data/PluginService';
 import { AvifConverter } from './AvifConverter';
-
-// 磁盘缓存文件元信息（超预算时按 mtime 淘汰最旧文件）
-interface CacheFileMeta {
-  name: string;
-  mtime: number;
-  size: number;
-}
+import { AtomicFileWriter } from './AtomicFileWriter';
+import { LruBudget } from './LruBudget';
 
 // 进程内解析结果（同一 URL 全部界面共享同一结果，杜绝状态分叉）
 interface ResolvedEntry {
@@ -34,10 +29,8 @@ export class ImageCache {
   private static resolved: Map<string, ResolvedEntry> = new Map();
   private static readonly FAIL_TTL_MS: number = 60000;
   private static readonly MAX_MEMO: number = 512;
-  private static seq: number = 0;
-  // 目录累计字节数（init 时延后一拍统计一次，写入增量维护）
-  private static totalBytes: number = 0;
-  private static evicting: boolean = false;
+  // 字节预算引擎（init 时创建）：记账 + 超预算按 mtime LRU 淘汰
+  private static budget: LruBudget | null = null;
 
   static init(context: common.Context): void {
     ImageCache.dir = `${context.cacheDir}/image_file_cache`;
@@ -48,31 +41,14 @@ export class ImageCache {
     } catch (e) {
       throw new Error(`init cache dir failed: ${e}`);
     }
+    ImageCache.budget = new LruBudget(ImageCache.dir, ImageCache.MAX_DISK_BYTES);
     // 启动路径不做同步全量统计：延后一拍在后台累计字节数，并清扫进程被杀残留的临时文件
     setTimeout((): void => {
-      ImageCache.sweepTmp();
-      ImageCache.rescanBytes();
-    }, 0);
-  }
-
-  // 清理 1 小时前的 .tmp 残留（进程被杀时未及 rename 的下载半成品）
-  private static sweepTmp(): void {
-    try {
-      const names = fs.listFileSync(ImageCache.dir);
-      const now = Date.now();
-      for (let i = 0; i < names.length; i++) {
-        const name = names[i];
-        if (name.indexOf('.tmp') !== name.length - '.tmp'.length) {
-          continue;
-        }
-        const stat = fs.statSync(`${ImageCache.dir}/${name}`);
-        const mtimeMs = stat.mtime * 1000;
-        if (now - mtimeMs > 3600000) {
-          fs.unlinkSync(`${ImageCache.dir}/${name}`);
-        }
+      AtomicFileWriter.sweepTmp(ImageCache.dir);
+      if (ImageCache.budget !== null) {
+        ImageCache.budget.rescan();
       }
-    } catch (_e) {
-    }
+    }, 0);
   }
 
   // 解析展示地址：http(s) 一律经宿主 http 管线下载落盘（AVIF→JPEG 转码 + LRU 淘汰）
@@ -175,6 +151,23 @@ export class ImageCache {
     });
   }
 
+  // 仅查磁盘缓存（不触发下载）：命中返回裸绝对路径，未命中返回 ''。
+  // 供下载流程复用在线阅读时已缓存到的页字节，未命中由调用方走自身网络路径
+  // （缓存中的 AVIF 已转码 JPEG，复制产物离线显示不受系统 AVIF 解码器缺失影响）
+  static async peekCached(url: string): Promise<string> {
+    if (ImageCache.dir === '') {
+      return '';
+    }
+    const path = await ImageCache.cachedPath(url);
+    try {
+      if (fs.accessSync(path)) {
+        return path;
+      }
+    } catch (_e) {
+    }
+    return '';
+  }
+
   // 限时等待插件加载完成（加载挂死时 8s 超时回落直连）；
 
   // 命中缓存直接返回；未命中无论源是否声明请求头都下载落盘；失败返回 ''
@@ -250,7 +243,9 @@ export class ImageCache {
   // 枚举仍同步（仅读目录项+元信息），真正的文件删除走异步 unlink，不再阻塞启动路径
   static clearAll(): number {
     const total: number = ImageCache.size();
-    ImageCache.totalBytes = 0;
+    if (ImageCache.budget !== null) {
+      ImageCache.budget.reset();
+    }
     try {
       if (ImageCache.dir !== '' && fs.accessSync(ImageCache.dir)) {
         const names = fs.listFileSync(ImageCache.dir);
@@ -265,27 +260,7 @@ export class ImageCache {
     return total;
   }
 
-  // 全量统计目录字节数（作为超预算判定的基准）
-  private static rescanBytes(): void {
-    try {
-      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-        return;
-      }
-      let total: number = 0;
-      const names = fs.listFileSync(ImageCache.dir);
-      for (let i = 0; i < names.length; i++) {
-        try {
-          total += fs.statSync(`${ImageCache.dir}/${names[i]}`).size;
-        } catch (_e) {
-        }
-      }
-      ImageCache.totalBytes = total;
-    } catch (e) {
-      throw new Error(`rescan cache bytes failed: ${e}`);
-    }
-  }
-
-  // 清空缓存目录，返回清除的字节数
+  // ---------------- 内部实现 ----------------
 
   // 插件就绪后清掉超时定时器，不留下空转计时器
   private static waitPluginsLoaded(): Promise<void> {
@@ -311,9 +286,7 @@ export class ImageCache {
     });
   }
 
-  // ---------------- 内部实现 ----------------
-
-  // 防盗链：源请求头未声明 Referer 时回退为章节页地址
+  // 防盗链：源请求头未声明 Referer 时回填为章节页地址
   private static withReferer(headers: Record<string, string>, pageUrl?: string): Record<string, string> {
     if (pageUrl === undefined || pageUrl === '') {
       return headers;
@@ -343,87 +316,14 @@ export class ImageCache {
         // 转换失败：保留原始 AVIF 字节（支持 AVIF 的设备仍可显示）
       }
     }
-    // 原子落盘：先写临时文件再改名，避免应用进程与表单进程并发写坏同一封面；
-    // 临时文件名带时间戳+序号，多进程/多任务并发写同一封面也不会互相覆盖
-    const tmp = `${path}.${Date.now()}.${ImageCache.seq++}.tmp`;
-    let existed = false;
-    try {
-      const file = fs.openSync(tmp, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE | fs.OpenMode.TRUNC);
-      try {
-        fs.writeSync(file.fd, buffer);
-      } finally {
-        fs.closeSync(file);
-      }
-      if (!fs.accessSync(path)) {
-        fs.renameSync(tmp, path);
-      } else {
-        fs.unlinkSync(tmp);
-        existed = true;
-      }
-    } catch (e) {
-      // 失败/异常路径清理 .tmp 残留
-      try {
-        if (fs.accessSync(tmp)) {
-          fs.unlinkSync(tmp);
-        }
-      } catch (_e) {
-      }
-      throw new Error((e as Error).message);
-    }
+    // 原子落盘（时间戳+序号 .tmp → rename）：避免应用进程与表单进程并发写坏同一封面
+    const existed = AtomicFileWriter.write(path, buffer);
     if (!existed) {
-      ImageCache.noteWrite(buffer.byteLength);
+      if (ImageCache.budget !== null) {
+        ImageCache.budget.noteWrite(buffer.byteLength);
+      }
     }
     return `file://${path}`;
-  }
-
-  // 写入成功后增量累计字节，超预算时延后一拍触发 LRU 淘汰
-  private static noteWrite(bytes: number): void {
-    ImageCache.totalBytes += bytes;
-    if (ImageCache.totalBytes > ImageCache.MAX_DISK_BYTES && !ImageCache.evicting) {
-      ImageCache.evicting = true;
-      setTimeout((): void => {
-        try {
-          ImageCache.evictOldest();
-        } finally {
-          ImageCache.evicting = false;
-        }
-      }, 0);
-    }
-  }
-
-  // 超预算时按 mtime 淘汰最旧文件，直到回到预算内
-  private static evictOldest(): void {
-    try {
-      if (ImageCache.dir === '' || !fs.accessSync(ImageCache.dir)) {
-        return;
-      }
-      const names = fs.listFileSync(ImageCache.dir);
-      const metas: CacheFileMeta[] = [];
-      for (let i = 0; i < names.length; i++) {
-        try {
-          const stat = fs.statSync(`${ImageCache.dir}/${names[i]}`);
-          const meta: CacheFileMeta = { name: names[i], mtime: stat.mtime, size: stat.size };
-          metas.push(meta);
-        } catch (_e) {
-        }
-      }
-      metas.sort((a: CacheFileMeta, b: CacheFileMeta): number => a.mtime - b.mtime);
-      for (let i = 0; i < metas.length; i++) {
-        if (ImageCache.totalBytes <= ImageCache.MAX_DISK_BYTES) {
-          break;
-        }
-        try {
-          fs.unlinkSync(`${ImageCache.dir}/${metas[i].name}`);
-          ImageCache.totalBytes -= metas[i].size;
-          if (ImageCache.totalBytes < 0) {
-            ImageCache.totalBytes = 0;
-          }
-        } catch (_e) {
-        }
-      }
-    } catch (e) {
-      throw new Error(`evict cache failed: ${e}`);
-    }
   }
 
   private static async cachedPath(url: string): Promise<string> {

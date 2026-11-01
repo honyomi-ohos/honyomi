@@ -23,11 +23,12 @@ import { ChapterRepo, MangaRepo } from './Repos';
 import { Settings } from '../common/Settings';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 import { HlsDownloader } from '../common/HlsDownloader';
-import { ArchiveReader } from '../common/ArchiveReader';
+import { ChapterPageStore } from '../common/ChapterPageStore';
 import { BtModule } from './BtModule';
 import { BtFlow } from './BtFlow';
 import { BtComponentInstaller } from '../common/BtComponentInstaller';
 import { AppKeys } from '../common/AppKeys';
+import { ImageCache } from '../common/ImageCache';
 
 // 拆分超长条漫图片的高度阈值（对齐 Mihon optimalImageHeight ≈ 屏幕高度*2）
 const TALL_IMAGE_LIMIT = 8000;
@@ -101,15 +102,10 @@ export class DownloadService {
 
   static init(context: common.UIAbilityContext): void {
     DownloadService.context = context;
-    DownloadService.rootDir = `${context.filesDir}/downloads`;
+    // 页文件存储（目录布局/原子读写/CBZ 解压）下沉到 ChapterPageStore（L0 持久层），本类只做下载编排
+    ChapterPageStore.init(context);
+    DownloadService.rootDir = ChapterPageStore.rootDir;
     DownloadService.queueFile = `${context.filesDir}/download_queue.json`;
-    try {
-      if (!fileIo.accessSync(DownloadService.rootDir)) {
-        fileIo.mkdirSync(DownloadService.rootDir, true);
-      }
-    } catch (e) {
-      throw new Error(`init download dir failed: ${e}`);
-    }
     if (!DownloadService.bgCancelBound) {
       DownloadService.bgCancelBound = true;
       try {
@@ -527,10 +523,6 @@ export class DownloadService {
 
   // 网络环境/仅 Wi-Fi 开关变化后的门禁刷新：
 
-  static chapterDir(mangaId: number, chapterId: number): string {
-    return `${DownloadService.rootDir}/${mangaId}/${chapterId}`;
-  }
-
   // 已下载漫画的 id 列表（downloads/{mangaId}/ 目录存在即算）
   static downloadedMangaIds(): number[] {
     const ids: number[] = [];
@@ -619,7 +611,7 @@ export class DownloadService {
   }
 
   static localText(mangaId: number, chapterId: number): string {
-    const path = `${DownloadService.chapterDir(mangaId, chapterId)}/chapter.txt`;
+    const path = `${ChapterPageStore.chapterDir(mangaId, chapterId)}/chapter.txt`;
     try {
       if (DownloadService.rootDir !== '' && fileIo.accessSync(path)) {
         return path;
@@ -631,7 +623,7 @@ export class DownloadService {
   }
 
   static localVideo(mangaId: number, chapterId: number): string {
-    const dir = DownloadService.chapterDir(mangaId, chapterId);
+    const dir = ChapterPageStore.chapterDir(mangaId, chapterId);
     // 直链下载产物为 video.mp4，m3u8(MPEG-TS) 合并产物为 video.ts
     const names: string[] = ['video.mp4', 'video.ts'];
     for (const name of names) {
@@ -648,42 +640,6 @@ export class DownloadService {
     return DownloadService.scanVideoFile(dir);
   }
 
-  static localPages(mangaId: number, chapterId: number): string[] {
-    const dir = DownloadService.chapterDir(mangaId, chapterId);
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return [];
-      }
-      const files = fileIo.listFileSync(dir);
-      const pages = files.filter((f: string) => f !== 'done.mark' && f !== 'chapter.txt' &&
-        f !== 'video.mp4' && f !== 'video.ts' && f !== 'chapter.cbz' && f !== 'extract.ok').sort();
-      const result: string[] = [];
-      for (const f of pages) {
-        result.push(`${dir}/${f}`);
-      }
-      return result;
-    } catch (e) {
-      throw new Error(`list local pages failed: ${e}`);
-    }
-  }
-
-  // 本地页面（异步版）：CBZ 章节首次阅读时解压到缓存目录后返回图片路径
-  static async localPagesAsync(mangaId: number, chapterId: number): Promise<string[]> {
-    const dir = DownloadService.chapterDir(mangaId, chapterId);
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return [];
-      }
-      const cbz = `${dir}/chapter.cbz`;
-      if (fileIo.accessSync(cbz)) {
-        return await DownloadService.extractCbzPages(cbz, mangaId, chapterId);
-      }
-    } catch (e) {
-      throw new Error(`check local pages failed: ${e}`);
-    }
-    return DownloadService.localPages(mangaId, chapterId);
-  }
-
   // 删除章节本地文件：先取消并等待活动下载任务退出，避免删除与写入并发产生半截文件
   static async deleteChapter(mangaId: number, chapterId: number): Promise<void> {
     const active = DownloadService.queue.find((t: DownloadTask) => t.chapterId === chapterId && t.state === 1);
@@ -698,15 +654,15 @@ export class DownloadService {
         }, 50);
       });
     }
-    const dir = DownloadService.chapterDir(mangaId, chapterId);
+    const dir = ChapterPageStore.chapterDir(mangaId, chapterId);
     try {
       if (fileIo.accessSync(dir)) {
-        DownloadService.rmdir(dir);
+        ChapterPageStore.rmdir(dir);
       }
     } catch (e) {
       throw new Error(`delete chapter files failed: ${e}`);
     }
-    DownloadService.clearExtractCache(mangaId, chapterId);
+    ChapterPageStore.clearExtractCache(mangaId, chapterId);
     if (DownloadService.doneIds !== undefined) {
       DownloadService.doneIds.delete(chapterId);
     }
@@ -748,7 +704,7 @@ export class DownloadService {
     try {
       const mangaPath = `${DownloadService.rootDir}/${mangaId}`;
       if (DownloadService.rootDir !== '' && fileIo.accessSync(mangaPath)) {
-        DownloadService.rmdir(mangaPath);
+        ChapterPageStore.rmdir(mangaPath);
       }
     } catch (_e) {
     }
@@ -1009,13 +965,13 @@ export class DownloadService {
       task.total = pages.length;
       DownloadService.notify();
       const imageHeaders = source.imageRequestHeaders();
-      const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+      const dir = ChapterPageStore.chapterDir(task.mangaId, task.chapterId);
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
       }
       // 残留 .tmp 是上次进程被杀/取消时的半截文件；正式页文件经原子写必然完整，
       // 已存在的页直接跳过实现断点续传
-      DownloadService.cleanTmpFiles(dir);
+      ChapterPageStore.cleanTmpFiles(dir);
       // 页级并发：单章内 pageLimit 个 worker 同时抓页
       const cursor = new PageCursor();
       const workerCount = Math.min(Settings.getDownloadParallelPageLimit(), pages.length);
@@ -1025,7 +981,7 @@ export class DownloadService {
       }
       await Promise.all(workers);
       // 页列表比上次短时清理超出的多余编号页，避免旧图混入本地阅读
-      DownloadService.removeStalePages(dir, pages.length);
+      ChapterPageStore.removeStalePages(dir, pages.length);
       // 打包 CBZ（设置开启时；失败自动回退文件夹形式）
       await DownloadService.buildCbz(task, dir);
       const markFd = fileIo.openSync(`${dir}/done.mark`,
@@ -1078,7 +1034,7 @@ export class DownloadService {
         throw new Error('network_blocked');
       }
       const p = pages[i];
-      const fileName = DownloadService.pad(p.index);
+      const fileName = ChapterPageStore.pad(p.index);
       const filePath = `${dir}/${fileName}.jpg`;
       let exists: boolean;
       try {
@@ -1088,14 +1044,28 @@ const err = e as Error;
         throw err;
       }
       if (!exists) {
-        const buffer = await Http.getBuffer(p.url, imageHeaders);
-        if (flags.cancelled) {
-          throw new Error('download_cancelled');
+        // 浏览缓存复用：在线阅读时经 ImageCache 管线下载过的页直接本地复制，
+        // 省一次网络请求（缓存中的 AVIF 已转码 JPEG，产物离线可正常显示）；
+        // 缓存被 LRU 淘汰/复制失败时回退原有网络下载路径
+        let placed = false;
+        const cached = await ImageCache.peekCached(p.url);
+        if (cached !== '') {
+          try {
+            ChapterPageStore.copyCachedPage(cached, filePath);
+            placed = true;
+          } catch (_e) {
+          }
         }
-        if (flags.blocked) {
-          throw new Error('network_blocked');
+        if (!placed) {
+          const buffer = await Http.getBuffer(p.url, imageHeaders);
+          if (flags.cancelled) {
+            throw new Error('download_cancelled');
+          }
+          if (flags.blocked) {
+            throw new Error('network_blocked');
+          }
+          ChapterPageStore.writePageFile(filePath, buffer);
         }
-        DownloadService.writePageFile(filePath, buffer);
         await DownloadService.splitTallIfNeeded(filePath);
       }
       task.progress += 1;
@@ -1133,8 +1103,8 @@ const err = e as Error;
         const pm: image.PixelMap = await src.createPixelMap({ desiredRegion: region });
         try {
           const buf: ArrayBuffer = await packer.packToData(pm, { format: 'image/jpeg', quality: 90 });
-          const slicePath = `${base}__${DownloadService.pad(i + 1)}.jpg`;
-          DownloadService.writePageFile(slicePath, buf);
+          const slicePath = `${base}__${ChapterPageStore.pad(i + 1)}.jpg`;
+          ChapterPageStore.writePageFile(slicePath, buf);
           slices.push(slicePath);
         } finally {
           // packing/写盘抛错时也要释放当前切片，避免 PixelMap 原生内存泄漏
@@ -1159,8 +1129,6 @@ const err = e as Error;
       }
     }
   }
-
-  // CBZ 读取：解压到 cacheDir/cbz_extract/{mangaId}/{chapterId}，extract.ok 标记完整性；
 
   // 打包失败保留文件夹形式，阅读路径不受影响
   private static async buildCbz(task: DownloadTask, dir: string): Promise<void> {
@@ -1216,91 +1184,6 @@ const err = e as Error;
     }
   }
 
-  // 缓存被系统清理或上次解压中断时自动重解
-  private static async extractCbzPages(cbzPath: string, mangaId: number, chapterId: number): Promise<string[]> {
-    const ctx = DownloadService.context;
-    if (ctx === undefined) {
-      throw new Error('download_not_ready');
-    }
-    const extractDir = `${ctx.cacheDir}/cbz_extract/${mangaId}/${chapterId}`;
-    const markPath = `${extractDir}/extract.ok`;
-    try {
-      if (!fileIo.accessSync(markPath)) {
-        if (fileIo.accessSync(extractDir)) {
-          DownloadService.rmdir(extractDir);
-        }
-        fileIo.mkdirSync(extractDir, true);
-        // 统一走归档分派层（chapter.cbz 为 zip 格式，zlib 解压）
-        await ArchiveReader.openArchive(cbzPath, extractDir);
-        const fd = fileIo.openSync(markPath,
-          fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE).fd;
-        fileIo.closeSync(fd);
-      }
-    } catch (e) {
-      try {
-        if (fileIo.accessSync(extractDir)) {
-          DownloadService.rmdir(extractDir);
-        }
-      } catch (_e) {
-      }
-      throw new Error(`extract cbz failed: ${e}`);
-    }
-    return DownloadService.listImagesRecursive(extractDir);
-  }
-
-  // 递归列出目录下全部图片文件（解压产物可能是嵌套目录结构，按文件名排序保证页序）
-  private static listImagesRecursive(dir: string): string[] {
-    const out: string[] = [];
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return out;
-      }
-      const files = fileIo.listFileSync(dir).sort();
-      for (const f of files) {
-        const p = `${dir}/${f}`;
-        let isDir = false;
-        try {
-          isDir = fileIo.statSync(p).isDirectory();
-        } catch (_e) {
-          continue;
-        }
-        if (isDir) {
-          const nested = DownloadService.listImagesRecursive(p);
-          for (const n of nested) {
-            out.push(n);
-          }
-        } else if (DownloadService.isImageFile(f)) {
-          out.push(p);
-        }
-      }
-    } catch (e) {
-      throw new Error(`list cbz images failed: ${e}`);
-    }
-    return out;
-  }
-
-  private static isImageFile(name: string): boolean {
-    const lower = name.toLowerCase();
-    return lower.endsWith('.jpg') || lower.endsWith('.jpeg') || lower.endsWith('.png') ||
-      lower.endsWith('.webp') || lower.endsWith('.gif');
-  }
-
-  // 删除章节时同步清理 CBZ 解压缓存
-  private static clearExtractCache(mangaId: number, chapterId: number): void {
-    const ctx = DownloadService.context;
-    if (ctx === undefined) {
-      return;
-    }
-    const extractDir = `${ctx.cacheDir}/cbz_extract/${mangaId}/${chapterId}`;
-    try {
-      if (fileIo.accessSync(extractDir)) {
-        DownloadService.rmdir(extractDir);
-      }
-    } catch (e) {
-      hilog.warn(0x0001, 'Download', 'clear extract cache failed: %{public}s', `${e}`);
-    }
-  }
-
   private static async downloadNovel(task: DownloadTask, source: Source, flags: DlFlags): Promise<void> {
     const text = await source.getChapterText(task.chapterUrl);
     if (flags.cancelled) {
@@ -1312,7 +1195,7 @@ const err = e as Error;
     if (text === '') {
       throw new Error('no_content');
     }
-    const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+    const dir = ChapterPageStore.chapterDir(task.mangaId, task.chapterId);
     try {
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
@@ -1358,7 +1241,7 @@ const err = e as Error;
         break;
       }
     }
-    const dir = DownloadService.chapterDir(task.mangaId, task.chapterId);
+    const dir = ChapterPageStore.chapterDir(task.mangaId, task.chapterId);
     try {
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
@@ -1634,85 +1517,8 @@ const err = e as Error;
     if (DownloadService.rootDir === '') {
       return;
     }
-    const dir = DownloadService.chapterDir(mangaId, chapterId);
-    DownloadService.cleanTmpFiles(dir);
-  }
-
-  // 原子写单页：先写 .tmp 再改名落位，进程任意时刻被杀都不会留下半截正式页文件，
-  // 从而重启后可按"文件存在即完整"安全断点续传
-  private static writePageFile(path: string, buffer: ArrayBuffer): void {
-    const tmp = `${path}.tmp`;
-    let fd: number = -1;
-    try {
-      fd = fileIo.openSync(tmp,
-        fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE | fileIo.OpenMode.TRUNC).fd;
-      fileIo.writeSync(fd, buffer);
-    } catch (e) {
-      throw new Error(`write_page_failed: ${e}`);
-    } finally {
-      if (fd >= 0) {
-        try {
-          fileIo.closeSync(fd);
-        } catch (e) {
-        }
-      }
-    }
-    try {
-      if (fileIo.accessSync(path)) {
-        fileIo.unlinkSync(path);
-      }
-      fileIo.renameSync(tmp, path);
-    } catch (e) {
-      throw new Error(`write_page_failed: ${e}`);
-    }
-  }
-
-  // 清理目录内残留的半截 .tmp 文件
-  private static cleanTmpFiles(dir: string): void {
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return;
-      }
-      const files = fileIo.listFileSync(dir);
-      for (const f of files) {
-        if (f.endsWith('.tmp')) {
-          fileIo.unlinkSync(`${dir}/${f}`);
-        }
-      }
-    } catch (e) {
-    }
-  }
-
-  // 删除编号超出当前页数的旧页文件（页列表缩短场景，避免旧图混入）
-  private static removeStalePages(dir: string, pageCount: number): void {
-    try {
-      if (!fileIo.accessSync(dir)) {
-        return;
-      }
-      const files = fileIo.listFileSync(dir);
-      for (const f of files) {
-        if (!f.endsWith('.jpg')) {
-          continue;
-        }
-        const idx = parseInt(f.substring(0, f.length - 4), 10);
-        if (!Number.isNaN(idx) && idx >= pageCount) {
-          fileIo.unlinkSync(`${dir}/${f}`);
-        }
-      }
-    } catch (e) {
-    }
-  }
-
-  private static pad(index: number): string {
-    const s = `${index}`;
-    if (s.length >= 3) {
-      return s;
-    }
-    let out = s;
-    while (out.length < 3) {
-      out = `0${out}`;
-    }
-    return out;
+    const dir = ChapterPageStore.chapterDir(mangaId, chapterId);
+    ChapterPageStore.cleanTmpFiles(dir);
   }
 
   // ---------------- DATA_TRANSFER 长时任务（真机锁屏/后台续传） ----------------
@@ -2007,26 +1813,6 @@ const err = e as Error;
       throw new Error(`rebuild done index failed: ${e}`);
     }
     DownloadService.doneIds = set;
-  }
-
-  private static rmdir(path: string): void {
-    try {
-      if (!fileIo.accessSync(path)) {
-        return;
-      }
-      const stat = fileIo.statSync(path);
-      if (stat.isDirectory()) {
-        const children = fileIo.listFileSync(path);
-        for (const c of children) {
-          DownloadService.rmdir(`${path}/${c}`);
-        }
-        fileIo.rmdirSync(path);
-      } else {
-        fileIo.unlinkSync(path);
-      }
-    } catch (e) {
-      throw new Error(`rmdir ${path} failed: ${e}`);
-    }
   }
 
   private static async chapterNames(mangaId: number, chapterId: number): Promise<string[]> {

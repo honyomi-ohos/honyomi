@@ -172,10 +172,16 @@ export struct CredentialsDialog {
 }
 
 // 双/三/四输入弹窗（Bangumi 镜像：API / 图片 / next / 主站地址一次编辑，留空恢复默认）
+// 每个输入框可配独立标签（firstLabel 等，空串不渲染），便于区分各字段用途
 @CustomDialog
 export struct DualInputDialog {
   controller?: CustomDialogController;
   title: Resource | string = '';
+  // 各输入框上方的独立标签（可选）：空串不渲染
+  firstLabel: Resource | string = '';
+  secondLabel: Resource | string = '';
+  thirdLabel: Resource | string = '';
+  fourthLabel: Resource | string = '';
   firstPlaceholder: Resource | string = '';
   secondPlaceholder: Resource | string = '';
   // 第三个输入（可选）：留空串不渲染该输入框
@@ -204,63 +210,59 @@ export struct DualInputDialog {
     this.fourth = this.initialFourth;
   }
 
+  // 输入字段标签统一样式：紧贴输入框上方的小字说明
+  @Builder
+  fieldLabel(label: Resource | string) {
+    if (label !== '') {
+      Text(label)
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+    }
+  }
+
   build() {
     Column({ space: 16 }) {
       Text(this.title)
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor(this.pal.text)
-      TextInput({
-        placeholder: this.firstPlaceholder,
-        text: this.first,
-      })
-        .defaultFocus(true)
-        .enterKeyType(EnterKeyType.Next)
-        .onChange((value: string) => {
-          this.first = value;
-        })
-        .onSubmit(() => {
-          // 首个输入框回车跳第二个（手动迁移焦点，失败时仍可 Tab 切换）
-          try {
-            this.getUIContext().getFocusController().requestFocus('dualSecondKey');
-          } catch (e) {
-          }
-        })
-      TextInput({
-        placeholder: this.secondPlaceholder,
-        text: this.second,
-      })
-        .id('dualSecondKey')
-        .enterKeyType(this.thirdPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
-        .onChange((value: string) => {
-          this.second = value;
-        })
-        .onSubmit(() => {
-          if (this.thirdPlaceholder !== '') {
-            // 第二个输入框回车跳第三个
-            try {
-              this.getUIContext().getFocusController().requestFocus('dualThirdKey');
-            } catch (e) {
-            }
-          } else {
-            this.confirm();
-          }
-        })
-      if (this.thirdPlaceholder !== '') {
+      Column({ space: 4 }) {
+        this.fieldLabel(this.firstLabel)
         TextInput({
-          placeholder: this.thirdPlaceholder,
-          text: this.third,
+          placeholder: this.firstPlaceholder,
+          text: this.first,
         })
-          .id('dualThirdKey')
-          .enterKeyType(this.fourthPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
+          .defaultFocus(true)
+          .enterKeyType(EnterKeyType.Next)
           .onChange((value: string) => {
-            this.third = value;
+            this.first = value;
           })
           .onSubmit(() => {
-            if (this.fourthPlaceholder !== '') {
-              // 第三个输入框回车跳第四个
+            // 首个输入框回车跳第二个（手动迁移焦点，失败时仍可 Tab 切换）
+            try {
+              this.getUIContext().getFocusController().requestFocus('dualSecondKey');
+            } catch (e) {
+            }
+          })
+      }
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+      Column({ space: 4 }) {
+        this.fieldLabel(this.secondLabel)
+        TextInput({
+          placeholder: this.secondPlaceholder,
+          text: this.second,
+        })
+          .id('dualSecondKey')
+          .enterKeyType(this.thirdPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
+          .onChange((value: string) => {
+            this.second = value;
+          })
+          .onSubmit(() => {
+            if (this.thirdPlaceholder !== '') {
+              // 第二个输入框回车跳第三个
               try {
-                this.getUIContext().getFocusController().requestFocus('dualFourthKey');
+                this.getUIContext().getFocusController().requestFocus('dualThirdKey');
               } catch (e) {
               }
             } else {
@@ -268,19 +270,53 @@ export struct DualInputDialog {
             }
           })
       }
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+      if (this.thirdPlaceholder !== '') {
+        Column({ space: 4 }) {
+          this.fieldLabel(this.thirdLabel)
+          TextInput({
+            placeholder: this.thirdPlaceholder,
+            text: this.third,
+          })
+            .id('dualThirdKey')
+            .enterKeyType(this.fourthPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
+            .onChange((value: string) => {
+              this.third = value;
+            })
+            .onSubmit(() => {
+              if (this.fourthPlaceholder !== '') {
+                // 第三个输入框回车跳第四个
+                try {
+                  this.getUIContext().getFocusController().requestFocus('dualFourthKey');
+                } catch (e) {
+                }
+              } else {
+                this.confirm();
+              }
+            })
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+      }
       if (this.fourthPlaceholder !== '') {
-        TextInput({
-          placeholder: this.fourthPlaceholder,
-          text: this.fourth,
-        })
-          .id('dualFourthKey')
-          .enterKeyType(EnterKeyType.Done)
-          .onChange((value: string) => {
-            this.fourth = value;
+        Column({ space: 4 }) {
+          this.fieldLabel(this.fourthLabel)
+          TextInput({
+            placeholder: this.fourthPlaceholder,
+            text: this.fourth,
           })
-          .onSubmit(() => {
-            this.confirm();
-          })
+            .id('dualFourthKey')
+            .enterKeyType(EnterKeyType.Done)
+            .onChange((value: string) => {
+              this.fourth = value;
+            })
+            .onSubmit(() => {
+              this.confirm();
+            })
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
       }
       Row({ space: 12 }) {
         Button($r('app.string.common_cancel'))

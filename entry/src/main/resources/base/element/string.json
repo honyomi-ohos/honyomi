@@ -5259,6 +5259,26 @@
     {
       "name": "pref_bangumi_web_mirror_hint",
       "value": "Main site mirror (OAuth/subject), https://your-proxy.example.com, empty = default bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_label",
+      "value": "API mirror"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_label",
+      "value": "Image mirror"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_label",
+      "value": "Next mirror (comments)"
+    },
+    {
+      "name": "pref_bangumi_web_mirror_label",
+      "value": "Website mirror"
+    },
+    {
+      "name": "data_clear_emoji_cache",
+      "value": "Clear Bangumi emoji cache"
     }
   ]
 }

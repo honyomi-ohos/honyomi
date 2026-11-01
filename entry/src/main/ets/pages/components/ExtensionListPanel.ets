@@ -1,7 +1,7 @@
 import { picker } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { SheetPreset } from './SheetPreset';
-import { InstalledPlugin, InstallOutcome, PluginService, RepoEntry } from '../../data/PluginService';
+import { InstalledPlugin, InstallOutcome, PluginService, RepoEntry, SourceSpec } from '../../data/PluginService';
 import { ContentType } from '../../model/Models';
 
 import { ThemePalette } from '../../common/Theme';
@@ -228,6 +228,8 @@ export struct ExtensionListPanel {
   @StorageProp('windowW') windowW: number = 0;
   // 仓库 key → entry 映射（更新检查/单项更新用），随 recomputeLists 重建
   private repoByKey: Map<string, RepoEntry> = new Map();
+  // 搜索子查询分词缓存（recomputeLists 时刷新）：逗号分词，任一命中即通过（OR 语义）
+  private queryTokens: string[] = [];
   // 懒加载行数据源：recomputeLists 结果摊平后整体替换
   private rowSource: ExtRowSource = new ExtRowSource();
   // 仓库请求并发防抖标志（与下拉 spinner 状态分离）
@@ -757,12 +759,57 @@ export struct ExtensionListPanel {
 
   // 分组重算（对齐 Mihon ExtensionsViewModel.items）：
 
-  private matchesQuery(name: string, key: string): boolean {
-    const q = this.searchQuery.trim().toLowerCase();
-    if (q === '') {
+  // 搜索词 → 子查询分词（对齐 Mihon ExtensionsViewModel.searchQueryPredicate）：
+  // 逗号分隔多关键词、忽略大小写、OR 语义；空查询分词为空数组（不筛选，全部通过）
+  private refreshQueryTokens(): void {
+    const tokens: string[] = [];
+    for (const part of this.searchQuery.split(',')) {
+      const token = part.trim().toLowerCase();
+      if (token !== '') {
+        tokens.push(token);
+      }
+    }
+    this.queryTokens = tokens;
+  }
+
+  // 字段子串命中（忽略大小写）
+  private fieldHit(token: string, field: string): boolean {
+    return field.toLowerCase().indexOf(token) >= 0;
+  }
+
+  // 已安装插件匹配：插件名 / 包 key / 站点 baseUrl + 子源名 / 子源 baseUrl / 子源 key / sourceId，
+  // 任一子查询命中任一字段即通过
+  private matchesInstalled(item: InstalledPlugin): boolean {
+    if (this.queryTokens.length === 0) {
       return true;
     }
-    return name.toLowerCase().indexOf(q) >= 0 || key.toLowerCase().indexOf(q) >= 0;
+    for (const token of this.queryTokens) {
+      if (this.fieldHit(token, item.manifest.name) || this.fieldHit(token, item.manifest.key) ||
+        this.fieldHit(token, item.manifest.baseUrl)) {
+        return true;
+      }
+      for (const spec of item.sources) {
+        if (this.fieldHit(token, spec.name) || this.fieldHit(token, spec.baseUrl) ||
+          this.fieldHit(token, spec.key) || this.fieldHit(token, spec.sourceId)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // 在线仓库条目匹配：仓库索引无子源声明，匹配插件名 / 包 key / 站点首页（site）
+  private matchesRepoEntry(entry: RepoEntry): boolean {
+    if (this.queryTokens.length === 0) {
+      return true;
+    }
+    for (const token of this.queryTokens) {
+      if (this.fieldHit(token, entry.name) || this.fieldHit(token, entry.key) ||
+        this.fieldHit(token, entry.site)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // 主内容类型 = 全量列表 [0]（归一保证非空，此处兜底漫画；角标显示用）
@@ -806,6 +853,7 @@ export struct ExtensionListPanel {
 
   // 待更新（已安装且仓库版本更高）→ 已安装（无更新）→ 在线可用（未安装）按语言分组
   private recomputeLists(animate: boolean): void {
+    this.refreshQueryTokens();
     const byKey = new Map<string, RepoEntry>();
     for (const entry of this.repoEntries) {
       byKey.set(entry.key, entry);
@@ -820,7 +868,7 @@ export struct ExtensionListPanel {
       if (item.manifest.nsfw && !this.showNsfw) {
         continue;
       }
-      if (!this.matchesQuery(item.manifest.name, item.manifest.key) ||
+      if (!this.matchesInstalled(item) ||
         !this.matchesType(item.manifest.contentTypes)) {
         continue;
       }
@@ -844,7 +892,7 @@ export struct ExtensionListPanel {
       if (entry.nsfw && !this.showNsfw) {
         continue;
       }
-      if (!this.matchesQuery(entry.name, entry.key) || !this.matchesType(entry.contentTypes)) {
+      if (!this.matchesRepoEntry(entry) || !this.matchesType(entry.contentTypes)) {
         continue;
       }
       let group: LangGroup | undefined = groupByLang.get(entry.lang);

@@ -22,6 +22,7 @@ import { CookieJar } from '../net/CookieJar';
 import { Http } from '../net/Http';
 import { ImageCache } from '../common/ImageCache';
 import { BgmCoverCache } from '../common/BgmCoverCache';
+import { EmojiCache } from '../common/EmojiCache';
 import { NetworkMonitor } from '../common/NetworkMonitor';
 
 import { WidgetUpdater } from '../form/WidgetUpdater';
@@ -147,6 +148,8 @@ const err = e as Error;
       ImageCache.init(this.context);
       // Bangumi 封面独立缓存（新番时间表/条目详情共用，与章节缓存清除隔离）
       BgmCoverCache.init(this.context);
+      // Bangumi 表情持久缓存（评论区表情，永不过期仅手动清除）
+      EmojiCache.init(this.context);
       // 启动时清除章节缓存（数据与存储设置）
       if (Settings.getAutoClearChapterCache()) {
         ImageCache.clearAll();

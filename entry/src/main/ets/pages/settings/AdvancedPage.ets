@@ -340,6 +340,10 @@ export struct AdvancedContent {
     const dialog = new CustomDialogController({
       builder: DualInputDialog({
         title: $r('app.string.pref_bangumi_mirror'),
+        firstLabel: $r('app.string.pref_bangumi_api_mirror_label'),
+        secondLabel: $r('app.string.pref_bangumi_img_mirror_label'),
+        thirdLabel: $r('app.string.pref_bangumi_next_mirror_label'),
+        fourthLabel: $r('app.string.pref_bangumi_web_mirror_label'),
         firstPlaceholder: $r('app.string.pref_bangumi_api_mirror_hint'),
         secondPlaceholder: $r('app.string.pref_bangumi_img_mirror_hint'),
         thirdPlaceholder: $r('app.string.pref_bangumi_next_mirror_hint'),

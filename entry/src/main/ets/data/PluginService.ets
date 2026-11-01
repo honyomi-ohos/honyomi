@@ -60,6 +60,9 @@ export interface InstalledPlugin {
 
   // 是否已受信任：未受信任插件不注册源、不执行插件代码，仅列表展示待确认状态
   trusted: boolean;
+
+  // 注册的子源规格（sourcesJson 解析结果）：插件列表搜索匹配源名/URL/sourceId 用；异常数据为空数组
+  sources: SourceSpec[];
 }
 
 // 安装结果：trusted = false 表示包已落盘但未受信任（未注册源、未执行插件代码），
@@ -320,6 +323,7 @@ export class PluginService {
           manifest: manifest,
           iconPath: PluginService.iconUrlOf(manifest),
           trusted: await PluginService.isRecordTrusted(manifest.key, manifest.versionCode),
+          sources: PluginService.parseSpecs(record.sourcesJson),
         };
         result.push(item);
       }
@@ -1211,6 +1215,11 @@ const err = e as Error;
 
   // 清理历史失败安装遗留的临时文件/目录（plugin_extract_*/plugin_install_*/plugin_repo_*）
   private static cleanStaleTemp(): void {
+    // 仓库索引缓存文件（plugin_repo_index.json）与 plugin_repo_* 临时下载前缀撞名：
+    // 它是持久缓存而非临时文件，必须跳过——否则每次冷启动磁盘缓存被清，
+    // 浏览-插件面板读不到缓存，退化为每次进入都向仓库发起网络首拉
+    const cacheName = PluginService.repoCacheFile !== '' ?
+      PluginService.repoCacheFile.substring(PluginService.repoCacheFile.lastIndexOf('/') + 1) : '';
     let names: string[] = [];
     try {
       if (!fs.accessSync(PluginService.cacheDir)) {
@@ -1221,6 +1230,9 @@ const err = e as Error;
       return;
     }
     for (const name of names) {
+      if (name === cacheName) {
+        continue;
+      }
       if (!name.startsWith('plugin_extract_') && !name.startsWith('plugin_install_') &&
         !name.startsWith('plugin_repo_')) {
         continue;

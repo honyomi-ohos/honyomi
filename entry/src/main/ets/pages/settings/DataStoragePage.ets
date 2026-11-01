@@ -5,6 +5,7 @@ import { Settings } from '../../common/Settings';
 import { Util } from '../../common/Util';
 import { AppKeys } from '../../common/AppKeys';
 import { ImageCache } from '../../common/ImageCache';
+import { EmojiCache } from '../../common/EmojiCache';
 import { BackupService, BackupOptions } from '../../data/BackupService';
 import { NavGlassAction, NavGlassPage } from '../../common/HdsNavHost';
 import { PrefGroup, PrefSelectRow, PrefSwitchRow, TextRow } from '../components/Prefs';
@@ -21,6 +22,7 @@ export struct DataStorageContent {
   // 自动备份失败状态（BackupService 写入）：true 时展示失败提示条
   @StorageProp('lastBackupFailed') lastBackupFailed: boolean = false;
   @State cacheLabel: string = '';
+  @State emojiCacheLabel: string = '';
   @State usedPercent: number = 0;
   @State spaceText: string = '—';
   @State lastBackupText: string = '';
@@ -176,6 +178,14 @@ export struct DataStorageContent {
               Settings.setAutoClearChapterCache(value);
             }
           })
+          Divider().color(this.pal.divider).margin({ left: 16 })
+          TextRow({
+            title: $r('app.string.data_clear_emoji_cache'),
+            value: this.emojiCacheLabel,
+            onTap: (): void => {
+              this.clearEmojiCache();
+            }
+          })
         }
 
         // 导出
@@ -200,6 +210,16 @@ export struct DataStorageContent {
   private refreshCacheLabel(): void {
     this.cacheLabel = Util.resStr(this.getUIContext(), $r('app.string.data_used_cache'),
       [Util.formatBytes(ImageCache.size())]);
+    this.emojiCacheLabel = Util.resStr(this.getUIContext(), $r('app.string.data_used_cache'),
+      [Util.formatBytes(EmojiCache.size())]);
+  }
+
+  // 清除 Bangumi 表情持久缓存（评论区表情图；清除后下次加载重新下载）
+  private clearEmojiCache(): void {
+    const deleted: number = EmojiCache.count();
+    EmojiCache.clearAll();
+    this.refreshCacheLabel();
+    Util.toastRes(this.getUIContext(), $r('app.string.data_cache_deleted'), [deleted]);
   }
 
   // 磁盘占用：内部存储 已用/总量（filesDir 所在分区）

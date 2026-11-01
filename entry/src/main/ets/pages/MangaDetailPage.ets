@@ -374,12 +374,13 @@ export struct MangaDetailPage {
 
   aboutToAppear(): void {
     DownloadService.addListener(this.onDlNotify);
-    this.twoPane = this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+    // md 档（600~840vp：折叠屏展开竖屏/手机横屏）即启用两列，覆盖原 lg-only 方案
+    this.twoPane = this.windowW >= Bp.MD_MIN && this.windowW < Bp.XL_MIN;
   }
 
-  // 窗口宽度跨越 lg/xl 断点：翻转单列/两列布局并带过渡动画
+  // 窗口宽度跨越 md/xl 断点：翻转单列/两列布局并带过渡动画
   private onWindowWChange(): void {
-    const next: boolean = this.windowW >= Bp.LG_MIN && this.windowW < Bp.XL_MIN;
+    const next: boolean = this.windowW >= Bp.MD_MIN && this.windowW < Bp.XL_MIN;
     if (next !== this.twoPane) {
       this.getUIContext().animateTo({ duration: 300, curve: Curve.FastOutSlowIn }, (): void => {
         this.twoPane = next;
@@ -751,7 +752,7 @@ export struct MangaDetailPage {
     })
   }
 
-  // 单列布局（手机/折叠屏，对齐 Mihon MangaScreenSmallImpl）：整页滚动，介绍与章节纵向串联
+  // 单列布局（手机竖屏/折叠屏折叠态，对齐 Mihon MangaScreenSmallImpl）：整页滚动，介绍与章节纵向串联
   @Builder
   singlePaneBody() {
     Column() {
@@ -818,7 +819,7 @@ export struct MangaDetailPage {
     .transition(TransitionEffect.OPACITY.animation({ duration: 300, curve: Curve.FastOutSlowIn }))
   }
 
-  // 两列布局（平板 lg 档，对齐 Mihon 平板 MangaScreenLargeImpl TwoPanelBox）：
+  // 两列布局（md 档及以上：折叠屏展开竖屏/手机横屏/平板，对齐 Mihon 平板 MangaScreenLargeImpl TwoPanelBox）：
   // 左列 = 介绍（头部信息/操作行/简介标签/相关作品），右列 = 章节列表，两列各自独立滚动
   @Builder
   twoPaneBody() {
@@ -2212,7 +2213,8 @@ export struct MangaDetailPage {
     return Bp.contentInset(this.windowW);
   }
 
-  // 平板宽度档（lg，840~1200vp）使用两列布局（对齐 Mihon 平板 MangaScreenLargeImpl）；
+  // md 宽度档（600~1200vp：折叠屏展开竖屏、手机横屏、平板）使用两列布局（对齐 Mihon 平板 MangaScreenLargeImpl）；
+  // 更窄窗口（<600vp：手机竖屏/折叠屏折叠态）为单列布局；
   // PC 等更大屏幕（xl，≥1200vp）沿用单列内容限宽（720vp）左右缩进居中方案
   private isTwoPane(): boolean {
     return this.twoPane;

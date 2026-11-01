@@ -19,6 +19,7 @@ import { ReaderChapterNav } from '../common/ReaderChapterNav';
 import { DownloadService } from '../data/DownloadService';
 import { DownloadRules } from '../data/DownloadRules';
 import { PageSanitizer } from '../common/PageSanitizer';
+import { ChapterPageStore } from '../common/ChapterPageStore';
 import { TrackService } from '../data/track/TrackService';
 import { SmartImage } from './components/SmartImage';
 import { AppIconRes } from './components/AppIcon';
@@ -2175,7 +2176,7 @@ export struct ReaderPage {
       let pages: SPage[] = [];
       if (DownloadService.isDownloaded(chapter.id)) {
         // 离线优先：读取已下载的本地页面（CBZ 章节首次阅读自动解压到缓存）
-        const files: string[] = await DownloadService.localPagesAsync(chapter.mangaId, chapter.id);
+        const files: string[] = await ChapterPageStore.localPagesAsync(chapter.mangaId, chapter.id);
         for (let i = 0; i < files.length; i++) {
           const p: SPage = { index: i, url: `file://${files[i]}` };
           pages.push(p);
@@ -2186,6 +2187,9 @@ export struct ReaderPage {
           throw new Error('source_unavailable');
         }
         pages = await source.getPageList(chapter.url);
+        // 部分下载复用：该章下载进行中/中断时，已完整落盘的页直接用本地文件，
+        // 未下载的页照常在线加载（列表结构不变，仅 url 替换为 file://）
+        pages = ChapterPageStore.substituteDownloadedPages(chapter.mangaId, chapter.id, pages);
       }
       if (gen !== this.loadGen) {
         return;

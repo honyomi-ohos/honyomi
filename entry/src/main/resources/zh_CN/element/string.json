@@ -5259,6 +5259,26 @@
     {
       "name": "pref_bangumi_web_mirror_hint",
       "value": "主站镜像（OAuth/条目页），https://your-proxy.example.com，留空 = 默认 bgm.tv"
+    },
+    {
+      "name": "pref_bangumi_api_mirror_label",
+      "value": "API 镜像"
+    },
+    {
+      "name": "pref_bangumi_img_mirror_label",
+      "value": "图片镜像"
+    },
+    {
+      "name": "pref_bangumi_next_mirror_label",
+      "value": "Next 镜像（评论）"
+    },
+    {
+      "name": "pref_bangumi_web_mirror_label",
+      "value": "主站镜像"
+    },
+    {
+      "name": "data_clear_emoji_cache",
+      "value": "清除 Bangumi 表情缓存"
     }
   ]
 }

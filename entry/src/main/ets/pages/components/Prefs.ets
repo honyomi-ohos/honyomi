@@ -51,7 +51,7 @@ export struct TextRow {
   // 父组件状态变化后行文本不会刷新
   @Prop value: Resource | string = '';
   // 第二段取值（如 Bangumi 镜像 API/图片双域名）：非空时与 value 以 · 并列，
-  // 各自独立省略（flexShrink 按比例收缩），窄屏下两段均保持可见
+  // 各自独立省略（外层定宽 Row 下按百分比 maxWidth 封顶），窄屏下两段均保持可见
   @Prop secondaryValue: Resource | string = '';
   onTap: () => void = () => {
   };
@@ -63,27 +63,27 @@ export struct TextRow {
         .fontColor(this.pal.text)
         .layoutWeight(1)
         .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+      // 各值 Text 直接挂在外层定宽 Row 下并单独设百分比 maxWidth 上限：
+      // maxLines+Ellipsis 只有在 Text 拿到确定测量宽度时才会截断，
+      // 包一层自适应宽度的内嵌 Row 会导致长文本按内容宽渲染、溢出并遮住箭头
       if (this.secondaryValue !== '') {
-        Row({ space: 4 }) {
-          Text(this.value)
-            .fontSize(14)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .flexShrink(1)
-          Text('·')
-            .fontSize(14)
-            .fontColor(this.pal.sub)
-          Text(this.secondaryValue)
-            .fontSize(14)
-            .fontColor(this.pal.sub)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .flexShrink(1)
-        }
-        // 值组占满标题剩余空间前先封顶，保证标题不被挤没；组内两段各自省略
-        .constraintSize({ maxWidth: '60%' })
-        .alignItems(VerticalAlign.Center)
+        Text(this.value)
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .constraintSize({ maxWidth: '35%' })
+        Text('·')
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .margin({ left: 4, right: 4 })
+        Text(this.secondaryValue)
+          .fontSize(14)
+          .fontColor(this.pal.sub)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .constraintSize({ maxWidth: '25%' })
       } else if (this.value !== '') {
         Text(this.value)
           .fontSize(14)

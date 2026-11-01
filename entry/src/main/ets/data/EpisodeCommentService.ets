@@ -1,10 +1,12 @@
 // 剧集评论（Bangumi 吐槽箱，next.bgm.tv 新版接口）：
 // 章节 → Bangumi 动画条目（matchSubject）→ 分集（getEpisodes）→ 单集评论全量拉取。
-// 评论正文为 BBCode：[b][i][u][s][color=][size=][url][img][mask] 与 Bangumi 表情
+// 评论正文为 BBCode：行内 [b][i][u][s][color=][size=][url][img][mask][user] 与
+// 块级 [quote][code][align][left][center][right][indent]，外加 Bangumi 表情
 // （(bgmN) 各组、(musume_N)/(blake_N) 大表情、颜文字）；接口无分页参数，
 // 一次返回全量数组且各评论内嵌 replies 楼中楼
 import { Http, RawResponse } from '../net/Http';
 import { Settings } from '../common/Settings';
+import { EmojiCache } from '../common/EmojiCache';
 import { BangumiApi, BgmEpisode } from './BangumiApi';
 import { ChapterRecord, MangaRecord } from '../model/Models';
 import { TrackerManager } from './track/TrackerManager';
@@ -204,13 +206,18 @@ export class EpisodeCommentService {
     '140': '101', '141': '102'
   };
 
-  // 反应值对应表情图 URL（经图片镜像出口；非法值返回 ''）
-  static reactionEmojiUrl(value: number): string {
+  // 反应值对应表情图远端 URL（经图片镜像出口；非法值返回 ''）
+  private static reactionEmojiRemoteUrl(value: number): string {
     const file: string | undefined = EpisodeCommentService.REACTION_FILE[`${value}`];
     if (file === undefined) {
       return '';
     }
     return Settings.rewriteBangumiImageUrl(`https://lain.bgm.tv/img/smiles/tv/${file}.gif`);
+  }
+
+  // 反应值对应表情图 URL（经表情持久缓存出口，命中即本地 file://；非法值返回 ''）
+  static reactionEmojiUrl(value: number): string {
+    return EmojiCache.cached(EpisodeCommentService.reactionEmojiRemoteUrl(value));
   }
 
   // ---- 认证（Bangumi OAuth access token 复用为 /p1 Bearer）----
@@ -343,7 +350,60 @@ export class EpisodeCommentService {
     if (epId <= 0) {
       throw new Error('comments_no_episode');
     }
-    return EpisodeCommentService.fetchComments(epId, force);
+    const items: EpisodeComment[] = await EpisodeCommentService.fetchComments(epId, force);
+    await EpisodeCommentService.warmEmojiCache(items);
+    return items;
+  }
+
+  // 表情图批量走持久缓存：先并发预热下载（磁盘已有直接命中），
+  // 再把片段表情改写为本地路径（未下载成功的保留远程地址由系统 Image 直连兜底）；
+  // 12 个反应表情不落片段、渲染时经 reactionEmojiUrl() 同步查同一缓存
+  private static async warmEmojiCache(items: EpisodeComment[]): Promise<void> {
+    const urls: string[] = [];
+    for (let i = 0; i < EpisodeCommentService.REACTION_VALUES.length; i++) {
+      const remote: string =
+        EpisodeCommentService.reactionEmojiRemoteUrl(EpisodeCommentService.REACTION_VALUES[i]);
+      if (remote !== '') {
+        urls.push(remote);
+      }
+    }
+    for (let i = 0; i < items.length; i++) {
+      EpisodeCommentService.collectEmojiUrls(items[i].blocks, urls);
+    }
+    await EmojiCache.ensureAll(urls);
+    for (let i = 0; i < items.length; i++) {
+      EpisodeCommentService.rewriteEmojiUrls(items[i].blocks);
+    }
+  }
+
+  // 收集片段表情的远程 URL（kind = 1 表情；已是本地路径的跳过）
+  private static collectEmojiUrls(blocks: CommentBlock[], urls: string[]): void {
+    for (let i = 0; i < blocks.length; i++) {
+      const segs: CommentSegment[] = blocks[i].segments;
+      for (let j = 0; j < segs.length; j++) {
+        const seg: CommentSegment = segs[j];
+        if (seg.kind === 1 && EpisodeCommentService.isHttp(seg.emojiUrl)) {
+          urls.push(seg.emojiUrl);
+        }
+      }
+    }
+  }
+
+  // 已落盘的片段表情改写为本地 file:// 路径（未命中的保持远程地址）
+  private static rewriteEmojiUrls(blocks: CommentBlock[]): void {
+    for (let i = 0; i < blocks.length; i++) {
+      const segs: CommentSegment[] = blocks[i].segments;
+      for (let j = 0; j < segs.length; j++) {
+        const seg: CommentSegment = segs[j];
+        if (seg.kind === 1 && EpisodeCommentService.isHttp(seg.emojiUrl)) {
+          seg.emojiUrl = EmojiCache.cached(seg.emojiUrl);
+        }
+      }
+    }
+  }
+
+  private static isHttp(url: string): boolean {
+    return url.indexOf('http://') === 0 || url.indexOf('https://') === 0;
   }
 
   // 章节对应的 Bangumi 分集 id（内存缓存；0 = 无匹配）：
