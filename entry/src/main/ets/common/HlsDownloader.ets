@@ -9,7 +9,7 @@ class HlsVariant {
   bandwidth: number = 0;
 }
 
-// HLS 媒体分片：URL + AES-128 加密信息（密钥地址与显式 IV）+ 媒体序号
+// HLS 媒体分片：URL + AES-128 加密信息（密钥地址与显式 IV）+ 媒体序号 + 时间轴块边界
 class HlsSegment {
   url: string = '';
   seq: number = 0;
@@ -17,6 +17,28 @@ class HlsSegment {
   keyUri: string = '';
   // EXT-X-KEY 显式 IV；undefined = 按媒体序号推导
   keyIv: Uint8Array | undefined = undefined;
+  // EXTINF 声明时长（秒）；0 = 未声明
+  durationSec: number = 0;
+  // 本分片起始于 EXT-X-DISCONTINUITY 之后（新时间轴块起点）
+  discontinuity: boolean = false;
+}
+
+// EXT-X-DISCONTINUITY 分隔出的连续分片块（广告识别的最小单元）
+class HlsBlock {
+  // 块内首分片下标（含）
+  start: number = 0;
+  // 块末分片下标（不含）
+  end: number = 0;
+  // 分片 URL 目录前缀（含末尾斜杠）
+  dirKey: string = '';
+  // 块内 EXTINF 声明总时长（秒）
+  durationSec: number = 0;
+  // 块内分片 URL 序列签名（逐个拼接），用于识别重复插入的广告块
+  signature: string = '';
+  // 块内存在带 AES 密钥的分片（正片加密、广告明文时的 KEY 三明治判据）
+  hasKey: boolean = false;
+  // 块内存在 URL 命中广告路径关键词的分片（adjump、/ads/、/adv/ 等）
+  adPath: boolean = false;
 }
 
 // HLS 媒体播放列表解析结果
@@ -129,23 +151,32 @@ class TsTimelineFixer {
     b[p + 5] = ext & 0xFF;
   }
 
-  // 处理一个 TS 分片（原位改写 buf）。无 PES 的分片直接跳过。
-  processSegment(buf: Uint8Array): void {
+  // 处理一个 TS 分片（原位改写 buf）。newBlock：播放列表用 EXT-X-DISCONTINUITY
+  // 显式声明该分片起始于新时间轴块——此时无条件重新锚定，前向 PTS 跳跃同样缝合。
+  // 只做倒退检测时，“正片→广告→正片恢复”场景里恢复的正片（源 PTS 与广告前连续）
+  // 相对已缝合的广告时间线是巨大的前向跳跃，会被误判为同一块而整体平移，在输出
+  // 时间轴上留下数百秒空洞（时长虚增、seek 进空洞失败）。无 PES 的分片直接跳过。
+  processSegment(buf: Uint8Array, newBlock: boolean): void {
     const scan: TsPesScan = TsTimelineFixer.scanPes(buf, this.curOffset, false);
     if (scan.firstPts < 0) {
       return;
     }
-    // 首个 PES 相对已输出时间线倒退超过 1s：判定为新时间轴块，块首紧接上一块结尾
-    // （留 40ms 间隙），此后所有分片叠加新偏移
-    if (this.lastOutPts >= 0 && scan.firstPts + this.curOffset < this.lastOutPts - 90000) {
+    // 首个 PES 相对已输出时间线倒退超过 1s：判定为新时间轴块（无显式标记时的兜底启发式）
+    const backward: boolean = this.lastOutPts >= 0 &&
+      scan.firstPts + this.curOffset < this.lastOutPts - 90000;
+    const reanchor: boolean = this.lastOutPts >= 0 && (backward || newBlock);
+    if (reanchor) {
+      // 块首紧接上一块结尾（留 40ms 间隙），此后所有分片叠加新偏移
       this.curOffset = this.lastOutPts + 3600 - scan.firstPts;
-      hilog.info(0x0001, 'HlsDownload', 'ts timeline stitched: new block, offset=%{public}d ticks (%{public}ds)',
-        this.curOffset, Math.round(this.curOffset / 90000));
+      hilog.info(0x0001, 'HlsDownload',
+        'ts timeline stitched (%{public}s): offset=%{public}d ticks (%{public}ds)',
+        newBlock ? 'discontinuity' : 'pts-regression', this.curOffset, Math.round(this.curOffset / 90000));
     }
-    if (this.curOffset === 0) {
-      // 尚无任何时间轴断裂：重写是恒等变换，只推进 lastOutPts
+    if (this.curOffset === 0 && !reanchor) {
+      // 偏移为零且未重锚：重写是恒等变换，只推进 lastOutPts
       this.lastOutPts = scan.maxPts;
     } else {
+      // 重锚后偏移可能恰好为 0，仍需按当前偏移重扫推进（恒等重写）
       this.lastOutPts = TsTimelineFixer.scanPes(buf, this.curOffset, true).maxPts;
     }
   }
@@ -158,6 +189,10 @@ class TsTimelineFixer {
 export class HlsDownloader {
   // 分片并发窗口：窗口内并发抓取、按序落盘，兼顾速度与顺序保证
   private static readonly CONCURRENCY: number = 3;
+  // 广告块时长上限：相对正片主目录总时长的比例，超过则视为正片（如换 CDN 的正片块）
+  private static readonly AD_MAX_RATIO: number = 0.2;
+  // 广告路径关键词：盗版源 CDN 常用 adjump、/ads/、/adv/ 等目录名托管插播广告
+  private static readonly AD_PATH_KEYWORDS: string[] = ['adjump', '/ads/', '/adv/'];
 
   // 下载一条 m3u8 流到 dir：返回最终文件路径。
   // onProgress 按分片计数回调（done/total）；shouldStop 返回 'cancelled'/'blocked' 中断下载
@@ -204,12 +239,31 @@ export class HlsDownloader {
     if (media.segments.length === 0) {
       throw new Error('hls_no_segments');
     }
+    // 识别并剔除第三方广告块（详见 filterAdSegments），再进入抓取/缝合流程
+    const segments: HlsSegment[] = HlsDownloader.filterAdSegments(media.segments);
+    const total = segments.length;
+    if (total === 0) {
+      throw new Error('hls_no_segments');
+    }
     const isFmp4 = media.initUrl !== '';
     const outPath = `${dir}/${isFmp4 ? 'video.mp4' : 'video.ts'}`;
     const tmpPath = `${outPath}.tmp`;
-    const total = media.segments.length;
     onProgress(0, total);
     hilog.info(0x0001, 'HlsDownload', 'start: %{public}d segments, %{public}s', total, isFmp4 ? 'fmp4' : 'ts');
+    if (isFmp4) {
+      // fMP4 时间线在 trun/tfdt 盒内，无法原位缝合；剔除广告后仍残留断点的流要显式告警
+      let hasDisc = false;
+      for (const s of segments) {
+        if (s.discontinuity) {
+          hasDisc = true;
+          break;
+        }
+      }
+      if (hasDisc) {
+        hilog.warn(0x0001, 'HlsDownload',
+          'fmp4 playlist still contains EXT-X-DISCONTINUITY after ad filtering; merged file may have timeline gaps');
+      }
+    }
     const keyCache = new Map<string, Uint8Array>();
     // MPEG-TS：逐分片缝合多时间轴（详见 TsTimelineFixer）；fMP4 时间线在 trun 盒内，不适用
     const fixer: TsTimelineFixer = new TsTimelineFixer();
@@ -228,17 +282,21 @@ export class HlsDownloader {
       let next = 0;
       let done = 0;
       const window: Array<Promise<ArrayBuffer>> = [];
+      // 与 window 一一对应的分片（供缝合器取 DISCONTINUITY 标记）
+      const windowSegs: HlsSegment[] = [];
       while (true) {
         HlsDownloader.checkStop(shouldStop);
         while (next < total && window.length < HlsDownloader.CONCURRENCY) {
-          const seg = media.segments[next];
+          const seg = segments[next];
           next += 1;
           const pending = HlsDownloader.fetchSegment(seg, headers, keyCache);
           // 并发窗口内其余分片失败时不产生未处理的 Promise 拒绝
           pending.catch((_e: Error): void => {
           });
+          windowSegs.push(seg);
           window.push(pending);
         }
+        const headSeg: HlsSegment | undefined = windowSegs.shift();
         const head: Promise<ArrayBuffer> | undefined = window.shift();
         if (head === undefined) {
           break;
@@ -246,7 +304,7 @@ export class HlsDownloader {
         const buf: ArrayBuffer = await head;
         HlsDownloader.checkStop(shouldStop);
         if (!isFmp4) {
-          fixer.processSegment(new Uint8Array(buf));
+          fixer.processSegment(new Uint8Array(buf), headSeg !== undefined && headSeg.discontinuity);
         }
         HlsDownloader.writeBuffer(stream, buf);
         done += 1;
@@ -323,6 +381,9 @@ export class HlsDownloader {
     let keyUri = '';
     let keyIv: Uint8Array | undefined = undefined;
     let index = 0;
+    // 待应用到下一个分片的 EXTINF 时长与 DISCONTINUITY 标记
+    let pendingDuration = 0;
+    let pendingDiscontinuity = false;
     for (const raw of lines) {
       const line = raw.trim();
       if (line === '') {
@@ -334,8 +395,12 @@ export class HlsDownloader {
         segment.seq = mediaSeq + index;
         segment.keyUri = keyUri;
         segment.keyIv = keyIv;
+        segment.durationSec = pendingDuration;
+        segment.discontinuity = pendingDiscontinuity;
         playlist.segments.push(segment);
         index += 1;
+        pendingDuration = 0;
+        pendingDiscontinuity = false;
         continue;
       }
       if (line.indexOf('#EXT-X-MEDIA-SEQUENCE:') === 0) {
@@ -345,6 +410,14 @@ export class HlsDownloader {
         }
       } else if (line.indexOf('#EXT-X-ENDLIST') === 0) {
         playlist.live = false;
+      } else if (line === '#EXT-X-DISCONTINUITY') {
+        // 精确匹配，避免误吞 EXT-X-DISCONTINUITY-SEQUENCE
+        pendingDiscontinuity = true;
+      } else if (line.indexOf('#EXTINF:') === 0) {
+        const d: number = parseFloat(line.substring('#EXTINF:'.length));
+        if (!Number.isNaN(d) && d > 0) {
+          pendingDuration = d;
+        }
       } else if (line.indexOf('#EXT-X-KEY:') === 0) {
         const attrs = HlsDownloader.parseAttrs(line);
         const method = HlsDownloader.attrStr(attrs, 'METHOD');
@@ -386,6 +459,190 @@ export class HlsDownloader {
       }
     }
     return playlist;
+  }
+
+  // ---------------- 广告块识别与剔除 ----------------
+
+  // 分片 URL 的目录前缀（含末尾斜杠）：盗版源的广告通常来自与正片不同的转码目录
+  private static dirKeyOf(url: string): string {
+    const slash: number = url.lastIndexOf('/');
+    return slash >= 0 ? url.substring(0, slash + 1) : url;
+  }
+
+  // 块的 URL 序列签名：盗版源常把同一段广告在正片前后各插一次，两个广告块的
+  // URL 序列逐个相同；正常点播内容不会有 DISCONTINUITY 分隔的重复块
+  private static blockSignature(segments: HlsSegment[], start: number, end: number): string {
+    let sig = '';
+    for (let i = start; i < end; i++) {
+      sig += `${segments[i].url}\n`;
+    }
+    return sig;
+  }
+
+  // 分片 URL 是否命中广告路径关键词（大小写不敏感）
+  private static isAdPath(url: string): boolean {
+    const lower: string = url.toLowerCase();
+    for (const kw of HlsDownloader.AD_PATH_KEYWORDS) {
+      if (lower.indexOf(kw) >= 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 填充块特征：目录前缀、URL 序列签名、是否含密钥分片、是否含广告路径分片
+  private static fillBlockTraits(block: HlsBlock, segments: HlsSegment[]): void {
+    block.dirKey = HlsDownloader.dirKeyOf(segments[block.start].url);
+    block.signature = HlsDownloader.blockSignature(segments, block.start, block.end);
+    for (let i = block.start; i < block.end; i++) {
+      if (segments[i].keyUri !== '') {
+        block.hasKey = true;
+      }
+      if (HlsDownloader.isAdPath(segments[i].url)) {
+        block.adPath = true;
+      }
+    }
+  }
+
+  // 识别并剔除盗版源拼进播放列表的第三方广告。裁决总纲“宁漏勿误”：高置信度才删，
+  // 不确定的保留原样，不影响下载与时间轴缝合。
+  // ① dummy 分片（逐分片剔除）：EXTINF < 0.1s 且 URI 在列表中重复的伪分片——
+  //    正常内容不会声明不足 0.1s 的时长还重复引用同一分片文件；
+  // ② 广告块（以 EXT-X-DISCONTINUITY 为边界切块，命中任一信号且块总时长
+  //    ≤ 正片主目录总时长的 AD_MAX_RATIO 才剔除）：
+  //    - 目录偏离：分片目录与正片主目录（分片总时长最大的目录，正片被广告切成
+  //      的多个块共享同一目录，天然聚合为主目录）不同；
+  //    - 重复插入：块 URL 序列与列表中其他块完全相同（同一段广告插多次）；
+  //    - KEY 三明治：无密钥块夹在两个有密钥块之间——正片 AES 加密、广告明文
+  //      的标准 SSAI 插入特征；
+  //    - 广告路径：分片 URL 含 adjump、/ads/、/adv/ 等广告路径关键词。
+  private static filterAdSegments(segments: HlsSegment[]): HlsSegment[] {
+    if (segments.length === 0) {
+      return segments;
+    }
+    // ① dummy 分片预剔除
+    const urlCounts: Map<string, number> = new Map<string, number>();
+    for (const s of segments) {
+      const prev: number | undefined = urlCounts.get(s.url);
+      urlCounts.set(s.url, prev !== undefined ? prev + 1 : 1);
+    }
+    const segs: HlsSegment[] = [];
+    let dummyRemoved = 0;
+    for (const s of segments) {
+      const cnt: number | undefined = urlCounts.get(s.url);
+      if (s.durationSec > 0 && s.durationSec < 0.1 && cnt !== undefined && cnt >= 2) {
+        dummyRemoved += 1;
+        continue;
+      }
+      segs.push(s);
+    }
+    if (dummyRemoved > 0) {
+      hilog.info(0x0001, 'HlsDownload',
+        'ad filter: removed %{public}d dummy segments', dummyRemoved);
+    }
+    if (segs.length === 0) {
+      return segments;
+    }
+    // ② 按 DISCONTINUITY 标记切块
+    const blocks: HlsBlock[] = [];
+    let start = 0;
+    let dur = 0;
+    for (let i = 0; i < segs.length; i++) {
+      const seg = segs[i];
+      if (i > 0 && seg.discontinuity) {
+        const block = new HlsBlock();
+        block.start = start;
+        block.end = i;
+        block.durationSec = dur;
+        HlsDownloader.fillBlockTraits(block, segs);
+        blocks.push(block);
+        start = i;
+        dur = 0;
+      }
+      dur += seg.durationSec;
+    }
+    const lastBlock = new HlsBlock();
+    lastBlock.start = start;
+    lastBlock.end = segs.length;
+    lastBlock.durationSec = dur;
+    HlsDownloader.fillBlockTraits(lastBlock, segs);
+    blocks.push(lastBlock);
+    // 统计相同 URL 序列的块出现次数（重复插入的广告块）
+    const sigCounts: Map<string, number> = new Map<string, number>();
+    for (const b of blocks) {
+      const prev: number | undefined = sigCounts.get(b.signature);
+      sigCounts.set(b.signature, prev !== undefined ? prev + 1 : 1);
+    }
+    // 有密钥块总数（KEY 三明治判据：无密钥块前后都存在有密钥块）
+    let keyBlockTotal = 0;
+    for (const b of blocks) {
+      if (b.hasKey) {
+        keyBlockTotal += 1;
+      }
+    }
+    // 按目录累计总时长，正片主目录 = 总时长最大者
+    const totals: Map<string, number> = new Map<string, number>();
+    for (const b of blocks) {
+      const prev: number | undefined = totals.get(b.dirKey);
+      totals.set(b.dirKey, (prev !== undefined ? prev : 0) + b.durationSec);
+    }
+    let mainDir = '';
+    let mainTotal = 0;
+    totals.forEach((t: number, dir: string): void => {
+      if (t > mainTotal) {
+        mainTotal = t;
+        mainDir = dir;
+      }
+    });
+    // 无有效时长信息时放弃识别，避免误删
+    if (mainDir === '' || mainTotal <= 0) {
+      return segs;
+    }
+    // 剔除广告块，保留正片
+    const keep: HlsSegment[] = [];
+    let removedCount = 0;
+    let removedDur = 0;
+    let keyBefore = 0;
+    for (const b of blocks) {
+      const dupCount: number | undefined = sigCounts.get(b.signature);
+      const duplicated: boolean = dupCount !== undefined && dupCount >= 2;
+      // 无密钥块，且其前后都存在有密钥块（正片加密、广告明文的 SSAI 特征）
+      const keySandwich: boolean = !b.hasKey && keyBefore > 0 && keyBefore < keyBlockTotal;
+      if (b.hasKey) {
+        keyBefore += 1;
+      }
+      let reason = '';
+      if (b.dirKey !== mainDir) {
+        reason = 'foreign-dir';
+      }
+      if (duplicated) {
+        reason = reason === '' ? 'duplicated' : `${reason}+duplicated`;
+      }
+      if (keySandwich) {
+        reason = reason === '' ? 'key-sandwich' : `${reason}+key-sandwich`;
+      }
+      if (b.adPath) {
+        reason = reason === '' ? 'ad-path' : `${reason}+ad-path`;
+      }
+      if (reason !== '' && b.durationSec <= mainTotal * HlsDownloader.AD_MAX_RATIO) {
+        removedCount += b.end - b.start;
+        removedDur += b.durationSec;
+        hilog.info(0x0001, 'HlsDownload',
+          'ad filter: drop block [%{public}d,%{public}d) %{public}ds (%{public}s)',
+          b.start, b.end, Math.round(b.durationSec), reason);
+        continue;
+      }
+      for (let i = b.start; i < b.end; i++) {
+        keep.push(segs[i]);
+      }
+    }
+    if (removedCount === 0 || keep.length === 0) {
+      return segs;
+    }
+    hilog.info(0x0001, 'HlsDownload',
+      'ad filter: removed %{public}d ad segments (%{public}ds), kept %{public}d/%{public}d',
+      removedCount, Math.round(removedDur), keep.length, segments.length);
+    return keep;
   }
 
   // ---------------- 分片获取与解密 ----------------

@@ -5,7 +5,7 @@ import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
 import { fileIo as fs, picker } from '@kit.CoreFileKit';
 import { util } from '@kit.ArkTS';
-import { window, PiPWindow, uiMaterial, display } from '@kit.ArkUI';
+import { window, PiPWindow, uiMaterial, display, UIContext } from '@kit.ArkUI';
 import { deviceInfo, BusinessError } from '@kit.BasicServicesKit';
 import { AVCastPicker } from '@kit.AVSessionKit';
 import { CacheListener } from '@ohos/video-cache';
@@ -238,8 +238,14 @@ export struct VideoPlayerPage {
   @State tsWebMounted: boolean = false;
   // ---- 非全屏布局：窗口横竖（rootW > rootH，由根 onAreaChange 维护）----
   @State isWide: boolean = false;
-  private rootW: number = 0;
-  private rootH: number = 0;
+  // @State：非横竖翻转的根区尺寸变化也需立即重排，普通成员不触发刷新会让视频区沿用旧尺寸
+  @State rootW: number = 0;
+  @State rootH: number = 0;
+  // 根区是否已被 onAreaChange 精确测量（精确值优先，display/窗口推定值不覆盖）
+  private rootMeasured: boolean = false;
+  // 非全屏内容区避让（全局维护，随旋转经 avoidAreaChange 同步），用于首帧几何推定
+  @StorageProp('statusBarH') statusBarH: number = 0;
+  @StorageProp('navBarH') navBarH: number = 0;
   // ---- 折叠屏悬停态：全屏时上半屏视频/下半屏常驻控制条；非全屏时视频与评论分界线避让折痕带 ----
   @State hoverActive: boolean = false;
   @State hoverBandH: boolean = true; // true 折痕横向（上下分界），false 折痕纵向（左右分界）
@@ -335,6 +341,9 @@ export struct VideoPlayerPage {
     this.skipEnabled = Settings.getVideoSkipOpEd();
     this.subFont = Settings.getSubtitleFont();
     this.pipEnabled = PiPWindow.isPiPEnabled();
+    // 横屏直进：首帧前同步推定根区横竖与尺寸，避免首个 onAreaChange 缺席/迟到时
+    // 按竖屏默认布局把视频区撑高、进度条下方控件推出屏幕（旋转后 onAreaChange 到达才恢复）
+    this.initRootGeometry();
     // 折叠屏悬停态监听：全屏时上半屏视频/下半屏常驻控制条；非全屏时视频与评论分界线避让折痕带
     this.setupFoldListener();
     // 沉浸式：隐藏状态栏与导航栏（页面已销毁则放弃，避免销毁后隐藏系统栏且无法还原）
@@ -343,6 +352,8 @@ export struct VideoPlayerPage {
         return;
       }
       this.win = w;
+      // 拿到窗口后按真实窗口矩形+避让区精化根区（display 推定对旋转时序/悬浮窗有偏差）
+      this.refineRootGeometry();
       this.updateHoverLayout();
       if (canIUse('SystemCapability.WindowManager.WindowManager.Core')) {
         if (this.pcLike) {
@@ -428,6 +439,52 @@ export struct VideoPlayerPage {
       this.updateHoverLayout();
     } catch (e) {
       this.log(`fold on catch: ${e}`);
+    }
+  }
+
+  // 首帧根区几何推定：横屏直进时 onAreaChange 的首次精确回调存在缺席/迟到窗口，
+  // 默认按竖屏（isWide=false）布局会把视频区按横屏宽度的 9/16 撑高，底部控件被推出屏幕；
+  // 首帧前用 display（同步 API）按当前旋转直接落地横竖与近似尺寸，精确值仍由 onAreaChange 修正
+  private initRootGeometry(): void {
+    if (this.pcLike) {
+      return;
+    }
+    try {
+      const d: display.Display = display.getDefaultDisplaySync();
+      const density: number = d.densityPixels > 0 ? d.densityPixels : 1;
+      // 非全屏窗口内容区 = display 减去状态栏与手势指示条避让
+      const wVp: number = d.width / density;
+      const hVp: number = d.height / density - this.statusBarH - this.navBarH;
+      if (wVp > 0 && hVp > 0) {
+        this.rootW = wVp;
+        this.rootH = hVp;
+        this.isWide = wVp > hVp;
+      }
+    } catch (e) {
+      this.log(`initRootGeometry catch: ${e}`);
+    }
+  }
+
+  // 窗口级精化：按真实窗口矩形+避让区重估根区；已被 onAreaChange 精确测量时不覆盖
+  private refineRootGeometry(): void {
+    if (this.pcLike || this.rootMeasured || this.win === undefined) {
+      return;
+    }
+    try {
+      const rect: window.Rect = this.win.getWindowProperties().windowRect;
+      const top: number = this.win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect.height;
+      const bottom: number =
+        this.win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR).bottomRect.height;
+      const ui: UIContext = this.getUIContext();
+      const wVp: number = ui.px2vp(rect.width);
+      const hVp: number = ui.px2vp(rect.height - top - bottom);
+      if (wVp > 0 && hVp > 0) {
+        this.rootW = wVp;
+        this.rootH = hVp;
+        this.isWide = wVp > hVp;
+      }
+    } catch (e) {
+      this.log(`refineRootGeometry catch: ${e}`);
     }
   }
 
@@ -2301,6 +2358,8 @@ export struct VideoPlayerPage {
         const w = newArea.width;
         const h = newArea.height;
         if (typeof w === 'number' && typeof h === 'number' && w > 0 && h > 0) {
+          // 已获精确测量值：后续 display/窗口推定不再覆盖
+          this.rootMeasured = true;
           if (this.rootW <= 0) {
             // 首次测量：直接落地不动画
             this.rootW = w;
