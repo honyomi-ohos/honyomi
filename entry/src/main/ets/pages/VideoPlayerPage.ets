@@ -31,6 +31,8 @@ import { Settings } from '../common/Settings';
 import { ThemePalette } from '../common/Theme';
 import { Util } from '../common/Util';
 import { VideoCacheServer } from '../common/VideoCacheServer';
+import { HlsDownloader } from '../common/HlsDownloader';
+import { M3u8ProxyServer } from '../common/M3u8ProxyServer';
 import { PipPageHooks, PipSessionInfo, VideoPipManager } from '../common/VideoPipManager';
 import { VideoCastItem, VideoCastManager } from '../common/VideoCast';
 import { ChapterNeighbors, ReaderChapterNav } from '../common/ReaderChapterNav';
@@ -158,6 +160,11 @@ export struct VideoPlayerPage {
   private mediaFile: fs.File | undefined = undefined;
   private cacheListener: CacheListener | undefined = undefined;
   private cacheUrl: string = '';
+  // 在线 m3u8 广告剔除改写：当前使用改写后的本地播放地址 / 对应视频 /
+  // 已回退直连过的地址（同一地址仅自动回退一次，防循环）
+  private hlsRewriteActive: boolean = false;
+  private hlsRewriteVideo: SVideo | undefined = undefined;
+  private hlsRewriteFailedUrl: string = '';
   private xCtrl: XComponentController = new XComponentController();
   // 画中画（华为视频对齐）：XComponent 内容迁移至系统小窗；退后台时按播放状态自动小窗
   @State pipEnabled: boolean = false;
@@ -3213,7 +3220,21 @@ export struct VideoPlayerPage {
     this.releasePlayer();
     let playUrl: string = video.url;
     let viaProxy: boolean = false;
-    if (VideoCacheServer.isProxyEligible(video.url)) {
+    let hlsRewritten: boolean = false;
+    // m3u8：拉取播放列表 → 过滤广告分片 → 本地服务改写播放；失败静默回退直连
+    if (video.url.indexOf('.m3u8') >= 0 && this.hlsRewriteFailedUrl !== video.url) {
+      const localUrl: string = await this.tryRewriteHls(video);
+      if (gen !== this.playGen) {
+        return;
+      }
+      if (localUrl !== '') {
+        playUrl = localUrl;
+        hlsRewritten = true;
+        this.hlsRewriteActive = true;
+        this.hlsRewriteVideo = video;
+      }
+    }
+    if (!hlsRewritten && VideoCacheServer.isProxyEligible(video.url)) {
       try {
         playUrl = await VideoCacheServer.getProxyUrl(
           Util.hostAbilityContext(this.getUIContext()), video.url, video.headers);
@@ -3254,6 +3275,42 @@ export struct VideoPlayerPage {
     });
   }
 
+  // 拉取 m3u8 播放列表 → 过滤广告分片重组 → 注册本地服务，返回可播放的本地地址；
+  // 任何一步失败（网络/解析/无可剔除内容/不支持加密形态）返回空串，调用方回退直连
+  private async tryRewriteHls(video: SVideo): Promise<string> {
+    try {
+      const headers: Record<string, string> = Http.headersFor(video.url, video.headers);
+      const text: string = await Http.get(video.url, headers);
+      const rewritten: string = HlsDownloader.buildAdFreePlaylistText(text, video.url);
+      if (rewritten === '') {
+        this.log('hls rewrite: nothing removed or unsupported, direct play');
+        return '';
+      }
+      const localUrl: string = await M3u8ProxyServer.serve(rewritten);
+      this.log(`hls rewrite: serving ${localUrl} (${rewritten.length} chars)`);
+      return localUrl;
+    } catch (e) {
+      this.log(`hls rewrite catch: ${e}`);
+      return '';
+    }
+  }
+
+  // 改写后的 m3u8 播放失败：自动回退原始地址直连一次（同一地址仅回退一次防循环）
+  private fallbackFromRewrite(): boolean {
+    const video: SVideo | undefined = this.hlsRewriteVideo;
+    this.hlsRewriteActive = false;
+    this.hlsRewriteVideo = undefined;
+    if (video === undefined) {
+      return false;
+    }
+    this.log(`rewritten hls playback failed, fallback to direct: ${video.url}`);
+    this.hlsRewriteFailedUrl = video.url;
+    this.errorText = '';
+    this.buffering = true;
+    this.playRemote(video);
+    return true;
+  }
+
   // 注册当前直链的缓存进度监听（进度的百分比用于进度条缓存区显示）
   private attachCacheListener(url: string): void {
     this.detachCacheListener();
@@ -3288,6 +3345,7 @@ export struct VideoPlayerPage {
         player.surfaceId = VideoPipManager.getInstance().resolveSurface(this.surfaceId);
         player.prepare();
       } else if (state === 'prepared') {
+        this.hlsRewriteFailedUrl = '';
         this.durationMs = player.duration > 0 ? player.duration : 0;
         this.videoW = player.width > 0 ? player.width : 0;
         this.videoH = player.height > 0 ? player.height : 0;
@@ -3343,6 +3401,10 @@ export struct VideoPlayerPage {
           this.onBtBoundary();
           return;
         }
+        // 改写后的 m3u8 播放失败：优先自动回退原始地址直连
+        if (this.fallbackFromRewrite()) {
+          return;
+        }
         this.playing = false;
         this.buffering = false;
         this.errorText = 'play_failed';
@@ -3363,6 +3425,10 @@ export struct VideoPlayerPage {
       this.log(`player error cb: ${_err.message}, native state: ${player.state}`);
       if (player.state !== 'error') {
         this.log('non-fatal error ignored');
+        return;
+      }
+      // 改写后的 m3u8 播放失败：优先自动回退原始地址直连
+      if (this.fallbackFromRewrite()) {
         return;
       }
       this.errorText = 'play_failed';
@@ -3440,6 +3506,8 @@ export struct VideoPlayerPage {
     this.log(`releasePlayer, hadPlayer=${player !== undefined}`);
     this.player = undefined;
     this.playing = false;
+    this.hlsRewriteActive = false;
+    this.hlsRewriteVideo = undefined;
     this.detachCacheListener();
     if (player !== undefined) {
       try {

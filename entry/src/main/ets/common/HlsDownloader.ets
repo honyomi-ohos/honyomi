@@ -645,6 +645,89 @@ export class HlsDownloader {
     return keep;
   }
 
+  // ---------------- 在线播放：广告剔除后的播放列表重组 ----------------
+
+  // IV 字节数组 → 0x 大写十六进制串（重发 EXT-X-KEY 用）
+  private static ivToHex(iv: Uint8Array): string {
+    let hex: string = '0x';
+    for (let i = 0; i < iv.length; i++) {
+      const b: number = iv[i];
+      hex += (b < 16 ? '0' : '') + b.toString(16).toUpperCase();
+    }
+    return hex;
+  }
+
+  // 在线播放用：媒体播放列表文本 → 剔除广告分片 → 重组为可直接播放的播放列表文本，
+  // 分片/密钥/初始化段全部已是绝对地址，AVPlayer 拿到后直连 CDN 请求。
+  // 以下情况返回空串，由调用方回退原始地址直连（宁漏勿误）：
+  // 主播放列表（多码率）、直播流、解析失败、无可剔除内容、保留分片存在按媒体
+  // 序号推导 IV 的 AES 加密（重组改变分片位置会导致隐式 IV 解密错乱）。
+  static buildAdFreePlaylistText(text: string, baseUrl: string): string {
+    if (text.indexOf('#EXTM3U') < 0 || text.indexOf('#EXT-X-STREAM-INF') >= 0) {
+      return '';
+    }
+    let playlist: HlsMediaPlaylist;
+    try {
+      playlist = HlsDownloader.parseMedia(text, baseUrl);
+    } catch (e) {
+      return '';
+    }
+    if (playlist.live || playlist.segments.length === 0) {
+      return '';
+    }
+    const kept: HlsSegment[] = HlsDownloader.filterAdSegments(playlist.segments);
+    if (kept.length === playlist.segments.length) {
+      // 未剔除任何分片（含 dummy），无需改写
+      return '';
+    }
+    for (const seg of kept) {
+      if (seg.keyUri !== '' && seg.keyIv === undefined) {
+        return '';
+      }
+    }
+    const lines: string[] = ['#EXTM3U', '#EXT-X-VERSION:3'];
+    let maxDur = 0;
+    for (const seg of kept) {
+      if (seg.durationSec > maxDur) {
+        maxDur = seg.durationSec;
+      }
+    }
+    if (maxDur > 0) {
+      lines.push(`#EXT-X-TARGETDURATION:${Math.max(1, Math.ceil(maxDur))}`);
+    }
+    if (playlist.initUrl !== '') {
+      lines.push(`#EXT-X-MAP:URI="${playlist.initUrl}"`);
+    }
+    // 块边界保留 DISCONTINUITY：播放器原生支持时间轴重置；KEY 状态变化时
+    // 重发对应 EXT-X-KEY，保证分片按原加密属性解密
+    let curKeyUri: string = '';
+    let curKeyIv: string = '';
+    let first: boolean = true;
+    for (const seg of kept) {
+      if (!first && seg.discontinuity) {
+        lines.push('#EXT-X-DISCONTINUITY');
+      }
+      first = false;
+      const ivHex: string = seg.keyIv !== undefined ? HlsDownloader.ivToHex(seg.keyIv) : '';
+      if (seg.keyUri !== curKeyUri || ivHex !== curKeyIv) {
+        if (seg.keyUri === '') {
+          lines.push('#EXT-X-KEY:METHOD=NONE');
+        } else {
+          lines.push(`#EXT-X-KEY:METHOD=AES-128,URI="${seg.keyUri}"` +
+            `${ivHex === '' ? '' : `,IV=${ivHex}`}`);
+        }
+        curKeyUri = seg.keyUri;
+        curKeyIv = ivHex;
+      }
+      if (seg.durationSec > 0) {
+        lines.push(`#EXTINF:${seg.durationSec},`);
+      }
+      lines.push(seg.url);
+    }
+    lines.push('#EXT-X-ENDLIST');
+    return lines.join('\n') + '\n';
+  }
+
   // ---------------- 分片获取与解密 ----------------
 
   // 通过流顺序写入整块缓冲：字节数不足视为写入失败（磁盘满/沙箱异常）
