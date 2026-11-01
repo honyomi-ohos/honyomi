@@ -722,7 +722,10 @@ export struct ExtensionListPanel {
     r.kind = 'installed';
     r.item = item;
     r.updatable = updatable;
-    r.key = `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}`;
+    // 行键含内容签名（对齐 setRowsDiff 契约：键不变即内容不变）：
+    // 必须包含 updatable——刷新仓库后插件获得新版本时 versionCode/iconPath 均不变，
+    // 若键不含 updatable，LazyForEach 会复用旧行组件（更新按钮不出现）
+    r.key = `plug-${item.manifest.key}-${item.manifest.versionCode}-${item.iconPath}-${item.trusted}-${updatable}`;
     return r;
   }
 

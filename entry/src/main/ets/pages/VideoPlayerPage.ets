@@ -845,6 +845,42 @@ export struct VideoPlayerPage {
     })
   }
 
+  // 弹幕开关按钮：tint 依赖 @State danmakuOn。
+  // @Builder 按值传参不随状态刷新，必须在 Builder 内直接读取 this.danmakuOn 才能即时更新
+  @Builder
+  danmakuCtrlBtn() {
+    Button({ type: ButtonType.Normal, stateEffect: true }) {
+      AppIcon({ name: 'forum', iconSize: 22, tint: this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)' })
+    }
+    .width(40)
+    .height(40)
+    .borderRadius(20)
+    .padding(0)
+    .backgroundColor(VIDEO_BTN_BG)
+    .systemMaterial(VIDEO_GLASS)
+    .onClick(() => {
+      this.toggleDanmaku();
+    })
+  }
+
+  // 全屏切换按钮：icon 依赖 @State fullscreen。
+  // 同上，直接读取 this.fullscreen，避免 @Builder 按值传参导致切换后图标不刷新
+  @Builder
+  fullscreenCtrlBtn() {
+    Button({ type: ButtonType.Normal, stateEffect: true }) {
+      AppIcon({ name: this.fullscreen ? 'fullscreen_exit' : 'fullscreen', iconSize: 22, tint: Color.White })
+    }
+    .width(40)
+    .height(40)
+    .borderRadius(20)
+    .padding(0)
+    .backgroundColor(VIDEO_BTN_BG)
+    .systemMaterial(VIDEO_GLASS)
+    .onClick(() => {
+      this.toggleFullscreen();
+    })
+  }
+
   // 弹幕输入条：占满控制条空余空间；未登录点击弹登录面板，已登录直接输入，
   // 有内容时出现小飞机发送按钮
   @Builder
@@ -989,18 +1025,14 @@ export struct VideoPlayerPage {
             this.openSheet(2);
           }, Color.White)
         }
-        this.ctrlBtn('forum', (): void => {
-          this.toggleDanmaku();
-        }, this.danmakuOn ? Color.White : 'rgba(255,255,255,0.35)')
+        this.danmakuCtrlBtn()
 
         this.dmInputBar()
 
         this.ctrlBtn('tune', (): void => {
           this.openSheet(4);
         }, Color.White)
-        this.ctrlBtn(this.fullscreen ? 'fullscreen_exit' : 'fullscreen', (): void => {
-          this.toggleFullscreen();
-        }, Color.White)
+        this.fullscreenCtrlBtn()
       }
       .justifyContent(FlexAlign.Center)
       .width('100%')
