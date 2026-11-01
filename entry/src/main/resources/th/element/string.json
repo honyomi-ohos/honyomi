@@ -4833,24 +4833,12 @@
       "value": "แบบ Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "ลูกบาศก์ 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "ซ้อน"
     },
     {
       "name": "novel_anim_fade",
       "value": "จาง"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "พลิก 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "ทรงกลม"
     },
     {
       "name": "transition_tap_continue",

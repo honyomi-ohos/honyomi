@@ -171,7 +171,7 @@ export struct CredentialsDialog {
   }
 }
 
-// 双/三输入弹窗（Bangumi 镜像：API / 图片 / next 地址一次编辑，留空恢复默认）
+// 双/三/四输入弹窗（Bangumi 镜像：API / 图片 / next / 主站地址一次编辑，留空恢复默认）
 @CustomDialog
 export struct DualInputDialog {
   controller?: CustomDialogController;
@@ -180,15 +180,19 @@ export struct DualInputDialog {
   secondPlaceholder: Resource | string = '';
   // 第三个输入（可选）：留空串不渲染该输入框
   thirdPlaceholder: Resource | string = '';
+  // 第四个输入（可选）：留空串不渲染该输入框
+  fourthPlaceholder: Resource | string = '';
   initialFirst: string = '';
   initialSecond: string = '';
   initialThird: string = '';
+  initialFourth: string = '';
   @State first: string = '';
   @State second: string = '';
   @State third: string = '';
+  @State fourth: string = '';
   @StorageProp('palette') pal: ThemePalette = new ThemePalette();
-  onConfirm: (first: string, second: string, third: string) => void =
-    (_f: string, _s: string, _t: string) => {
+  onConfirm: (first: string, second: string, third: string, fourth: string) => void =
+    (_f: string, _s: string, _t: string, _fo: string) => {
     };
   onClose: () => void = () => {
   };
@@ -197,6 +201,7 @@ export struct DualInputDialog {
     this.first = this.initialFirst;
     this.second = this.initialSecond;
     this.third = this.initialThird;
+    this.fourth = this.initialFourth;
   }
 
   build() {
@@ -247,9 +252,31 @@ export struct DualInputDialog {
           text: this.third,
         })
           .id('dualThirdKey')
-          .enterKeyType(EnterKeyType.Done)
+          .enterKeyType(this.fourthPlaceholder !== '' ? EnterKeyType.Next : EnterKeyType.Done)
           .onChange((value: string) => {
             this.third = value;
+          })
+          .onSubmit(() => {
+            if (this.fourthPlaceholder !== '') {
+              // 第三个输入框回车跳第四个
+              try {
+                this.getUIContext().getFocusController().requestFocus('dualFourthKey');
+              } catch (e) {
+              }
+            } else {
+              this.confirm();
+            }
+          })
+      }
+      if (this.fourthPlaceholder !== '') {
+        TextInput({
+          placeholder: this.fourthPlaceholder,
+          text: this.fourth,
+        })
+          .id('dualFourthKey')
+          .enterKeyType(EnterKeyType.Done)
+          .onChange((value: string) => {
+            this.fourth = value;
           })
           .onSubmit(() => {
             this.confirm();
@@ -284,7 +311,7 @@ export struct DualInputDialog {
 
   private confirm(): void {
     this.dismiss();
-    this.onConfirm(this.first.trim(), this.second.trim(), this.third.trim());
+    this.onConfirm(this.first.trim(), this.second.trim(), this.third.trim(), this.fourth.trim());
   }
 
   private dismiss(): void {

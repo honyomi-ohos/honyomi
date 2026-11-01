@@ -108,7 +108,7 @@ export class DownloadRules {
       return;
     }
     ChapterRepo.listByManga(manga.id).then((raw: ChapterRecord[]): void => {
-      // 阅读正序：下一章 = 阅读方向上更靠后的章节（不受源"新→旧"返回顺序影响）
+      // 阅读正序：下一章 = 阅读方向上更靠后的章节（不受详情页展示方向影响）
       const list = ReaderChapterNav.readingOrder(raw, manga.chapterFlags, manga.sourceKey);
       let idx = -1;
       for (let i = 0; i < list.length; i++) {

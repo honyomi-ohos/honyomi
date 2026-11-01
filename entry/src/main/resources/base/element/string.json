@@ -4577,24 +4577,12 @@
       "value": "Kindle style"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D cube"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Stack"
     },
     {
       "name": "novel_anim_fade",
       "value": "Fade"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D flip"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Sphere"
     },
     {
       "name": "transition_tap_continue",
@@ -5219,6 +5207,58 @@
     {
       "name": "intent_seek_done",
       "value": "Done: %s"
+    },
+    {
+      "name": "video_comments_reply",
+      "value": "Reply"
+    },
+    {
+      "name": "video_comments_react",
+      "value": "React"
+    },
+    {
+      "name": "video_comments_send",
+      "value": "Send"
+    },
+    {
+      "name": "video_comments_input_hint",
+      "value": "Say something…"
+    },
+    {
+      "name": "video_comments_login_required",
+      "value": "Log in to Bangumi to join the discussion"
+    },
+    {
+      "name": "video_comments_login",
+      "value": "Log in"
+    },
+    {
+      "name": "video_comments_sent",
+      "value": "Comment posted"
+    },
+    {
+      "name": "video_comments_send_failed",
+      "value": "Failed to post comment"
+    },
+    {
+      "name": "video_comments_relogin",
+      "value": "Bangumi session expired, please log in again"
+    },
+    {
+      "name": "video_comments_ts_failed",
+      "value": "Human verification failed, please retry"
+    },
+    {
+      "name": "video_comments_replying_to",
+      "value": "Replying to %1"
+    },
+    {
+      "name": "video_comments_rate_limited",
+      "value": "Too many requests, please try again later"
+    },
+    {
+      "name": "pref_bangumi_web_mirror_hint",
+      "value": "Main site mirror (OAuth/subject), https://your-proxy.example.com, empty = default bgm.tv"
     }
   ]
 }

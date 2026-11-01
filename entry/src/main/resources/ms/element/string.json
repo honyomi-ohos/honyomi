@@ -4741,24 +4741,12 @@
       "value": "Gaya Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "Kiub 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Tindanan"
     },
     {
       "name": "novel_anim_fade",
       "value": "Pudar"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "Terbalik 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Sfera"
     },
     {
       "name": "transition_tap_continue",

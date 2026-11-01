@@ -4841,24 +4841,12 @@
       "value": "Kindle 스타일"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D 큐브"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "스택"
     },
     {
       "name": "novel_anim_fade",
       "value": "페이드"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D 플립"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "구체"
     },
     {
       "name": "transition_tap_continue",

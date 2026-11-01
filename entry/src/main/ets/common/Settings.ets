@@ -896,6 +896,25 @@ export class Settings {
     return 'https://next.bgm.tv';
   }
 
+  // Bangumi 主站镜像（高级设置）：bgm.tv 网页域（OAuth 授权/登录页、条目页），
+  // 独立于数据 API 镜像；存储原始输入，空串 = 未设置
+  static getBangumiWebBaseInput(): string {
+    return Settings.getStr('bangumiWebBase', '').trim();
+  }
+
+  static setBangumiWebBase(v: string): void {
+    Settings.setStr('bangumiWebBase', v.trim());
+  }
+
+  // 生效的主站基地址：强制 https:// 前缀，未设置/非法回退默认 https://bgm.tv
+  static bangumiWebBase(): string {
+    const raw: string = Settings.getBangumiWebBaseInput().replace(/\/+$/, '');
+    if (/^https:\/\//.test(raw)) {
+      return raw;
+    }
+    return 'https://bgm.tv';
+  }
+
   // Bangumi 图片 URL 统一出口：协议相对（//lain.bgm.tv/...）补 https；
   // host 为 lain.bgm.tv 时替换为图片镜像基地址（路径原样保留），其余 URL 原样返回
   static rewriteBangumiImageUrl(url: string): string {
@@ -1274,12 +1293,11 @@ export class Settings {
   }
 
   // 漫画翻页动画（横向分页）：curl（仿真）| slide（滑动）| cover（覆盖）
-  // | cube（3D 立方体）| stack（堆叠）| fade（淡入淡出）| flip（3D 翻转）| sphere（球面）
-  // 垂直滚动与条漫不使用。3D 模式经组件 rotate/scale 过渡实现。
+  // | stack（堆叠）| fade（淡入淡出）
+  // 垂直滚动与条漫不使用。stack/fade 经组件 rotate/scale 过渡实现。
   static getReaderPageAnim(): string {
     const raw = Settings.getStr('readerPageAnim', 'slide');
-    if (raw === 'curl' || raw === 'cover' || raw === 'cube' || raw === 'stack' ||
-      raw === 'fade' || raw === 'flip' || raw === 'sphere') {
+    if (raw === 'curl' || raw === 'cover' || raw === 'stack' || raw === 'fade') {
       return raw;
     }
     return 'slide';

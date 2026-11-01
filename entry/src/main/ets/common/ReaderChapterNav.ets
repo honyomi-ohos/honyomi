@@ -1,5 +1,5 @@
 import { ChapterRepo, MangaRepo } from '../data/Repos';
-import { ChapterRecord, ContentType } from '../model/Models';
+import { ChapterRecord } from '../model/Models';
 import { ChapterFlags } from './ChapterFlags';
 import { NaturalCompare } from './NaturalCompare';
 
@@ -15,18 +15,15 @@ export interface ChapterNeighbors {
 }
 
 // 三阅读器（漫画/小说/视频）共用的章节导航：定位当前章节并给出前后章节。
-// prev/next 恒按"阅读正序"（旧→新）计算（对齐 Mihon ReaderViewModel 的
-// getChapterSort(manga, sortDescending = false)），不受详情页列表展示方向影响
+// prev/next 恒按"阅读正序"（旧→新）计算，不受详情页列表展示方向影响
 export class ReaderChapterNav {
-  // 阅读正序排序（对齐 Mihon getChapterSort sortDescending=false）：
-  // - 源顺序模式：在线源遵循"从最新到最旧"返回约定（Mihon SyncChaptersWithSource
-  //   注释明示该约定），正序 = sortOrder 降序；本地源 sortOrder 已按自然顺序
-  //   （旧→新）生成，正序 = sortOrder 升序
+  // 阅读正序排序：
+  // - 源顺序模式：sortOrder 即源声明顺序（本应用插件按"旧→新"自然顺序返回章节列表，
+  //   详情页"源顺序原样"展示同此顺序），正序 = sortOrder 升序
   // - 章节号/上传日期/字母模式：对应键升序
-  // 同值回退保持同方向稳定序，再回退 id
-  static readingOrder(list: ChapterRecord[], flags: number, sourceKey: string): ChapterRecord[] {
+  // 同值回退 sortOrder 升序保持稳定序，再回退 id
+  static readingOrder(list: ChapterRecord[], flags: number, _sourceKey: string): ChapterRecord[] {
     const mode: number = ChapterFlags.sortingMode(flags);
-    const local: boolean = ContentType.isLocal(sourceKey);
     const sorted: ChapterRecord[] = list.slice().sort((a: ChapterRecord, b: ChapterRecord): number => {
       let cmp: number = 0;
       if (mode === ChapterFlags.SORTING_NUMBER) {
@@ -36,12 +33,12 @@ export class ReaderChapterNav {
       } else if (mode === ChapterFlags.SORTING_ALPHABET) {
         cmp = NaturalCompare.compare(a.name, b.name);
       } else {
-        cmp = local ? a.sortOrder - b.sortOrder : b.sortOrder - a.sortOrder;
+        cmp = a.sortOrder - b.sortOrder;
       }
       if (cmp !== 0) {
         return cmp;
       }
-      const orderCmp: number = local ? a.sortOrder - b.sortOrder : b.sortOrder - a.sortOrder;
+      const orderCmp: number = a.sortOrder - b.sortOrder;
       if (orderCmp !== 0) {
         return orderCmp;
       }

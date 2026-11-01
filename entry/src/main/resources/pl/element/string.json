@@ -4769,24 +4769,12 @@
       "value": "Styl Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "Kostka 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Stos"
     },
     {
       "name": "novel_anim_fade",
       "value": "Zanikanie"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "Obrót 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Sfera"
     },
     {
       "name": "transition_tap_continue",

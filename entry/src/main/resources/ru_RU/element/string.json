@@ -4817,24 +4817,12 @@
       "value": "Как в Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D-куб"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Стопка"
     },
     {
       "name": "novel_anim_fade",
       "value": "Затухание"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D-переворот"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Сфера"
     },
     {
       "name": "transition_tap_continue",

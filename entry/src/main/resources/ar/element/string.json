@@ -4841,24 +4841,12 @@
       "value": "نمط Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "مكعب ثلاثي الأبعاد"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "تكديس"
     },
     {
       "name": "novel_anim_fade",
       "value": "تلاشي"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "قلب ثلاثي الأبعاد"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "كرة"
     },
     {
       "name": "transition_tap_continue",

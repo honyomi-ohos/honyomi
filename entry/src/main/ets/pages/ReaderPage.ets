@@ -238,7 +238,7 @@ export struct ReaderPage {
   @State nextChapterScanlator: string = '';
   @State nextChapterDownloaded: boolean = false;
   @State nextGap: number = 0;
-  // 新翻页动画（cube/stack/fade/flip/sphere）逐单元格旋转/缩放/透明度
+  // 新翻页动画（stack/fade）逐单元格旋转/缩放/透明度
   @State animRot: number[] = [];
   @State animScl: number[] = [];
   @State animOpa: number[] = [];
@@ -1373,11 +1373,8 @@ export struct ReaderPage {
               this.animChip($r('app.string.novel_anim_cover'), 'cover')
               if (this.mode !== 'vertical' && !this.dualPageActive()) {
                 // 附加转场动画：仅单页水平模式可用
-                this.animChip($r('app.string.novel_anim_cube'), 'cube')
                 this.animChip($r('app.string.novel_anim_stack'), 'stack')
                 this.animChip($r('app.string.novel_anim_fade'), 'fade')
-                this.animChip($r('app.string.novel_anim_flip'), 'flip')
-                this.animChip($r('app.string.novel_anim_sphere'), 'sphere')
               }
             }
             .width('100%')
@@ -2300,8 +2297,8 @@ export struct ReaderPage {
       }
     }
     // 阅读正序（对齐 Mihon getChapterSort(manga, sortDescending=false)）：
-    // 源顺序模式在线源 = sortOrder 降序（源约定"新→旧"返回），本地源 = 升序；
-    // 章节号/日期/字母模式 = 对应键升序。prev/next 不再受源列表原始顺序反转影响
+    // 源顺序模式 = sortOrder 升序（sortOrder 即源声明的"旧→新"自然顺序）；
+    // 章节号/日期/字母模式 = 对应键升序。prev/next 不再受详情页展示方向影响
     list = ReaderChapterNav.readingOrder(list, this.manga.chapterFlags, this.manga.sourceKey);
     if (this.skipDuplicate) {
       list = this.removeDuplicateChapters(list);
@@ -3538,10 +3535,9 @@ export struct ReaderPage {
     return arr[index];
   }
 
-  // 附加页面动画（立方体/堆叠/交叉/翻牌/球面）：仅单页水平模式可用
+  // 附加页面动画（堆叠/交叉）：仅单页水平模式可用
   private isExtraAnim(): boolean {
-    return this.pageAnim === 'cube' || this.pageAnim === 'stack' || this.pageAnim === 'fade' ||
-      this.pageAnim === 'flip' || this.pageAnim === 'sphere';
+    return this.pageAnim === 'stack' || this.pageAnim === 'fade';
   }
 
   private extraAnimAllowed(): boolean {
@@ -3686,8 +3682,7 @@ export struct ReaderPage {
   }
 
   // 附加页面动画转场（单页水平模式）：
-  // fade=双页固定位移交叉淡化；stack=进场自然滑入、离场定点缩退；
-  // cube=双面 90° 立方体滚动；flip=cube + 缩放/淡化包装；sphere=进场页 45° 摆入
+  // fade=双页固定位移交叉淡化；stack=进场自然滑入、离场定点缩退
   private onExtraAnimTransition(proxy: SwiperContentTransitionProxy): void {
     const i = proxy.index;
     if (i < 0 || i >= this.coverX.length) {
@@ -3709,29 +3704,15 @@ export struct ReaderPage {
       // 离场页
       if (anim === 'fade') {
         this.setAnim(i, pin, 0, 0, 0, 1, 1 - L);
-      } else if (anim === 'stack') {
-        this.setAnim(i, pin, 0, 0, 0, 1 - 0.15 * L, 1 - 0.4 * L);
-      } else if (anim === 'cube') {
-        this.setAnim(i, pin, 0, 0, (p < 0 ? -90 : 90) * L, 1, 1);
-      } else if (anim === 'flip') {
-        this.setAnim(i, pin, 0, 0, (p < 0 ? -90 : 90) * L, 1 - 0.15 * L, 1 - L);
       } else {
-        // sphere：离场页保持原位
-        this.setAnim(i, 0, 0, 0, 0, 1, 1);
+        this.setAnim(i, pin, 0, 0, 0, 1 - 0.15 * L, 1 - 0.4 * L);
       }
     } else if (i === selected + 1 || i === selected - 1) {
       // 进场页
       if (anim === 'fade') {
         this.setAnim(i, pin, 0, 2, 0, 1, t);
-      } else if (anim === 'stack') {
-        this.setAnim(i, 0, 0, 2, 0, 1, 1);
-      } else if (anim === 'cube') {
-        this.setAnim(i, 0, 0, 2, (p > 0 ? 90 : -90) * t, 1, 1);
-      } else if (anim === 'flip') {
-        this.setAnim(i, 0, 0, 2, (p > 0 ? 90 : -90) * t, 0.85 + 0.15 * t, t);
       } else {
-        // sphere：进场页 45° 摆入
-        this.setAnim(i, 0, 0, 2, 45 * p, 1, 1);
+        this.setAnim(i, 0, 0, 2, 0, 1, 1);
       }
     } else {
       this.setAnim(i, 0, 0, 0, 0, 1, 1);

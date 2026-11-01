@@ -5,14 +5,11 @@ import { OAuthToken, TrackDate, Tracker, TrackHttp } from './Tracker';
 import { Http } from '../../net/Http';
 
 // API 基地址经 Settings.bangumiApiBase() 动态读取（支持高级设置镜像）；
-// OAuth 授权/登录页固定在 bgm.tv 网页域（api 镜像只代理 /v0 数据接口）
-const BGM_OAUTH_URL = 'https://bgm.tv/oauth/access_token';
-const BGM_LOGIN_URL = 'https://bgm.tv/oauth/authorize';
+// OAuth 授权/登录与条目页经 Settings.bangumiWebBase() 动态读取（主站镜像，默认 bgm.tv）
 const BGM_CLIENT_ID = 'bgm74166ae06145a0f07';
 const BGM_CLIENT_SECRET = '9dfec3d559362bd957afd73dd8993dab';
 const BGM_REDIRECT_URL = 'honyomi://bangumi-auth';
 const BGM_USER_AGENT = 'Honyomi/1.0 (HarmonyOS)';
-const BGM_SUBJECT_URL_PREFIX = 'https://bangumi.tv/subject/';
 
 // ---- 原始 JSON 模型 ----
 interface BgmSlimSubjectRaw {
@@ -168,8 +165,8 @@ export class BangumiTracker extends Tracker {
   }
 
   async getAuthUrl(): Promise<string> {
-    return `${BGM_LOGIN_URL}?client_id=${BGM_CLIENT_ID}&response_type=code` +
-      `&redirect_uri=${encodeURIComponent(BGM_REDIRECT_URL)}`;
+    return `${Settings.bangumiWebBase()}/oauth/authorize?client_id=${BGM_CLIENT_ID}` +
+      `&response_type=code&redirect_uri=${encodeURIComponent(BGM_REDIRECT_URL)}`;
   }
 
   async loginWithCode(code: string): Promise<void> {
@@ -181,7 +178,8 @@ export class BangumiTracker extends Tracker {
       'redirect_uri': BGM_REDIRECT_URL,
     };
     const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded' };
-    const resp = await TrackHttp.send('POST', BGM_OAUTH_URL, headers, TrackHttp.formEncode(form));
+    const resp = await TrackHttp.send('POST', `${Settings.bangumiWebBase()}/oauth/access_token`,
+      headers, TrackHttp.formEncode(form));
     const token = BangumiTracker.parseToken(resp);
     this.saveToken(token);
     const user = await this.getCurrentUser();
@@ -269,7 +267,8 @@ export class BangumiTracker extends Tracker {
       'redirect_uri': BGM_REDIRECT_URL,
     };
     const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded' };
-    const resp = await TrackHttp.send('POST', BGM_OAUTH_URL, headers, TrackHttp.formEncode(form));
+    const resp = await TrackHttp.send('POST', `${Settings.bangumiWebBase()}/oauth/access_token`,
+      headers, TrackHttp.formEncode(form));
     return BangumiTracker.parseToken(resp);
   }
 
@@ -354,7 +353,7 @@ export class BangumiTracker extends Tracker {
     const summary = (subject.summary ?? '').trim();
     r.summary = nameCn !== '' ? `作品原名：${subject.name}\n${summary}` : summary;
     r.score = subject.rating?.score ?? -1;
-    r.trackingUrl = `${BGM_SUBJECT_URL_PREFIX}${subject.id}`;
+    r.trackingUrl = `${Settings.bangumiWebBase()}/subject/${subject.id}`;
     r.totalChapters = subject.eps ?? 0;
     r.startDate = subject.date ?? '';
     return r;

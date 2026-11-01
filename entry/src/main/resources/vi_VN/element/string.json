@@ -4793,24 +4793,12 @@
       "value": "Kiểu Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "Khối 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Xếp chồng"
     },
     {
       "name": "novel_anim_fade",
       "value": "Mờ dần"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "Lật 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Hình cầu"
     },
     {
       "name": "transition_tap_continue",

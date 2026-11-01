@@ -4673,24 +4673,12 @@
       "value": "Style Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "Cube 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Pile"
     },
     {
       "name": "novel_anim_fade",
       "value": "Fondu"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "Rotation 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Sphère"
     },
     {
       "name": "transition_tap_continue",

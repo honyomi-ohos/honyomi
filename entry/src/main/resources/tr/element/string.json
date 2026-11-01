@@ -4793,24 +4793,12 @@
       "value": "Kindle tarzı"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D küp"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Yığın"
     },
     {
       "name": "novel_anim_fade",
       "value": "Solma"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D çevirme"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Küre"
     },
     {
       "name": "transition_tap_continue",

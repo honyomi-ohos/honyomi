@@ -4549,24 +4549,12 @@
       "value": "Kindle 样式"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D 立方"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "堆叠"
     },
     {
       "name": "novel_anim_fade",
       "value": "淡入淡出"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D 翻转"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "球体"
     },
     {
       "name": "transition_tap_continue",
@@ -5219,6 +5207,58 @@
     {
       "name": "EntryAbility_label",
       "value": "Honyomi"
+    },
+    {
+      "name": "video_comments_reply",
+      "value": "回复"
+    },
+    {
+      "name": "video_comments_react",
+      "value": "回应"
+    },
+    {
+      "name": "video_comments_send",
+      "value": "发送"
+    },
+    {
+      "name": "video_comments_input_hint",
+      "value": "吐槽一下…"
+    },
+    {
+      "name": "video_comments_login_required",
+      "value": "登录 Bangumi 后可参与讨论"
+    },
+    {
+      "name": "video_comments_login",
+      "value": "登录"
+    },
+    {
+      "name": "video_comments_sent",
+      "value": "发送成功"
+    },
+    {
+      "name": "video_comments_send_failed",
+      "value": "发送失败"
+    },
+    {
+      "name": "video_comments_relogin",
+      "value": "Bangumi 登录已失效，请重新登录"
+    },
+    {
+      "name": "video_comments_ts_failed",
+      "value": "人机验证未通过，请重试"
+    },
+    {
+      "name": "video_comments_replying_to",
+      "value": "回复 %1"
+    },
+    {
+      "name": "video_comments_rate_limited",
+      "value": "操作过于频繁，请稍后再试"
+    },
+    {
+      "name": "pref_bangumi_web_mirror_hint",
+      "value": "主站镜像（OAuth/条目页），https://your-proxy.example.com，留空 = 默认 bgm.tv"
     }
   ]
 }

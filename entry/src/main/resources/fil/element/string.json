@@ -4609,24 +4609,12 @@
       "value": "Istilo ng Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D cube"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Stack"
     },
     {
       "name": "novel_anim_fade",
       "value": "Fade"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D flip"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Sphere"
     },
     {
       "name": "transition_tap_continue",

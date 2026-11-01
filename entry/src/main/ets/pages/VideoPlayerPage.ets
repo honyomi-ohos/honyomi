@@ -1,4 +1,5 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { webview } from '@kit.ArkWeb';
 import { SheetPreset } from './components/SheetPreset';
 import { KeyCode } from '@kit.InputKit';
 import { media } from '@kit.MediaKit';
@@ -17,8 +18,9 @@ import { BtModule } from '../data/BtModule';
 import type { TorrentFileJson } from '@honyomi/torrent';
 import { AppKeys } from '../common/AppKeys';
 import { DanmakuItem, DanmakuService, DdpAccount } from '../data/DanmakuService';
-import { CommentSegment, EpisodeComment, EpisodeCommentReply, EpisodeCommentService }
-  from '../data/EpisodeCommentService';
+import { CommentSegment, CommentBlock, EpisodeComment, EpisodeReaction, EpisodeCommentReply,
+  EpisodeCommentService } from '../data/EpisodeCommentService';
+import { TrackerManager } from '../data/track/TrackerManager';
 import { SubCue, SubtitleParser } from '../common/SubtitleParser';
 import { SourceRegistry } from '../source/Source';
 import { Http } from '../net/Http';
@@ -36,6 +38,7 @@ import { Haptics } from '../common/Haptics';
 import { AppIcon } from './components/AppIcon';
 import { CoverViewer } from './components/CoverViewer';
 import { DanmakuController, DanmakuView } from './components/DanmakuView';
+import { OAuthSheet } from './components/OAuthSheet';
 
 const SPEEDS: number[] = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 const SCALE_MODES: number[] = [0, 1, 2];
@@ -58,6 +61,14 @@ const VIDEO_GLASS: uiMaterial.ImmersiveMaterial = new uiMaterial.ImmersiveMateri
   lightEffect: { color: Color.White }
 });
 const VIDEO_BTN_BG: ResourceColor = '#66000000';
+// 续播避开片尾：保存进度落在片尾数秒内（上次已基本看完）时重新从头播放，
+// 防止续播到片尾立即触发 completed → 自动下一集，导致点选剧集被瞬间跳走
+const VIDEO_RESUME_TAIL_MS: number = 5000;
+// 发评人机验证（Cloudflare Turnstile）：next.bgm.tv 域 sitekey，
+// 由隐藏 Web 加载 next.bgm.tv 页面后注入 invisible 组件获取 token（5 分钟有效、一次性）
+const TS_SITEKEY: string = '0x4AAAAAAABkMYinukE8nzYS';
+const TS_PAGE_URL: string = 'https://next.bgm.tv/';
+const TS_TOKEN_VALID_MS: number = 240000;
 let vpSeq: number = 0;
 
 // 意图框架快进指令载荷（AppStorage videoSeek 键，VideoSeekIntent 写入）
@@ -201,7 +212,30 @@ export struct VideoPlayerPage {
   // 评论面板状态：0 加载中 1 已加载 2 失败 3 空闲（未开始/已重置）
   @State commentsState: number = 3;
   @State commentsErrNoEp: boolean = false;
+  // 当前集 ep id（发评目标；0 未解析）
+  @State commentsEpId: number = 0;
+  // 发评/回复输入
+  @State commentInput: string = '';
+  @State commentSending: boolean = false;
+  // 回复模式：0 = 顶层吐槽；> 0 = 楼中楼目标（主评论 id）
+  @State replyToId: number = 0;
+  @State replyToName: string = '';
+  // Bangumi 登录态（发评/回应前置条件；OAuth token 复用为 /p1 Bearer）
+  @State bgmLoggedIn: boolean = false;
+  @State showBgmLogin: boolean = false;
+  @State bgmLoginUrl: string = '';
+  // 表情回应选择器（> 0 = 打开，值为目标评论 id）
+  @State showReactPicker: boolean = false;
+  @State reactPickerId: number = 0;
+  @State reactPickerCurrent: number = 0;
   private commentsGen: number = 0;
+  // ---- Turnstile token（隐藏 Web 注入获取）----
+  private tsController: webview.WebviewController = new webview.WebviewController();
+  private tsInjected: boolean = false;
+  private tsToken: string = '';
+  private tsTokenAt: number = 0;
+  // 评论加载完成后才挂载隐藏 Web（避免每次进播放页都拉取 next.bgm.tv）
+  @State tsWebMounted: boolean = false;
   // ---- 非全屏布局：窗口横竖（rootW > rootH，由根 onAreaChange 维护）----
   @State isWide: boolean = false;
   private rootW: number = 0;
@@ -296,6 +330,8 @@ export struct VideoPlayerPage {
     this.dmDur = Settings.getDanmakuDurationSec();
     // 底部弹幕输入条按登录态渲染：进入页面即恢复已保存的 dandanplay 账号
     this.dmAccount = DanmakuService.savedAccount();
+    // 评论发评/回应按登录态渲染：Bangumi OAuth token 复用为 /p1 Bearer
+    this.bgmLoggedIn = EpisodeCommentService.isLoggedIn();
     this.skipEnabled = Settings.getVideoSkipOpEd();
     this.subFont = Settings.getSubtitleFont();
     this.pipEnabled = PiPWindow.isPiPEnabled();
@@ -1669,7 +1705,18 @@ export struct VideoPlayerPage {
           List({ space: 0 }) {
             ForEach(this.comments, (c: EpisodeComment) => {
               ListItem() {
-                VpCommentItem({ comment: c })
+                VpCommentItem({
+                  comment: c,
+                  onReply: (replyToId: number, nickname: string, isSubReply: boolean): void => {
+                    this.startReply(replyToId, nickname, isSubReply);
+                  },
+                  onReact: (commentId: number, value: number, current: number): void => {
+                    this.toggleReaction(commentId, value, current);
+                  },
+                  onReactAdd: (commentId: number, current: number): void => {
+                    this.openReactPicker(commentId, current);
+                  },
+                })
               }
             }, (c: EpisodeComment) => `cmt-${c.id}`)
           }
@@ -1678,12 +1725,37 @@ export struct VideoPlayerPage {
           .scrollBar(BarState.Off)
           .edgeEffect(EdgeEffect.Spring)
           .cachedCount(4)
-          .padding({ bottom: 16 })
+          .padding({ bottom: 8 })
         }
       } else {
         Column()
           .width('100%')
           .layoutWeight(1)
+      }
+
+      // 底部输入区（发评/楼中楼回复）
+      this.commentInputBar()
+
+      // 隐藏 Web：next.bgm.tv 页面（Turnstile 域名校验载体），评论加载完成后挂载，
+      // onPageEnd 注入 invisible 组件获取发评人机验证 token
+      if (this.tsWebMounted) {
+        Web({ src: TS_PAGE_URL, controller: this.tsController })
+          .width(1)
+          .height(1)
+          .opacity(0)
+          .javaScriptAccess(true)
+          .domStorageAccess(true)
+          .fileAccess(false)
+          .onControllerAttached(() => {
+            try {
+              this.tsController.setCustomUserAgent(Http.USER_AGENT);
+              this.tsController.onActive();
+            } catch (_e) {
+            }
+          })
+          .onPageEnd(() => {
+            this.injectTurnstile();
+          })
       }
     }
     // 竖屏占满视频下方剩余高度（layoutWeight）；横屏固定宽占满右侧；
@@ -1693,6 +1765,135 @@ export struct VideoPlayerPage {
     .layoutWeight(this.isWide && !this.hoverAvoidBand() ? 0 : 1)
     .backgroundColor(this.pal.bg)
     .transition(TransitionEffect.OPACITY)
+    // 表情回应选择器（12 个合法反应值）
+    .bindContentCover($$this.showReactPicker, this.reactPickerBuilder(), {
+      modalTransition: ModalTransition.ALPHA,
+      backgroundColor: '#00000000',
+    })
+    // Bangumi OAuth 登录（发评/回应前置）
+    .bindSheet($$this.showBgmLogin, this.bgmLoginBuilder(), {
+      height: '80%',
+      detents: [SheetSize.MEDIUM, SheetSize.LARGE],
+      dragBar: true,
+      showClose: false,
+      blurStyle: BlurStyle.COMPONENT_ULTRA_THICK,
+      maskColor: 'rgba(0,0,0,0.45)'
+    })
+  }
+
+  // 评论底部输入区：回复模式提示条 + 输入框/发送；未登录展示登录入口
+  @Builder
+  commentInputBar() {
+    Column({ space: 6 }) {
+      if (this.replyToId > 0) {
+        Row({ space: 6 }) {
+          Text(Util.resStr(this.getUIContext(), $r('app.string.video_comments_replying_to'),
+            [this.replyToName]))
+            .fontSize(12)
+            .fontColor(this.pal.primary)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .layoutWeight(1)
+          AppIcon({ name: 'close', iconSize: 16, tint: this.pal.sub })
+            .onClick(() => {
+              this.cancelReply();
+            })
+        }
+        .width('100%')
+        .padding({ left: 14, right: 14 })
+        .alignItems(VerticalAlign.Center)
+      }
+      if (this.bgmLoggedIn) {
+        Row({ space: 8 }) {
+          TextInput({ text: this.commentInput,
+            placeholder: $r('app.string.video_comments_input_hint') })
+            .onChange((v: string) => {
+              this.commentInput = v;
+            })
+            .layoutWeight(1)
+            .height(38)
+            .fontSize(14)
+            .fontColor(this.pal.text)
+            .placeholderColor(this.pal.sub)
+            .backgroundColor(this.pal.chip)
+            .borderRadius(19)
+            .padding({ left: 14, right: 14 })
+            .caretColor(this.pal.primary)
+          if (this.commentSending) {
+            LoadingProgress()
+              .width(22)
+              .height(22)
+              .color(this.pal.primary)
+          } else {
+            Text($r('app.string.video_comments_send'))
+              .fontSize(14)
+              .fontWeight(FontWeight.Medium)
+              .fontColor(this.pal.primary)
+              .padding({ left: 4, right: 4 })
+              .onClick(() => {
+                this.sendComment();
+              })
+          }
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+      } else {
+        Row({ space: 8 }) {
+          Text($r('app.string.video_comments_login_required'))
+            .fontSize(12)
+            .fontColor(this.pal.sub)
+            .layoutWeight(1)
+            .maxLines(1)
+          Text($r('app.string.video_comments_login'))
+            .fontSize(13)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(this.pal.primary)
+            .padding({ left: 10, right: 10, top: 5, bottom: 5 })
+            .borderRadius(14)
+            .backgroundColor(this.pal.chip)
+            .onClick(() => {
+              this.openBgmLogin();
+            })
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Center)
+      }
+    }
+    .width('100%')
+    .padding({ left: 12, right: 12, top: 6, bottom: 8 })
+  }
+
+  // 表情回应选择器弹层：12 个合法反应值网格，点击即选，点空白处关闭
+  @Builder
+  reactPickerBuilder() {
+    Column() {
+      Blank()
+      Column() {
+        Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
+          ForEach(EpisodeCommentService.REACTION_VALUES, (v: number) => {
+            Image(EpisodeCommentService.reactionEmojiUrl(v))
+              .width(32)
+              .height(32)
+              .margin(7)
+              .objectFit(ImageFit.Contain)
+              .onClick(() => {
+                this.onReactPickerValue(v);
+              })
+          }, (v: number) => `rv-${v}`)
+        }
+      }
+      .width('72%')
+      .padding({ left: 14, right: 14, top: 14, bottom: 14 })
+      .borderRadius(16)
+      .backgroundColor(this.pal.bg)
+      Blank()
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#88000000')
+    .onClick(() => {
+      this.showReactPicker = false;
+    })
   }
 
   build() {
@@ -2417,28 +2618,269 @@ export struct VideoPlayerPage {
     this.comments = [];
     this.commentsState = 3;
     this.commentsErrNoEp = false;
+    this.commentsEpId = 0;
+    this.replyToId = 0;
+    this.replyToName = '';
+    this.commentInput = '';
+    this.showReactPicker = false;
   }
 
-  // 加载当前章节对应的 Bangumi 单集评论（无匹配剧集/网络失败展示对应占位态）
-  private loadComments(): void {
+  // 加载当前章节对应的 Bangumi 单集评论（无匹配剧集/网络失败展示对应占位态）；
+  // force = 跳过缓存刷新（发评/回应成功后回刷，失败时静默保留旧列表）
+  private loadComments(force: boolean = false): void {
     const gen: number = ++this.commentsGen;
-    this.comments = [];
-    this.commentsState = 0;
-    this.commentsErrNoEp = false;
-    EpisodeCommentService.loadForChapter(this.manga, this.chapter).then((items: EpisodeComment[]) => {
-      if (gen !== this.commentsGen || this.destroyed) {
-        return;
+    if (!force) {
+      this.comments = [];
+      this.commentsState = 0;
+      this.commentsErrNoEp = false;
+    }
+    // 解析当前集 ep id（发评目标；内存缓存，重复调用无额外网络开销）
+    EpisodeCommentService.resolveEpisodeId(this.manga, this.chapter).then((epId: number): void => {
+      if (gen === this.commentsGen && !this.destroyed) {
+        this.commentsEpId = epId;
       }
-      this.comments = items;
-      this.commentsState = 1;
-    }).catch((e: Error) => {
-      if (gen !== this.commentsGen || this.destroyed) {
-        return;
-      }
-      this.commentsState = 2;
-      this.commentsErrNoEp = e.message === 'comments_no_episode';
-      this.log(`loadComments failed: ${e.message}`);
+    }).catch((): void => {
     });
+    EpisodeCommentService.loadForChapter(this.manga, this.chapter, force)
+      .then((items: EpisodeComment[]) => {
+        if (gen !== this.commentsGen || this.destroyed) {
+          return;
+        }
+        this.comments = items;
+        this.commentsState = 1;
+        // 评论加载成功后挂载隐藏 Turnstile Web（发评人机验证载体，延迟到实际需要时）
+        if (this.bgmLoggedIn) {
+          this.tsWebMounted = true;
+        }
+      }).catch((e: Error) => {
+        if (gen !== this.commentsGen || this.destroyed) {
+          return;
+        }
+        if (force && this.comments.length > 0) {
+          // 刷新失败静默保留旧列表
+          this.commentsState = 1;
+        } else {
+          this.commentsState = 2;
+          this.commentsErrNoEp = e.message === 'comments_no_episode';
+        }
+        this.log(`loadComments failed: ${e.message}`);
+      });
+  }
+
+  // 评论写操作统一错误提示（发评/回应共用）
+  private commentWriteError(e: Error): void {
+    const msg: string = e.message;
+    if (msg === 'comments_unauthorized') {
+      this.bgmLoggedIn = false;
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_relogin'));
+    } else if (msg === 'comments_rate_limited') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_rate_limited'));
+    } else if (msg === 'turnstile_failed') {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_ts_failed'));
+    } else {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_send_failed'));
+    }
+    this.log(`comment write failed: ${msg}`);
+  }
+
+  // 进入回复模式（主评/楼中楼共用；isSubReply = 点击楼中楼内回复，输入框预填 @昵称）
+  private startReply(replyToId: number, nickname: string, isSubReply: boolean): void {
+    this.replyToId = replyToId;
+    this.replyToName = nickname;
+    if (isSubReply && this.commentInput.trim() === '') {
+      this.commentInput = `@${nickname} `;
+    }
+  }
+
+  private cancelReply(): void {
+    this.replyToId = 0;
+    this.replyToName = '';
+  }
+
+  // 发送评论/楼中楼回复：Turnstile token → POST → 成功清输入并强制刷新列表
+  private sendComment(): void {
+    const content: string = this.commentInput.trim();
+    if (content === '' || this.commentSending) {
+      return;
+    }
+    if (!this.bgmLoggedIn) {
+      this.openBgmLogin();
+      return;
+    }
+    if (this.commentsEpId <= 0) {
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_no_episode'));
+      return;
+    }
+    this.commentSending = true;
+    this.ensureTurnstileToken().then((token: string): Promise<number> => {
+      this.tsToken = '';
+      return EpisodeCommentService.postComment(this.commentsEpId, content, this.replyToId, token);
+    }).then((): void => {
+      this.commentSending = false;
+      this.commentInput = '';
+      this.replyToId = 0;
+      this.replyToName = '';
+      Util.toastRes(this.getUIContext(), $r('app.string.video_comments_sent'));
+      this.loadComments(true);
+    }).catch((e: Error) => {
+      this.commentSending = false;
+      this.commentWriteError(e);
+    });
+  }
+
+  // 表情回应切换：current = 该评论当前已选值（0 未选）；选中值相同 = 取消
+  private toggleReaction(commentId: number, value: number, current: number): void {
+    if (!this.bgmLoggedIn) {
+      this.openBgmLogin();
+      return;
+    }
+    const call: Promise<void> = current === value ?
+      EpisodeCommentService.unreact(commentId) :
+      EpisodeCommentService.react(commentId, value);
+    call.then((): void => {
+      this.loadComments(true);
+    }).catch((e: Error) => {
+      this.commentWriteError(e);
+    });
+  }
+
+  // 打开表情回应选择器（12 个合法反应值）
+  private openReactPicker(commentId: number, current: number): void {
+    this.reactPickerId = commentId;
+    this.reactPickerCurrent = current;
+    this.showReactPicker = true;
+  }
+
+  // 选择器选中值：与当前值相同 = 取消回应，否则切换
+  private onReactPickerValue(value: number): void {
+    this.showReactPicker = false;
+    const id: number = this.reactPickerId;
+    const current: number = this.reactPickerCurrent;
+    this.reactPickerId = 0;
+    if (id > 0) {
+      this.toggleReaction(id, value, current);
+    }
+  }
+
+  // ---- Bangumi 登录（评论发言/回应前置；OAuth token 复用为 /p1 Bearer）----
+
+  private openBgmLogin(): void {
+    if (this.showBgmLogin) {
+      return;
+    }
+    TrackerManager.bangumi.getAuthUrl().then((url: string): void => {
+      this.bgmLoginUrl = url;
+      this.showBgmLogin = true;
+    }).catch((): void => {
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  @Builder
+  bgmLoginBuilder() {
+    OAuthSheet({
+      authUrl: this.bgmLoginUrl,
+      sheetTitle: 'Bangumi',
+      onOAuthResult: (params: Record<string, string>): void => {
+        this.onBgmAuthResult(params);
+      },
+      onClose: (): void => {
+        this.showBgmLogin = false;
+      },
+    })
+  }
+
+  private onBgmAuthResult(params: Record<string, string>): void {
+    this.showBgmLogin = false;
+    const code: string = params['code'] ?? '';
+    if (code === '') {
+      return;
+    }
+    TrackerManager.bangumi.loginWithCode(code).then((): void => {
+      this.bgmLoggedIn = true;
+      EpisodeCommentService.resetMyUser();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_logged_in'), ['Bangumi']);
+      this.loadComments(true);
+    }).catch((): void => {
+      TrackerManager.bangumi.logout();
+      Util.toastRes(this.getUIContext(), $r('app.string.track_login_failed'));
+    });
+  }
+
+  // ---- Turnstile token（发评人机验证）----
+
+  // 隐藏 Web 加载 next.bgm.tv 完成后注入 invisible Turnstile 组件（幂等）
+  private injectTurnstile(): void {
+    if (this.tsInjected) {
+      return;
+    }
+    this.tsInjected = true;
+    const js: string = `(function(){` +
+      `if(window.__hyTsLoaded){return;}` +
+      `window.__hyTsLoaded=true;` +
+      `var d=document.createElement('div');d.id='hy-ts';document.body.appendChild(d);` +
+      `var s=document.createElement('script');` +
+      `s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';` +
+      `s.onload=function(){` +
+      `turnstile.render('#hy-ts',{sitekey:'${TS_SITEKEY}',size:'invisible',` +
+      `'error-callback':function(){window.__hyTsToken='';},` +
+      `'expired-callback':function(){window.__hyTsToken='';},` +
+      `'callback':function(t){window.__hyTsToken=t;}});};` +
+      `document.head.appendChild(s);` +
+      `})();`;
+    this.tsController.runJavaScript(js).catch((): void => {
+      this.tsInjected = false;
+    });
+  }
+
+  // 获取有效 token：缓存未过期直接用，否则轮询注入组件产出的 token（约 15s 超时）
+  private async ensureTurnstileToken(): Promise<string> {
+    if (this.tsToken !== '' && Date.now() - this.tsTokenAt < TS_TOKEN_VALID_MS) {
+      return this.tsToken;
+    }
+    this.tsToken = '';
+    if (this.destroyed) {
+      throw new Error('turnstile_failed');
+    }
+    for (let i = 0; i < 30; i++) {
+      let raw: string = '';
+      try {
+        raw = await this.tsController.runJavaScript(
+          'window.__hyTsToken ? window.__hyTsToken : ""');
+      } catch (_e) {
+        // Web 未就绪/已销毁：继续轮询
+      }
+      const token: string = this.parseRunJsString(raw);
+      if (token !== '') {
+        this.tsToken = token;
+        this.tsTokenAt = Date.now();
+        return token;
+      }
+      // 页面已加载但组件未注入时补注（onPageEnd 未触发的兜底）
+      if (i === 5) {
+        this.injectTurnstile();
+      }
+      await new Promise<void>((resolve: (v: void) => void) => {
+        setTimeout(resolve, 500);
+      });
+      if (this.destroyed) {
+        break;
+      }
+    }
+    throw new Error('turnstile_failed');
+  }
+
+  // runJavaScript 返回值规整：结果为 JSON 字符串（带引号），剥壳取原文；
+  // token 仅含 base64url 字符，无转义序列，手工剥引号即可
+  private parseRunJsString(raw: string): string {
+    if (raw === '' || raw === '""') {
+      return '';
+    }
+    let s: string = raw;
+    if (s.length >= 2 && s.charAt(0) === '"' && s.charAt(s.length - 1) === '"') {
+      s = s.substring(1, s.length - 1);
+    }
+    return s.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
   }
 
   private startCurrent(): void {
@@ -2792,7 +3234,8 @@ export struct VideoPlayerPage {
         this.videoH = player.height > 0 ? player.height : 0;
         this.adjustSurface();
         this.preparePip();
-        if (this.resumeMs > 0 && (this.durationMs === 0 || this.resumeMs < this.durationMs)) {
+        if (this.resumeMs > 0 && (this.durationMs === 0 ||
+          this.resumeMs < this.durationMs - VIDEO_RESUME_TAIL_MS)) {
           // @SuppressWarnings syscap
           player.seek(this.resumeMs, media.SeekMode.SEEK_PREV_SYNC);
           if (this.resumeTipArmed) {
@@ -4368,7 +4811,8 @@ export function VideoPlayerBuilder() {
 }
 
 // 单条剧集评论：头像 + 昵称 + 时间 + 表情回应数 + 正文（片段序列渲染）+ 楼中楼回复；
-// 正文内 [mask] 剧透段默认以占位遮罩呈现，点击正文切换揭示
+// 正文内 [mask] 剧透段默认以占位遮罩呈现，点击正文切换揭示；
+// 底部表情回应 chips（点击切换/取消自己的回应）与回复入口
 @Component
 struct VpCommentItem {
   @Prop comment: EpisodeComment = new EpisodeComment();
@@ -4378,27 +4822,162 @@ struct VpCommentItem {
   // 图片查看器（无链接的 [img] 内联图点击进入应用内查看）
   @State showViewer: boolean = false;
   @State viewerUrl: string = '';
+  // 点已有回应 chip：同值取消、异值切换（commentId + 反应值 + 当前已选值）
+  onReact: (commentId: number, value: number, current: number) => void =
+    (_commentId: number, _value: number, _current: number) => {
+    };
+  // "+" 添加回应：打开 12 表情选择器
+  onReactAdd: (commentId: number, current: number) => void =
+    (_commentId: number, _current: number) => {
+    };
+  // 回复：主评 replyToId = 主评 id；楼中楼 replyToId 仍为主评 id（isSubReply 预填 @昵称）
+  onReply: (replyToId: number, nickname: string, isSubReply: boolean) => void =
+    (_replyToId: number, _nickname: string, _isSubReply: boolean) => {
+    };
 
-  // 片段文字颜色：链接用主题色，[color] 指定色优先，否则正文色
-  private segColor(seg: CommentSegment): ResourceColor {
+  // 片段文字颜色：链接用主题色，[color] 指定色优先，引用块内用次要色，否则正文色
+  private segColor(seg: CommentSegment, quoted: boolean): ResourceColor {
     if (seg.linkUrl !== '') {
       return this.pal.primary;
     }
     if (seg.color !== '') {
       return seg.color;
     }
-    return this.pal.text;
+    return quoted ? this.pal.sub : this.pal.text;
   }
 
   // 片段装饰线：[u]/[s] → 下划线/删除线（两者同取时优先删除线）
-  private segDecoration(seg: CommentSegment): DecorationStyleInterface {
+  private segDecoration(seg: CommentSegment, quoted: boolean): DecorationStyleInterface {
     if (seg.underline || seg.strike) {
       return {
         type: seg.strike ? TextDecorationType.LineThrough : TextDecorationType.Underline,
-        color: this.segColor(seg)
+        color: this.segColor(seg, quoted)
       };
     }
     return { type: TextDecorationType.None, color: Color.Black };
+  }
+
+  // 主评或任一楼中楼含 [mask]（点击正文任意处切换揭示）
+  private hasAnyMask(): boolean {
+    if (this.comment.hasMask) {
+      return true;
+    }
+    for (let i = 0; i < this.comment.replies.length; i++) {
+      if (this.comment.replies[i].hasMask) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 行内片段渲染：0 文本 1 表情 2 遮罩占位 3 图片；masked 需揭示后渲染
+  @Builder
+  private segmentBuilder(seg: CommentSegment, baseSize: number, emojiSize: number,
+    imgW: number, imgH: number, quoted: boolean) {
+    if (seg.kind === 2) {
+      if (!this.revealed) {
+        Span($r('app.string.video_comments_spoiler'))
+          .fontSize(baseSize - 2)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.pal.primary)
+      }
+    } else {
+      if (!seg.masked || this.revealed) {
+        if (seg.kind === 1) {
+          ImageSpan(seg.emojiUrl)
+            .size({ width: seg.emojiLarge ? 55 : emojiSize, height: seg.emojiLarge ? 55 : emojiSize })
+            .verticalAlign(ImageSpanAlignment.BASELINE)
+        } else {
+          if (seg.kind === 3) {
+            ImageSpan(seg.imageUrl)
+              .size({ width: imgW, height: imgH })
+              .objectFit(ImageFit.Contain)
+              .borderRadius(6)
+              .verticalAlign(ImageSpanAlignment.BASELINE)
+              .onClick(() => {
+                if (seg.linkUrl !== '') {
+                  this.openLink(seg.linkUrl);
+                } else {
+                  this.openImage(seg.imageUrl);
+                }
+              })
+          } else {
+            Span(seg.text)
+              .fontSize(seg.fontSize > 0 ? seg.fontSize : baseSize)
+              .fontColor(this.segColor(seg, quoted))
+              .fontWeight(seg.bold ? FontWeight.Bold : FontWeight.Normal)
+              .fontStyle(seg.italic ? FontStyle.Italic : FontStyle.Normal)
+              .decoration(this.segDecoration(seg, quoted))
+              .onClick(() => {
+                if (seg.linkUrl !== '') {
+                  this.openLink(seg.linkUrl);
+                }
+              })
+          }
+        }
+      }
+    }
+  }
+
+  // 内容块渲染：块级 quote（左竖线 + 次要色）/code（等宽 + 底色）/align/indent，
+  // 主评与楼中楼共用（baseSize/emojiSize/imgW/imgH/lineHeight 按容器区分）
+  @Builder
+  private blocksBuilder(blocks: CommentBlock[], baseSize: number, emojiSize: number,
+    imgW: number, imgH: number, lineHeight: number) {
+    Column({ space: 4 }) {
+      ForEach(blocks, (block: CommentBlock, bi: number) => {
+        if (block.code) {
+          Text() {
+            ForEach(block.segments, (seg: CommentSegment, si: number) => {
+              Span(seg.text)
+                .fontSize(12)
+                .fontColor(this.pal.sub)
+                .fontFamily('monospace')
+            }, (seg: CommentSegment, si: number) => `${bi}-c${si}`)
+          }
+          .width('100%')
+          .lineHeight(18)
+          .fontSize(12)
+          .fontColor(this.pal.sub)
+          .fontFamily('monospace')
+          .backgroundColor(this.pal.chip)
+          .borderRadius(6)
+          .padding(8)
+          .textAlign(TextAlign.Start)
+        } else if (block.quote) {
+          Text() {
+            ForEach(block.segments, (seg: CommentSegment, si: number) => {
+              this.segmentBuilder(seg, baseSize, emojiSize, imgW, imgH, true)
+            }, (seg: CommentSegment, si: number) => `${bi}-q${si}`)
+          }
+          .width('100%')
+          .lineHeight(lineHeight)
+          .textAlign(block.align === 1 ? TextAlign.Center :
+            (block.align === 2 ? TextAlign.End : TextAlign.Start))
+          .padding({ left: 10, right: 10, top: 4, bottom: 4 })
+          .border({ width: { left: 3 }, color: this.pal.primary })
+          .borderRadius(4)
+        } else {
+          Text() {
+            ForEach(block.segments, (seg: CommentSegment, si: number) => {
+              this.segmentBuilder(seg, baseSize, emojiSize, imgW, imgH, false)
+            }, (seg: CommentSegment, si: number) => `${bi}-s${si}`)
+          }
+          .width('100%')
+          .lineHeight(lineHeight)
+          .textAlign(block.align === 1 ? TextAlign.Center :
+            (block.align === 2 ? TextAlign.End : TextAlign.Start))
+          .padding({ left: block.indent > 0 ? block.indent * 14 : 0 })
+        }
+      }, (block: CommentBlock, bi: number) => `${bi}-${block.code}-${block.quote}-${block.align}-${block.indent}`)
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+    .onClick(() => {
+      if (this.hasAnyMask()) {
+        this.revealed = !this.revealed;
+      }
+    })
   }
 
   // 用系统浏览器打开链接
@@ -4422,6 +5001,60 @@ struct VpCommentItem {
         this.showViewer = false;
       }
     })
+  }
+
+  // 表情回应 chips + 添加回应 + 回复操作行（主评与楼中楼共用）：
+  // reactionId = 回应目标评论 id；replyToId = 回复目标（楼中楼回复仍挂主评 id）；
+  // myValue = 当前用户已选反应值（0 未选），compact = 楼中楼紧凑档
+  @Builder
+  reactionRow(reactionId: number, replyToId: number, reactions: EpisodeReaction[],
+    myValue: number, nickname: string, isSubReply: boolean, compact: boolean) {
+    Row({ space: 6 }) {
+      ForEach(reactions, (re: EpisodeReaction) => {
+        Row({ space: 3 }) {
+          Image(EpisodeCommentService.reactionEmojiUrl(re.value))
+            .width(compact ? 14 : 16)
+            .height(compact ? 14 : 16)
+            .objectFit(ImageFit.Contain)
+          Text(`${re.count}`)
+            .fontSize(11)
+            .fontColor(re.mine ? this.pal.onPrimary : this.pal.sub)
+        }
+        .alignItems(VerticalAlign.Center)
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .borderRadius(11)
+        .backgroundColor(re.mine ? this.pal.primary : this.pal.chip)
+        .onClick(() => {
+          this.onReact(reactionId, re.value, myValue);
+        })
+      }, (re: EpisodeReaction) => `re-${reactionId}-${re.value}-${re.count}-${re.mine}`)
+      // + 添加回应（打开 12 表情选择器）
+      Row() {
+        Text('+')
+          .fontSize(14)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(this.pal.sub)
+      }
+      .alignItems(VerticalAlign.Center)
+      .justifyContent(FlexAlign.Center)
+      .width(26)
+      .height(22)
+      .borderRadius(11)
+      .backgroundColor(this.pal.chip)
+      .onClick(() => {
+        this.onReactAdd(reactionId, myValue);
+      })
+      Blank()
+      Text($r('app.string.video_comments_reply'))
+        .fontSize(12)
+        .fontColor(this.pal.sub)
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .onClick(() => {
+          this.onReply(replyToId, nickname, isSubReply);
+        })
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Center)
   }
 
   build() {
@@ -4470,61 +5103,12 @@ struct VpCommentItem {
       .width('100%')
       .alignItems(VerticalAlign.Top)
 
-      // 正文：扁平片段序列（0 文本 1 表情 2 遮罩占位 3 图片；masked 需揭示后渲染）
-      Text() {
-        ForEach(this.comment.segments, (seg: CommentSegment, si: number) => {
-          if (seg.kind === 2) {
-            if (!this.revealed) {
-              Span($r('app.string.video_comments_spoiler'))
-                .fontSize(12)
-                .fontWeight(FontWeight.Medium)
-                .fontColor(this.pal.primary)
-            }
-          } else {
-            if (!seg.masked || this.revealed) {
-              if (seg.kind === 1) {
-                ImageSpan(seg.emojiUrl)
-                  .size({ width: 20, height: 20 })
-                  .verticalAlign(ImageSpanAlignment.CENTER)
-              } else {
-                if (seg.kind === 3) {
-                  ImageSpan(seg.imageUrl)
-                    .size({ width: 180, height: 130 })
-                    .objectFit(ImageFit.Contain)
-                    .borderRadius(6)
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    .onClick(() => {
-                      if (seg.linkUrl !== '') {
-                        this.openLink(seg.linkUrl);
-                      } else {
-                        this.openImage(seg.imageUrl);
-                      }
-                    })
-                } else {
-                  Span(seg.text)
-                    .fontSize(seg.fontSize > 0 ? seg.fontSize : 14)
-                    .fontColor(this.segColor(seg))
-                    .fontWeight(seg.bold ? FontWeight.Bold : FontWeight.Normal)
-                    .fontStyle(seg.italic ? FontStyle.Italic : FontStyle.Normal)
-                    .decoration(this.segDecoration(seg))
-                    .onClick(() => {
-                      if (seg.linkUrl !== '') {
-                        this.openLink(seg.linkUrl);
-                      }
-                    })
-                }
-              }
-            }
-          }
-        }, (seg: CommentSegment, si: number) => `${this.comment.id}-s${si}`)
-      }
-      .width('100%')
-      .lineHeight(22)
-      .onClick(() => {
-        if (this.comment.hasMask) {
-          this.revealed = !this.revealed;
-        }
-      })
+      // 正文：块级内容（引用/代码/对齐/缩进块 + 行内片段；masked 需揭示后渲染）
+      this.blocksBuilder(this.comment.blocks, 14, 20, 180, 130, 22)
+
+      // 表情回应 chips + 回复入口
+      this.reactionRow(this.comment.id, this.comment.id, this.comment.reactions,
+        this.comment.myReactionValue, this.comment.nickname, false, false)
 
       // 楼中楼回复
       if (this.comment.replies.length > 0) {
@@ -4556,60 +5140,11 @@ struct VpCommentItem {
               .width('100%')
               .alignItems(VerticalAlign.Center)
 
-              Text() {
-                ForEach(r.segments, (rseg: CommentSegment, rsi: number) => {
-                  if (rseg.kind === 2) {
-                    if (!this.revealed) {
-                      Span($r('app.string.video_comments_spoiler'))
-                        .fontSize(11)
-                        .fontWeight(FontWeight.Medium)
-                        .fontColor(this.pal.primary)
-                    }
-                  } else {
-                    if (!rseg.masked || this.revealed) {
-                      if (rseg.kind === 1) {
-                        ImageSpan(rseg.emojiUrl)
-                          .size({ width: 18, height: 18 })
-                          .verticalAlign(ImageSpanAlignment.CENTER)
-                      } else {
-                        if (rseg.kind === 3) {
-                          ImageSpan(rseg.imageUrl)
-                            .size({ width: 150, height: 110 })
-                            .objectFit(ImageFit.Contain)
-                            .borderRadius(6)
-                            .verticalAlign(ImageSpanAlignment.CENTER)
-                            .onClick(() => {
-                              if (rseg.linkUrl !== '') {
-                                this.openLink(rseg.linkUrl);
-                              } else {
-                                this.openImage(rseg.imageUrl);
-                              }
-                            })
-                        } else {
-                          Span(rseg.text)
-                            .fontSize(rseg.fontSize > 0 ? rseg.fontSize : 13)
-                            .fontColor(this.segColor(rseg))
-                            .fontWeight(rseg.bold ? FontWeight.Bold : FontWeight.Normal)
-                            .fontStyle(rseg.italic ? FontStyle.Italic : FontStyle.Normal)
-                            .decoration(this.segDecoration(rseg))
-                            .onClick(() => {
-                              if (rseg.linkUrl !== '') {
-                                this.openLink(rseg.linkUrl);
-                              }
-                            })
-                        }
-                      }
-                    }
-                  }
-                }, (rseg: CommentSegment, rsi: number) => `${r.id}-s${rsi}`)
-              }
-              .width('100%')
-              .lineHeight(20)
-              .onClick(() => {
-                if (r.hasMask) {
-                  this.revealed = !this.revealed;
-                }
-              })
+              this.blocksBuilder(r.blocks, 13, 18, 150, 110, 20)
+
+              // 楼中楼紧凑回应 chips + 回复入口
+              this.reactionRow(r.id, this.comment.id, r.reactions,
+                r.myReactionValue, r.nickname, true, true)
             }
             .width('100%')
             .alignItems(HorizontalAlign.Start)

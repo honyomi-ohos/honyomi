@@ -5105,24 +5105,12 @@
       "value": "Kindle 樣式"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D 立方"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "堆疊"
     },
     {
       "name": "novel_anim_fade",
       "value": "淡入淡出"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D 翻轉"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "球體"
     },
     {
       "name": "transition_tap_continue",

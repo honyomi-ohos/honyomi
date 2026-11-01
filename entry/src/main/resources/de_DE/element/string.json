@@ -4665,24 +4665,12 @@
       "value": "Kindle-Stil"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D-Würfel"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Stapel"
     },
     {
       "name": "novel_anim_fade",
       "value": "Überblenden"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D-Drehung"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Kugel"
     },
     {
       "name": "transition_tap_continue",

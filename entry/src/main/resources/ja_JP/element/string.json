@@ -4837,24 +4837,12 @@
       "value": "Kindle スタイル"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "3D キューブ"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "スタック"
     },
     {
       "name": "novel_anim_fade",
       "value": "フェード"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "3D フリップ"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "球体"
     },
     {
       "name": "transition_tap_continue",

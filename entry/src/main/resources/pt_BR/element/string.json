@@ -4721,24 +4721,12 @@
       "value": "Estilo Kindle"
     },
     {
-      "name": "novel_anim_cube",
-      "value": "Cubo 3D"
-    },
-    {
       "name": "novel_anim_stack",
       "value": "Pilha"
     },
     {
       "name": "novel_anim_fade",
       "value": "Esmaecer"
-    },
-    {
-      "name": "novel_anim_flip",
-      "value": "Virada 3D"
-    },
-    {
-      "name": "novel_anim_sphere",
-      "value": "Esfera"
     },
     {
       "name": "transition_tap_continue",
