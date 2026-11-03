@@ -59,9 +59,10 @@ export class MigrateSourceCount {
   count: number = 0;
   iconPath: string = '';
   contentType: string = '';
+  contentTypes: string[] = [];
 
   static of(key: string, name: string, lang: string, count: number,
-    iconPath: string = '', contentType: string = ''): MigrateSourceCount {
+    iconPath: string = '', contentType: string = '', contentTypes: string[] = []): MigrateSourceCount {
     const m = new MigrateSourceCount();
     m.key = key;
     m.name = name;
@@ -69,6 +70,11 @@ export class MigrateSourceCount {
     m.count = count;
     m.iconPath = iconPath;
     m.contentType = contentType;
+    if (contentTypes.length > 0) {
+      m.contentTypes = contentTypes;
+    } else if (contentType !== '') {
+      m.contentTypes = [contentType];
+    }
     return m;
   }
 }
@@ -490,13 +496,24 @@ export struct BrowsePage {
     if (this.enabledLangs.length > 0 && this.enabledLangs.indexOf(s.lang) < 0) {
       return false;
     }
-    if (this.enabledTypes.length > 0 && this.enabledTypes.indexOf(s.contentType) < 0) {
+    if (this.enabledTypes.length > 0 && !this.matchesEnabledType(s)) {
       return false;
     }
     if (s.nsfw && !this.showNsfw) {
       return false;
     }
     return true;
+  }
+
+  // 内容类型过滤：全量列表任一命中即通过（多类型插件可被多个类型筛选命中）
+  private matchesEnabledType(s: Source): boolean {
+    const types: string[] = s.contentTypes.length > 0 ? s.contentTypes : [s.contentType];
+    for (let i = 0; i < types.length; i++) {
+      if (this.enabledTypes.indexOf(types[i]) >= 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private sourceByKey(key: string): Source | undefined {
@@ -532,7 +549,7 @@ export struct BrowsePage {
         fallbackChar: s.name.substring(0, 1).toUpperCase(),
         iconSize: 40,
         cornerRadius: 20,
-        contentType: s.contentType,
+        contentTypes: s.contentTypes,
         badgeBorder: this.pal.bg,
       })
 
@@ -694,7 +711,7 @@ export struct BrowsePage {
                   fallbackChar: item.name.substring(0, 1).toUpperCase(),
                   iconSize: 40,
                   cornerRadius: 20,
-                  contentType: item.contentType,
+                  contentTypes: item.contentTypes,
                   badgeBorder: this.pal.bg,
                 })
                 Column() {
@@ -979,7 +996,8 @@ export struct BrowsePage {
       for (const s of SourceRegistry.all()) {
         const c: number | undefined = counts[s.key];
         if (c !== undefined && c > 0) {
-          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c, s.iconPath, s.contentType));
+          items.push(MigrateSourceCount.of(s.key, this.sourceNameText(s), s.lang, c, s.iconPath,
+            s.contentType, s.contentTypes));
         }
       }
       this.migrateItems = this.sortMigrate(items);

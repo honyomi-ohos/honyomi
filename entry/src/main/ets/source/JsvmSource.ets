@@ -160,6 +160,15 @@ export class JsvmSource implements Source {
   bt: boolean;
   acgn: boolean;
   manifest: PluginManifest;
+
+  // 插件声明的全部内容类型。manifest 归一后恒非空，此处再兜底主类型。
+  get contentTypes(): string[] {
+    if (this.manifest.contentTypes.length > 0) {
+      return this.manifest.contentTypes;
+    }
+    return [this.contentType];
+  }
+
   // 插件包目录名。多语言扩展共用一个 JSVM 引擎，浏览列表里每个语言各有自己的 key。
   readonly packageKey: string;
   // 旧多源记录的 source id。当前插件为空字符串，调用时不作为首参。

@@ -17,6 +17,11 @@ export abstract class LocalFsSource implements Source {
   readonly bt = false;
   readonly acgn = false;
   abstract readonly contentType: string;
+
+  get contentTypes(): string[] {
+    return [this.contentType];
+  }
+
   private readonly syncRoot: string;
 
   protected constructor(filesDir: string) {

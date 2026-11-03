@@ -2793,6 +2793,10 @@
       "value": "만"
     },
     {
+      "name": "badge_type_multi",
+      "value": "여"
+    },
+    {
       "name": "last_backup_failed_hint",
       "value": "마지막 자동 백업에 실패했습니다"
     },

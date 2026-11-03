@@ -1713,6 +1713,10 @@
       "value": "漫"
     },
     {
+      "name": "badge_type_multi",
+      "value": "多"
+    },
+    {
       "name": "last_backup_failed_hint",
       "value": "前回の自動バックアップに失敗しました"
     },

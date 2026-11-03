@@ -2,8 +2,6 @@ import { picker } from '@kit.CoreFileKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { SheetPreset } from './SheetPreset';
 import { InstalledPlugin, InstallOutcome, PluginService, RepoEntry, SourceSpec } from '../../data/PluginService';
-import { ContentType } from '../../model/Models';
-
 import { ThemePalette } from '../../common/Theme';
 import { Util } from '../../common/Util';
 import { Settings } from '../../common/Settings';
@@ -221,6 +219,8 @@ export struct ExtensionListPanel {
   // 下拉刷新 spinner 状态（Refresh 双向绑定）
   @State loadingRepo: boolean = false;
   @State busy: boolean = false;
+  // 正在下载安装的插件 key：行尾下载图标换成转圈，避免请求期间看起来像没点到
+  @State installingKey: string = '';
   // 安装前站点预览弹层（在线插件行地球按钮触发）
   @State showSitePreview: boolean = false;
   @State previewSiteUrl: string = '';
@@ -304,7 +304,7 @@ export struct ExtensionListPanel {
         fallbackChar: this.firstCharOf(item.manifest.name),
         iconSize: 40,
         cornerRadius: 10,
-        contentType: this.primaryType(item.manifest.contentTypes),
+        contentTypes: item.manifest.contentTypes,
         badgeBorder: this.pal.bg,
       })
 
@@ -383,16 +383,20 @@ export struct ExtensionListPanel {
 
       // 有新版本时显示更新按钮（对齐 Mihon hasUpdate → Download 图标）
       if (updatable) {
-        AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
-          .padding({
-            left: 8,
-            right: 8,
-            top: 10,
-            bottom: 10
-          })
-          .onClick(() => {
-            this.updateOne(item.manifest.key);
-          })
+        if (this.installingKey === item.manifest.key) {
+          this.installingMark()
+        } else {
+          AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+            .padding({
+              left: 8,
+              right: 8,
+              top: 10,
+              bottom: 10
+            })
+            .onClick(() => {
+              this.updateOne(item.manifest.key);
+            })
+        }
       }
     }
     .width('100%')
@@ -431,7 +435,7 @@ export struct ExtensionListPanel {
         fallbackChar: this.firstCharOf(entry.name),
         iconSize: 40,
         cornerRadius: 10,
-        contentType: this.primaryType(entry.contentTypes),
+        contentTypes: entry.contentTypes,
         badgeBorder: this.pal.bg,
       })
 
@@ -482,16 +486,20 @@ export struct ExtensionListPanel {
           })
       }
 
-      AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
-        .padding({
-          left: 8,
-          right: 8,
-          top: 10,
-          bottom: 10
-        })
-        .onClick(() => {
-          this.installFromRepo(entry);
-        })
+      if (this.installingKey === entry.key) {
+        this.installingMark()
+      } else {
+        AppIcon({ name: 'download', iconSize: 22, tint: this.pal.primary })
+          .padding({
+            left: 8,
+            right: 8,
+            top: 10,
+            bottom: 10
+          })
+          .onClick(() => {
+            this.installFromRepo(entry);
+          })
+      }
     }
     .width('100%')
     .alignItems(VerticalAlign.Center)
@@ -815,14 +823,6 @@ export struct ExtensionListPanel {
     return false;
   }
 
-  // 主内容类型 = 全量列表 [0]（归一保证非空，此处兜底漫画；角标显示用）
-  private primaryType(contentTypes: string[]): string {
-    if (contentTypes.length === 0) {
-      return ContentType.MANGA;
-    }
-    return contentTypes[0];
-  }
-
   // 类型过滤：内容类型全量列表任一命中即通过（多类型插件可被多个类型筛选命中）
   private matchesType(contentTypes: string[]): boolean {
     if (this.typeFilter.length === 0) {
@@ -1065,10 +1065,24 @@ export struct ExtensionListPanel {
     }
   }
 
+  // 下载进行中：占住原来的下载图标位置
+  @Builder
+  installingMark() {
+    LoadingProgress()
+      .width(22)
+      .height(22)
+      .color(this.pal.primary)
+      .margin({
+        left: 8,
+        right: 8
+      })
+  }
+
   // 单次仓库安装/更新核心（不含 busy 门控，供单项安装与“全部更新”复用）：
   // interactive = true 时未受信任结果弹信任确认；批量更新传 false（行内展示未受信任
   // 状态，由用户逐个点击确认，避免连续弹窗）
   private async performRepoInstall(entry: RepoEntry, interactive: boolean): Promise<void> {
+    this.installingKey = entry.key;
     try {
       const outcome: InstallOutcome = await PluginService.installFromRepo(entry);
       if (this.disposed) {
@@ -1087,6 +1101,10 @@ export struct ExtensionListPanel {
       }
       Util.toastRes(this.getUIContext(), $r('app.string.plugin_install_failed'),
         [Util.errText(this.getUIContext(), (e as Error).message)]);
+    } finally {
+      if (!this.disposed && this.installingKey === entry.key) {
+        this.installingKey = '';
+      }
     }
   }
 
@@ -1095,9 +1113,12 @@ export struct ExtensionListPanel {
       return;
     }
     this.busy = true;
-    await this.performRepoInstall(entry, true);
-    if (!this.disposed) {
-      this.busy = false;
+    try {
+      await this.performRepoInstall(entry, true);
+    } finally {
+      if (!this.disposed) {
+        this.busy = false;
+      }
     }
   }
 
@@ -1128,11 +1149,15 @@ export struct ExtensionListPanel {
       return;
     }
     this.busy = true;
-    for (const entry of snapshot) {
-      await this.performRepoInstall(entry, false);
-    }
-    if (!this.disposed) {
-      this.busy = false;
+    try {
+      for (const entry of snapshot) {
+        await this.performRepoInstall(entry, false);
+      }
+    } finally {
+      if (!this.disposed) {
+        this.busy = false;
+        this.installingKey = '';
+      }
     }
   }
 

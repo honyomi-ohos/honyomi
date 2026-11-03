@@ -3321,6 +3321,10 @@
       "value": "M"
     },
     {
+      "name": "badge_type_multi",
+      "value": "+"
+    },
+    {
       "name": "last_backup_failed_hint",
       "value": "Last automatic backup failed"
     },

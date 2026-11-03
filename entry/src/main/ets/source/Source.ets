@@ -8,6 +8,8 @@ export interface Source {
   readonly lang: string;
   readonly supportsLatest: boolean;
   readonly contentType: string;
+  // 插件声明的全部内容类型（主类型在前）。单类型源为仅含 contentType 的一项。
+  readonly contentTypes: string[];
 
   // NSFW 源标记（插件 manifest 声明）；关闭“显示 NSFW 源”时在浏览/搜索中隐藏
   readonly nsfw: boolean;

@@ -1,5 +1,4 @@
 import { InstalledPlugin, PluginService } from '../data/PluginService';
-import { ContentType } from '../model/Models';
 import { Source, SourceRegistry } from '../source/Source';
 import { JsvmSource, SourcePrefItem, SourcePrefOption } from '../source/JsvmSource';
 import { BrowseSourceParams, ExtensionDetailParams } from '../model/RouteParams';
@@ -248,8 +247,7 @@ export struct ExtensionDetailPage {
                     .toUpperCase(),
                   iconSize: 72,
                   cornerRadius: 16,
-                  contentType: this.plugin.manifest.contentTypes.length > 0 ?
-                    this.plugin.manifest.contentTypes[0] : ContentType.MANGA,
+                  contentTypes: this.plugin.manifest.contentTypes,
                   badgeBorder: this.pal.card,
                 })
                   .margin({ top: 8 })
