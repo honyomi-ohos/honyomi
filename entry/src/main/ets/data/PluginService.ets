@@ -178,7 +178,7 @@ interface RawManifestSettingsFile {
 // 引擎在源被实际调用时惰性拉起（ensureEngine 记忆化 + LRU 淘汰，见 JsvmExtensionManager）。
 export class PluginService {
   // 宿主支持的插件 DSL 最高版本（与 JSVM 适配层 ADAPTER_JS 的契约保持一致）
-  static readonly HOST_DSL_VERSION: number = 2;
+  static readonly HOST_DSL_VERSION: number = 3;
   private static pluginsDir: string = '';
   private static cacheDir: string = '';
   // 仓库索引缓存：合并后的条目列表落盘（cacheDir/plugin_repo_index.json），
@@ -338,11 +338,14 @@ export class PluginService {
   // 从文件选择器 URI 安装插件包：受信任（同版本且内容指纹一致）直接激活，
   // 否则仅落盘返回未受信任结果，由 UI 弹信任确认（对齐 Mihon TrustExtension 门禁）
   static async installFromFile(uri: string): Promise<InstallOutcome> {
+    if (uri.trim() === '') {
+      throw new Error('plugin_read_failed|empty_uri');
+    }
     const zipPath = `${PluginService.cacheDir}/plugin_install_${Date.now()}_${util.generateRandomUUID()}.honyomiplug`;
     try {
       const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
       try {
-        fs.copyFile(srcFile.fd, zipPath);
+        await fs.copyFile(srcFile.fd, zipPath);
       } finally {
         fs.closeSync(srcFile);
       }

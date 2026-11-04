@@ -4,7 +4,7 @@
  * Native 引擎把插件的 (kind, payloadJson) 请求经 HTTP 任务通道投递到主线程
  * （msg.type === 'hostCall'），本模块按 kind 分发到具体宿主能力：
  *   cookieHeader / cookieGet / cookieSet  → CookieJar（域级持久 Cookie）
- *   imageDecode / imageEncodePng          → @ohos.image（像素级编解码）
+ *   imageDecode / imageEncodePng / imageEncodeJpeg → @ohos.image（像素级编解码）
  *   aesCbc / aesGcm / aesCtr              → CryptoArchitectureKit（插件 AES）
  * dispatch 返回结果 JSON 字符串（信封 body），异常向上抛由桥接层转错误信封。
  * 运行时 shim 已校验载荷，此处独立再校验：防插件绕过 shim 手工打桥。
@@ -12,8 +12,12 @@
 
 import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 import { CookieJar } from '../net/CookieJar';
 import { PluginHostCrypto } from './PluginHostCrypto';
+
+const HOST_CALLS_DOMAIN: number = 0x0000;
+const HOST_CALLS_TAG: string = 'HostCalls';
 
 interface HostCallPayload {
   url?: string;
@@ -23,6 +27,7 @@ interface HostCallPayload {
   width?: number;
   height?: number;
   pixelsBase64?: string;
+  quality?: number;
   // AES 桥：data/key/iv/aad 均为 base64；decrypt 缺省 true
   dataBase64?: string;
   keyBase64?: string;
@@ -47,6 +52,10 @@ interface ImageDecodeResult {
 
 interface ImageEncodeResult {
   pngBase64: string;
+}
+
+interface ImageEncodeJpegResult {
+  jpegBase64: string;
 }
 
 interface AesResult {
@@ -106,7 +115,30 @@ export class HostCalls {
         if (b64 === '') {
           throw new Error('图片编码失败: 空像素缓冲');
         }
-        return await HostCalls.encodePng(w, h, b64);
+        return await HostCalls.encodePacked(w, h, b64, 'image/png', 100, 'png');
+      }
+      case 'imageEncodeJpeg': {
+        const w = payload.width ?? 0;
+        const h = payload.height ?? 0;
+        if (!Number.isInteger(w) || !Number.isInteger(h) || w <= 0 || h <= 0 ||
+          w * h > IMAGE_PIXELS_MAX) {
+          throw new Error(`图片编码失败: 尺寸非法 (${w}x${h})`);
+        }
+        const b64 = payload.pixelsBase64 ?? '';
+        if (b64 === '') {
+          throw new Error('图片编码失败: 空像素缓冲');
+        }
+        let q = payload.quality ?? 90;
+        if (!Number.isFinite(q)) {
+          q = 90;
+        }
+        q = Math.floor(q);
+        if (q < 1) {
+          q = 1;
+        } else if (q > 100) {
+          q = 100;
+        }
+        return await HostCalls.encodePacked(w, h, b64, 'image/jpeg', q, 'jpeg');
       }
       case 'aesCbc': {
         return HostCalls.aesResult(
@@ -193,21 +225,61 @@ export class HostCalls {
     return JSON.stringify(out);
   }
 
-  // 图片字节 → {width, height, pixelsBase64}：RGBA_8888 解码，
+  // 图片字节 → {width, height, pixelsBase64}：RGBA_8888 解码。
   // readPixelsToBuffer 原始布局原样回传（与 encodePng 对称，通道序对
-  // 解码→重排→回编的还原类拦截器无影响）
+  // 解码→重排→回编的还原类拦截器无影响）。
+  // 加固：createImageSource 只接受 ArrayBuffer（传 Uint8Array 会得到 undefined，
+  // 再调 createPixelMap 即 "createPixelMap of undefined"）；失败返回稳定错误串，
+  // 永不对 undefined 调 createPixelMap。AVIF 不在此特判（真机系统可解；
+  // 模拟器 AVIF 已知不可用，见 AvifConverter，P2 不做插件侧接入）。
   private static async decodeImage(bytesBase64: string): Promise<string> {
-    const bytes = new util.Base64Helper().decodeSync(bytesBase64);
+    let bytes: Uint8Array;
+    try {
+      bytes = new util.Base64Helper().decodeSync(bytesBase64);
+    } catch (e) {
+      throw new Error('图片解码失败: invalid base64');
+    }
     if (bytes.byteLength === 0) {
       throw new Error('图片解码失败: 空输入');
     }
     if (bytes.byteLength > IMAGE_BYTES_MAX) {
       throw new Error('图片解码失败: 输入过大');
     }
-    const source = image.createImageSource(bytes);
+    // 拷贝出独立 ArrayBuffer：@ohos.image 要 ArrayBuffer（传 Uint8Array 会得到 null/undefined）
+    const ab = new ArrayBuffer(bytes.byteLength);
+    new Uint8Array(ab).set(bytes);
+    let source: image.ImageSource | undefined = undefined;
+    try {
+      source = image.createImageSource(ab);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : `${e}`;
+      hilog.warn(HOST_CALLS_DOMAIN, HOST_CALLS_TAG,
+        'imageDecode createImageSource throw len=%{public}d err=%{public}s',
+        bytes.byteLength, msg);
+      throw new Error(`图片解码失败: createImageSource (${msg})`);
+    }
+    // createImageSource 失败时可能返回 null 或 undefined，二者都要拦
+    if (source === undefined || (source as Object | null) === null) {
+      hilog.warn(HOST_CALLS_DOMAIN, HOST_CALLS_TAG,
+        'imageDecode createImageSource empty len=%{public}d', bytes.byteLength);
+      throw new Error('图片解码失败: createImageSource returned empty');
+    }
     let pixelMap: image.PixelMap | undefined = undefined;
     try {
-      pixelMap = await source.createPixelMap({ desiredPixelFormat: image.PixelMapFormat.RGBA_8888 });
+      try {
+        pixelMap = await source.createPixelMap({ desiredPixelFormat: image.PixelMapFormat.RGBA_8888 });
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : `${e}`;
+        hilog.warn(HOST_CALLS_DOMAIN, HOST_CALLS_TAG,
+          'imageDecode createPixelMap throw len=%{public}d err=%{public}s',
+          bytes.byteLength, msg);
+        throw new Error(`图片解码失败: createPixelMap (${msg})`);
+      }
+      if (pixelMap === undefined || (pixelMap as Object | null) === null) {
+        hilog.warn(HOST_CALLS_DOMAIN, HOST_CALLS_TAG,
+          'imageDecode createPixelMap empty len=%{public}d', bytes.byteLength);
+        throw new Error('图片解码失败: createPixelMap returned empty');
+      }
       const info = await pixelMap.getImageInfo();
       const w = info.size.width;
       const h = info.size.height;
@@ -239,26 +311,55 @@ export class HostCalls {
     }
   }
 
-  // RGBA 像素（width*height*4 字节）→ PNG 字节（base64 回传）
-  private static async encodePng(width: number, height: number, pixelsBase64: string): Promise<string> {
-    const pixels = new util.Base64Helper().decodeSync(pixelsBase64);
+  // RGBA 像素（width*height*4 字节）→ PNG/JPEG 字节（base64 回传）
+  // format: 'image/png' | 'image/jpeg'；resultKind: 'png' → pngBase64，'jpeg' → jpegBase64
+  private static async encodePacked(
+    width: number,
+    height: number,
+    pixelsBase64: string,
+    format: string,
+    quality: number,
+    resultKind: string,
+  ): Promise<string> {
+    let pixels: Uint8Array;
+    try {
+      pixels = new util.Base64Helper().decodeSync(pixelsBase64);
+    } catch (e) {
+      throw new Error('图片编码失败: invalid base64');
+    }
     if (pixels.byteLength !== width * height * 4) {
       throw new Error('图片编码失败: 像素缓冲长度不匹配');
     }
-    const pixelMap = await image.createPixelMap(pixels.buffer, {
-      size: { width: width, height: height },
-      pixelFormat: image.PixelMapFormat.RGBA_8888,
-    });
+    const ab = new ArrayBuffer(pixels.byteLength);
+    new Uint8Array(ab).set(pixels);
+    let pixelMap: image.PixelMap | undefined = undefined;
+    try {
+      pixelMap = await image.createPixelMap(ab, {
+        size: { width: width, height: height },
+        pixelFormat: image.PixelMapFormat.RGBA_8888,
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : `${e}`;
+      hilog.warn(HOST_CALLS_DOMAIN, HOST_CALLS_TAG,
+        'imageEncode createPixelMap throw format=%{public}s err=%{public}s', format, msg);
+      throw new Error(`图片编码失败: createPixelMap (${msg})`);
+    }
+    if (pixelMap === undefined || (pixelMap as Object | null) === null) {
+      throw new Error('图片编码失败: createPixelMap returned empty');
+    }
     const packer = image.createImagePacker();
     try {
-      const opt: image.PackingOption = { format: 'image/png', quality: 100 };
+      const opt: image.PackingOption = { format: format, quality: quality };
       const packed = await packer.packToData(pixelMap, opt);
-      const out: ImageEncodeResult = {
-        pngBase64: new util.Base64Helper().encodeToStringSync(new Uint8Array(packed)),
-      };
+      const b64 = new util.Base64Helper().encodeToStringSync(new Uint8Array(packed));
+      if (resultKind === 'jpeg') {
+        const out: ImageEncodeJpegResult = { jpegBase64: b64 };
+        return JSON.stringify(out);
+      }
+      const out: ImageEncodeResult = { pngBase64: b64 };
       return JSON.stringify(out);
     } catch (e) {
-const err = e as Error;
+      const err = e as Error;
       throw err;
     } finally {
       try {

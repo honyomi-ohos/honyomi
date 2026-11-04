@@ -787,23 +787,35 @@ static JSVM_Value NativeHttpRequestShared(JSVM_Env env, JSVM_CallbackInfo info)
     OH_JSVM_GetNull(env, &bytes);
     if (bodyShared != nullptr) {
         bool copied = false;
-        JSVM_Value external = nullptr;
+        JSVM_Value arrayBuffer = nullptr;
         if (OH_JSVM_CreateArrayBufferFromExternalMemory(env, bodyShared->data, bodyShared->length,
-                SharedBodyFinalize, bodyShared, &copied, &external) == JSVM_OK &&
-            external != nullptr) {
-            bytes = external;
+                SharedBodyFinalize, bodyShared, &copied, &arrayBuffer) == JSVM_OK &&
+            arrayBuffer != nullptr) {
+            // zero-copy external ArrayBuffer OK
         } else {
             // Fallback (e.g. unaligned backing store): copy once, then unpin.
-            JSVM_Value copy = nullptr;
+            arrayBuffer = nullptr;
             void *copyData = nullptr;
-            if (OH_JSVM_CreateArraybuffer(env, bodyShared->length, &copyData, &copy) == JSVM_OK &&
-                copy != nullptr && copyData != nullptr) {
+            if (OH_JSVM_CreateArraybuffer(env, bodyShared->length, &copyData, &arrayBuffer) == JSVM_OK &&
+                arrayBuffer != nullptr && copyData != nullptr) {
                 if (bodyShared->length > 0) {
                     std::memcpy(copyData, bodyShared->data, bodyShared->length);
                 }
-                bytes = copy;
+            } else {
+                arrayBuffer = nullptr;
             }
             PostRelease(bodyShared->callId);
+        }
+        // runtime httpBytesRequest 用 bytes.length 判空；ArrayBuffer 只有 byteLength。
+        // 包成 Uint8Array，与 NativeRandomBytes / HostFetchBytes 契约一致。
+        if (arrayBuffer != nullptr) {
+            JSVM_Value typed = nullptr;
+            if (OH_JSVM_CreateTypedarray(env, JSVM_UINT8_ARRAY, bodyShared->length,
+                    arrayBuffer, 0, &typed) == JSVM_OK && typed != nullptr) {
+                bytes = typed;
+            } else {
+                bytes = arrayBuffer;
+            }
         }
     }
     OH_JSVM_SetNamedProperty(env, obj, "bytes", bytes);

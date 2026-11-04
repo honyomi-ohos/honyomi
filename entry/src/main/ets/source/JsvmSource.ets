@@ -543,17 +543,34 @@ export class JsvmSource implements Source {
     return merged;
   }
 
+  // 插件是否导出 fetchImage：宿主应走 fetchPageImage 代取字节，而非直连 HTTP
+  hasFetchImage(): boolean {
+    return this.hasMethod('fetchImage');
+  }
+
   async fetchPageImage(pageUrl: string, imageUrl: string): Promise<ArrayBuffer | undefined> {
-    if (this.exportedMethods.indexOf('fetchImage') < 0) {
+    if (!this.hasFetchImage()) {
       return undefined;
     }
     const raw = await this.call<string>('fetchImage', this.callArgs([pageUrl, imageUrl]));
     if (raw === undefined || raw === '') {
       return undefined;
     }
+    // Coerce + strip whitespace: MIME/bridge CR/LF makes OHOS decodeSync throw Parameter error.
+    const cleaned = `${raw}`.replace(/[\r\n\s]/g, '');
+    if (cleaned.length < 4) {
+      return undefined;
+    }
     const helper = new util.Base64Helper();
-    const bytes = helper.decodeSync(raw);
-    return bytes.buffer;
+    let bytes: Uint8Array;
+    try {
+      bytes = helper.decodeSync(cleaned);
+    } catch (e) {
+      throw new Error(
+        `fetchImage base64 decode failed len=${cleaned.length} head=${cleaned.substring(0, 24)} err=${e}`);
+    }
+    // Uint8Array.buffer may be a larger pooled ArrayBuffer — slice the view.
+    return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   }
 
   async getFilterList(): Promise<RawFilter[]> {

@@ -5,7 +5,8 @@ import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { Http } from '../net/Http';
-import { SourceRegistry } from '../source/Source';
+import { Source, SourceRegistry } from '../source/Source';
+import { JsvmSource } from '../source/JsvmSource';
 import { PluginService } from '../data/PluginService';
 import { AvifConverter } from './AvifConverter';
 import { AtomicFileWriter } from './AtomicFileWriter';
@@ -104,13 +105,14 @@ export class ImageCache {
     // 统一经宿主管线下载缓存（未入库封面同样进 LRU 公共缓存）
     const srcHeaders = source !== undefined ? source.imageRequestHeaders() : undefined;
     const headers: Record<string, string> = srcHeaders !== undefined ? srcHeaders : {};
-    // 单例任务：创建者与并发加入者共享同一 Promise；任务内部自带失败回退，
+    // 单例任务：创建者与并发加入者共享同一 Promise；任务内部自带失败回退；
     // 所有调用方拿到完全一致的结果，不会出现裸拒绝穿透导致的状态分叉
     const pending = ImageCache.inflight.get(url);
     if (pending !== undefined) {
       return pending;
     }
-    const task = ImageCache.settleFetch(url, ImageCache.withReferer(headers, pageUrl), path);
+    // 插件导出 fetchImage 时优先走 JSVM 代取（解密/反防盗链），空结果再回落 HTTP
+    const task = ImageCache.settleResolve(source, url, path, headers, pageUrl);
     ImageCache.inflight.set(url, task);
     try {
       return await task;
@@ -198,7 +200,7 @@ export class ImageCache {
       const done = await pending;
       return done.indexOf('file://') === 0 ? done.substring('file://'.length) : '';
     }
-    const task = ImageCache.settleFetch(url, headers, path);
+    const task = ImageCache.settleResolve(source, url, path, headers, undefined);
     ImageCache.inflight.set(url, task);
     try {
       const done = await task;
@@ -305,14 +307,34 @@ export class ImageCache {
     return merged;
   }
 
-  private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
-    const raw = await Http.getBuffer(url, headers);
+  // 统一解析入口：插件 fetchImage 优先，空/失败回落 HTTP settleFetch（保持 inflight 单例）
+  private static settleResolve(source: Source | undefined, url: string, path: string,
+    headers: Record<string, string>, pageUrl?: string): Promise<string> {
+    return (async (): Promise<string> => {
+      if (source instanceof JsvmSource && source.hasFetchImage()) {
+        try {
+          const buf = await source.fetchPageImage(pageUrl ?? '', url);
+          if (buf !== undefined && buf.byteLength > 0) {
+            const local = await ImageCache.writeBuffer(buf, path);
+            ImageCache.remember(url, local, true);
+            return local;
+          }
+        } catch (e) {
+          hilog.warn(0x0000, 'CoverDbg', 'fetchImage failed url=%{public}s err=%{public}s', url, `${e}`);
+        }
+      }
+      return await ImageCache.settleFetch(url, ImageCache.withReferer(headers, pageUrl), path);
+    })();
+  }
+
+  // AVIF→JPEG + 原子落盘 + LRU 记账（HTTP 与插件代取共用）
+  private static async writeBuffer(raw: ArrayBuffer, path: string): Promise<string> {
     let buffer = raw;
     // AVIF 落盘前转 JPEG：系统解码器不支持 AVIF（且失败时 Promise 挂死）
     if (AvifConverter.isAvif(new Uint8Array(raw))) {
       try {
         buffer = await AvifConverter.convert(new Uint8Array(raw));
-      } catch (e) {
+      } catch (_e) {
         // 转换失败：保留原始 AVIF 字节（支持 AVIF 的设备仍可显示）
       }
     }
@@ -324,6 +346,11 @@ export class ImageCache {
       }
     }
     return `file://${path}`;
+  }
+
+  private static async fetch(url: string, headers: Record<string, string>, path: string): Promise<string> {
+    const raw = await Http.getBuffer(url, headers);
+    return ImageCache.writeBuffer(raw, path);
   }
 
   private static async cachedPath(url: string): Promise<string> {

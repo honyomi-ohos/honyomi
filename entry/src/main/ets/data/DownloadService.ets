@@ -9,6 +9,7 @@ import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
 import { Http } from '../net/Http';
 import { Source, SourceRegistry } from '../source/Source';
+import { JsvmSource } from '../source/JsvmSource';
 import {
   ChapterRecord,
   ContentType,
@@ -964,12 +965,11 @@ export class DownloadService {
       }
       task.total = pages.length;
       DownloadService.notify();
-      const imageHeaders = source.imageRequestHeaders();
       const dir = ChapterPageStore.chapterDir(task.mangaId, task.chapterId);
       if (!fileIo.accessSync(dir)) {
         fileIo.mkdirSync(dir, true);
       }
-      // 残留 .tmp 是上次进程被杀/取消时的半截文件；正式页文件经原子写必然完整，
+      // 残留 .tmp 是上次进程被杀/取消时的半截文件；正式页文件经原子写必然完整；
       // 已存在的页直接跳过实现断点续传
       ChapterPageStore.cleanTmpFiles(dir);
       // 页级并发：单章内 pageLimit 个 worker 同时抓页
@@ -977,7 +977,7 @@ export class DownloadService {
       const workerCount = Math.min(Settings.getDownloadParallelPageLimit(), pages.length);
       const workers: Array<Promise<void>> = [];
       for (let i = 0; i < workerCount; i++) {
-        workers.push(DownloadService.pageWorker(task, pages, dir, imageHeaders, flags, cursor));
+        workers.push(DownloadService.pageWorker(task, pages, dir, source, flags, cursor));
       }
       await Promise.all(workers);
       // 页列表比上次短时清理超出的多余编号页，避免旧图混入本地阅读
@@ -1020,7 +1020,8 @@ export class DownloadService {
 
   // 单章页面下载 worker：按共享游标领取下一页，直至取尽或被取消/阻断
   private static async pageWorker(task: DownloadTask, pages: SPage[], dir: string,
-    imageHeaders: Record<string, string> | undefined, flags: DlFlags, cursor: PageCursor): Promise<void> {
+    source: Source, flags: DlFlags, cursor: PageCursor): Promise<void> {
+    const imageHeaders = source.imageRequestHeaders();
     while (true) {
       const i = cursor.next;
       cursor.next += 1;
@@ -1040,12 +1041,12 @@ export class DownloadService {
       try {
         exists = fileIo.accessSync(filePath);
       } catch (e) {
-const err = e as Error;
+        const err = e as Error;
         throw err;
       }
       if (!exists) {
         // 浏览缓存复用：在线阅读时经 ImageCache 管线下载过的页直接本地复制，
-        // 省一次网络请求（缓存中的 AVIF 已转码 JPEG，产物离线可正常显示）；
+        // 省一次网络请求（缓存中的 AVIF 已转为 JPEG，产物离线可正常显示）；
         // 缓存被 LRU 淘汰/复制失败时回退原有网络下载路径
         let placed = false;
         const cached = await ImageCache.peekCached(p.url);
@@ -1057,7 +1058,18 @@ const err = e as Error;
           }
         }
         if (!placed) {
-          const buffer = await Http.getBuffer(p.url, imageHeaders);
+          // 插件导出 fetchImage 时走 JSVM 代取（解密图），空结果再回落 HTTP
+          let buffer: ArrayBuffer | undefined = undefined;
+          if (source instanceof JsvmSource && source.hasFetchImage()) {
+            try {
+              buffer = await source.fetchPageImage(p.pageUrl ?? '', p.url);
+            } catch (e) {
+              hilog.warn(0x0001, 'Download', 'fetchImage failed url=%{public}s err=%{public}s', p.url, `${e}`);
+            }
+          }
+          if (buffer === undefined || buffer.byteLength === 0) {
+            buffer = await Http.getBuffer(p.url, imageHeaders);
+          }
           if (flags.cancelled) {
             throw new Error('download_cancelled');
           }
