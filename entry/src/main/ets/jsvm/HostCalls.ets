@@ -5,6 +5,7 @@
  * （msg.type === 'hostCall'），本模块按 kind 分发到具体宿主能力：
  *   cookieHeader / cookieGet / cookieSet  → CookieJar（域级持久 Cookie）
  *   imageDecode / imageEncodePng          → @ohos.image（像素级编解码）
+ *   aesCbc / aesGcm / aesCtr              → CryptoArchitectureKit（插件 AES）
  * dispatch 返回结果 JSON 字符串（信封 body），异常向上抛由桥接层转错误信封。
  * 运行时 shim 已校验载荷，此处独立再校验：防插件绕过 shim 手工打桥。
  */
@@ -12,6 +13,7 @@
 import { image } from '@kit.ImageKit';
 import { util } from '@kit.ArkTS';
 import { CookieJar } from '../net/CookieJar';
+import { PluginHostCrypto } from './PluginHostCrypto';
 
 interface HostCallPayload {
   url?: string;
@@ -21,6 +23,12 @@ interface HostCallPayload {
   width?: number;
   height?: number;
   pixelsBase64?: string;
+  // AES 桥：data/key/iv/aad 均为 base64；decrypt 缺省 true
+  dataBase64?: string;
+  keyBase64?: string;
+  ivBase64?: string;
+  aadBase64?: string;
+  decrypt?: boolean;
 }
 
 interface CookieHeaderResult {
@@ -39,6 +47,10 @@ interface ImageDecodeResult {
 
 interface ImageEncodeResult {
   pngBase64: string;
+}
+
+interface AesResult {
+  dataBase64: string;
 }
 
 // 图像桥载荷上限（与 runtime $ DSL 侧一致）
@@ -96,6 +108,40 @@ export class HostCalls {
         }
         return await HostCalls.encodePng(w, h, b64);
       }
+      case 'aesCbc': {
+        return HostCalls.aesResult(
+          PluginHostCrypto.aesCbc(
+            HostCalls.decodeB64('aes', payload.dataBase64),
+            HostCalls.decodeB64('aes', payload.keyBase64),
+            HostCalls.decodeB64('aes', payload.ivBase64),
+            payload.decrypt !== false,
+          ),
+        );
+      }
+      case 'aesGcm': {
+        const aad = payload.aadBase64 !== undefined && payload.aadBase64 !== ''
+          ? HostCalls.decodeB64('aes-gcm', payload.aadBase64)
+          : new Uint8Array(0);
+        return HostCalls.aesResult(
+          PluginHostCrypto.aesGcm(
+            HostCalls.decodeB64('aes-gcm', payload.dataBase64),
+            HostCalls.decodeB64('aes-gcm', payload.keyBase64),
+            HostCalls.decodeB64('aes-gcm', payload.ivBase64),
+            aad,
+            payload.decrypt !== false,
+          ),
+        );
+      }
+      case 'aesCtr': {
+        return HostCalls.aesResult(
+          PluginHostCrypto.aesCtr(
+            HostCalls.decodeB64('aes-ctr', payload.dataBase64),
+            HostCalls.decodeB64('aes-ctr', payload.keyBase64),
+            HostCalls.decodeB64('aes-ctr', payload.ivBase64),
+            payload.decrypt !== false,
+          ),
+        );
+      }
       default:
         throw new Error(`不支持的 host call: ${kind}`);
     }
@@ -125,6 +171,26 @@ export class HostCalls {
       throw new Error('非法 cookie 值');
     }
     return v;
+  }
+
+
+  private static decodeB64(prefix: string, b64: string | undefined): Uint8Array {
+    const s = b64 ?? '';
+    if (s === '') {
+      throw new Error(`${prefix}: empty base64`);
+    }
+    try {
+      return new util.Base64Helper().decodeSync(s);
+    } catch (e) {
+      throw new Error(`${prefix}: invalid base64`);
+    }
+  }
+
+  private static aesResult(data: Uint8Array): string {
+    const out: AesResult = {
+      dataBase64: new util.Base64Helper().encodeToStringSync(data),
+    };
+    return JSON.stringify(out);
   }
 
   // 图片字节 → {width, height, pixelsBase64}：RGBA_8888 解码，
